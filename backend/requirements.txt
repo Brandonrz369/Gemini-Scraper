@@ -1,0 +1,6 @@
+requests==2.31.0
+beautifulsoup4==4.12.3
+fake-useragent==1.4.0
+lxml==5.2.0
+tqdm==4.66.2
+openai # For OpenRouter API interaction

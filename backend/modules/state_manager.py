@@ -1,0 +1,172 @@
+# modules/state_manager.py (Recreated)
+import sqlite3
+import logging
+import os
+import json # For handling potential JSON in DB later if needed
+from datetime import datetime
+
+class StateManager:
+    def __init__(self, config):
+        self.db_path = config.get('STATE_CONFIG', {}).get('DATABASE_FILE', 'data/leads.db')
+        # Ensure the path is relative to the backend directory
+        self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.db_path = os.path.join(self.backend_dir, self.db_path)
+
+        # Ensure data directory exists
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+
+        self.conn = None
+        self.cursor = None
+        self._connect_db()
+        self._initialize_schema()
+
+    def _connect_db(self):
+        """Establishes connection to the SQLite database."""
+        try:
+            self.conn = sqlite3.connect(self.db_path)
+            # Use Row factory for dictionary-like access
+            self.conn.row_factory = sqlite3.Row
+            self.cursor = self.conn.cursor()
+            logging.info(f"Connected to database: {self.db_path}")
+        except sqlite3.Error as e:
+            logging.error(f"Error connecting to database {self.db_path}: {e}", exc_info=True)
+            raise # Re-raise the exception
+
+    def _initialize_schema(self):
+        """Creates necessary tables if they don't exist."""
+        if not self.conn: return
+        try:
+            # Leads table - adjust columns as needed based on full_lead_details structure
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS leads (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    url TEXT UNIQUE NOT NULL,
+                    title TEXT,
+                    description TEXT,
+                    city TEXT,
+                    category TEXT,
+                    date_posted_iso TEXT,
+                    scraped_timestamp TEXT,
+                    estimated_value TEXT,
+                    contact_method TEXT,
+                    contact_info TEXT,
+                    has_been_contacted BOOLEAN DEFAULT 0,
+                    follow_up_date TEXT,
+                    ai_is_junk BOOLEAN,
+                    ai_profitability_score INTEGER,
+                    ai_reasoning TEXT
+                )
+            ''')
+            # Progress table
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS progress (
+                    key TEXT PRIMARY KEY,
+                    value TEXT
+                )
+            ''')
+            self.conn.commit()
+            logging.info("Database schema initialized/verified.")
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing database schema: {e}", exc_info=True)
+
+    def add_lead(self, lead_details):
+        """Adds a lead to the database if the URL is unique."""
+        if not self.conn:
+            logging.error("Database not connected. Cannot add lead.")
+            return False
+
+        url = lead_details.get('url')
+        if not url:
+            logging.warning("Skipping lead: Missing URL.")
+            return False
+
+        # Flatten AI grade details
+        ai_grade = lead_details.get('ai_grade', {})
+        ai_is_junk = ai_grade.get('is_junk') if isinstance(ai_grade, dict) else None
+        ai_score = ai_grade.get('profitability_score') if isinstance(ai_grade, dict) else None
+        ai_reasoning = ai_grade.get('reasoning') if isinstance(ai_grade, dict) else None
+
+        # Prepare data for insertion, ensuring keys match table columns
+        # Use .get() with default None for safety
+        data_to_insert = {
+            'url': url,
+            'title': lead_details.get('title'),
+            'description': lead_details.get('description'),
+            'city': lead_details.get('city'),
+            'category': lead_details.get('category'),
+            'date_posted_iso': lead_details.get('date_posted_iso'),
+            'scraped_timestamp': lead_details.get('scraped_timestamp', datetime.now().isoformat()),
+            'estimated_value': lead_details.get('estimated_value'),
+            'contact_method': lead_details.get('contact_method'),
+            'contact_info': lead_details.get('contact_info'),
+            'has_been_contacted': lead_details.get('has_been_contacted', False),
+            'follow_up_date': lead_details.get('follow_up_date'),
+            'ai_is_junk': ai_is_junk,
+            'ai_profitability_score': ai_score,
+            'ai_reasoning': ai_reasoning
+        }
+
+        # Define columns explicitly for the INSERT statement
+        columns = list(data_to_insert.keys())
+        placeholders = ', '.join('?' * len(columns))
+        sql = f"INSERT OR IGNORE INTO leads ({', '.join(columns)}) VALUES ({placeholders})"
+        values = tuple(data_to_insert[col] for col in columns)
+
+        try:
+            self.cursor.execute(sql, values)
+            self.conn.commit()
+            # Check if a row was actually inserted (IGNORE means 0 changes if duplicate)
+            if self.cursor.rowcount > 0:
+                logging.debug(f"Lead added to DB: {url}")
+                return True
+            else:
+                logging.debug(f"Lead already exists (duplicate URL): {url}")
+                return False
+        except sqlite3.Error as e:
+            logging.error(f"Error adding lead {url} to database: {e}", exc_info=True)
+            return False
+
+    def get_leads(self):
+        """Retrieves all leads from the database."""
+        if not self.conn: return []
+        try:
+            self.cursor.execute("SELECT * FROM leads ORDER BY scraped_timestamp DESC")
+            rows = self.cursor.fetchall()
+            # Convert sqlite3.Row objects to dictionaries
+            return [dict(row) for row in rows]
+        except sqlite3.Error as e:
+            logging.error(f"Error retrieving leads: {e}", exc_info=True)
+            return []
+
+    def _get_total_leads_count(self):
+        """Gets the total number of leads in the database."""
+        if not self.conn: return 0
+        try:
+            self.cursor.execute("SELECT COUNT(*) FROM leads")
+            count = self.cursor.fetchone()[0]
+            return count
+        except sqlite3.Error as e:
+            logging.error(f"Error getting lead count: {e}", exc_info=True)
+            return 0
+
+    def _set_progress_value(self, key, value):
+        """Sets a progress key-value pair."""
+        if not self.conn: return
+        try:
+            sql = "INSERT OR REPLACE INTO progress (key, value) VALUES (?, ?)"
+            self.cursor.execute(sql, (key, str(value))) # Ensure value is string
+            self.conn.commit()
+        except sqlite3.Error as e:
+            logging.error(f"Error setting progress value for key '{key}': {e}", exc_info=True)
+
+    def close_db(self):
+        """Closes the database connection."""
+        if self.conn:
+            self.conn.close()
+            logging.info("Database connection closed.")
+            self.conn = None
+            self.cursor = None
+
+    def __del__(self):
+        """Ensure DB connection is closed when object is destroyed."""
+        self.close_db()

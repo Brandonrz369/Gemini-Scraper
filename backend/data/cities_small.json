@@ -1,0 +1,12 @@
+[
+  { "code": "newyork", "name": "New York City" },
+  { "code": "losangeles", "name": "Los Angeles" },
+  { "code": "chicago", "name": "Chicago" },
+  { "code": "sfbay", "name": "SF Bay Area" },
+  { "code": "dallas", "name": "Dallas/Fort Worth" },
+  { "code": "houston", "name": "Houston" },
+  { "code": "washingtondc", "name": "Washington DC" },
+  { "code": "philadelphia", "name": "Philadelphia" },
+  { "code": "miami", "name": "Miami" },
+  { "code": "atlanta", "name": "Atlanta" }
+]
