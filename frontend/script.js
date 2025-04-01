@@ -109,8 +109,9 @@ $(document).ready(function() {
 
 
     // Fetch data and initialize
-    // Assumes graded_leads.json is in the public/ directory relative to index.html
-    fetch('./public/graded_leads.json') // Fetch from ./public/
+    // Assumes graded_leads.json is in the 'public' folder within the Vercel Root Directory ('frontend').
+    // Vercel serves 'public' folder contents at the root URL path.
+    fetch('/graded_leads.json') // Fetch from the root path
         .then(response => {
             if (!response.ok) {
                 // Provide more context in the error message
