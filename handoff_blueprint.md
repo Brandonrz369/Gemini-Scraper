@@ -57,7 +57,25 @@ The project has been enhanced from its initial state to support wider scraping a
         # Optional: For GitHub deployment
         GITHUB_PAT=your_github_personal_access_token
         ```
-5.  **Run Test Scan (Recommended First):**
+5.  **Configure Local Perplexity MCP Server (Optional but Recommended for Research):**
+    *   The Perplexity MCP server (`researcher-mcp`) was used during development for brainstorming and research. To enable it locally, you need to add its configuration to your MCP settings file.
+    *   **Location:** This file is typically located at `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json` (Linux) or similar paths on other OSes. **Do NOT commit this file to Git.**
+    *   **Configuration:** Add the following within the `mcpServers` object in that file (create the object if it doesn't exist):
+        ```json
+        "perplexity-server": {
+          "command": "npx",
+          "args": ["mcp-perplexity-search"],
+          "env": {
+            "PERPLEXITY_API_KEY": "YOUR_PERPLEXITY_API_KEY_HERE", // Replace with your actual key
+            "PERPLEXITY_MODEL": "sonar-pro",
+            "PERPLEXITY_MODEL_CHAT": "sonar-pro",
+            "PERPLEXITY_MODEL_ASK": "sonar-reasoning-pro",
+            "PERPLEXITY_MODEL_CODE": "sonar-reasoning-pro"
+          }
+        }
+        ```
+    *   **Note:** Replace `"YOUR_PERPLEXITY_API_KEY_HERE"` with your actual Perplexity API key. You may need to install the server globally first if you haven't: `npm install -g mcp-perplexity-search`.
+6.  **Run Test Scan (Recommended First):**
     *   This command runs the scan using the full US list but limits it to 1 page per category for a quick test. Uses 8 threads for lead processing.
     ```bash
     source .venv/bin/activate

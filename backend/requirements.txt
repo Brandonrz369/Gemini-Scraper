@@ -4,3 +4,4 @@ fake-useragent==1.4.0
 lxml==5.2.0
 tqdm==4.66.2
 openai # For OpenRouter API interaction
+python-dotenv # For loading .env files

@@ -1,4 +1,12 @@
 """Configuration settings for the Craigslist Lead Generator"""
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file located in the backend directory
+# Assumes .env file is in the 'backend' directory, one level up from 'config'
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+
 
 # Oxylabs credentials
 OXYLABS_CONFIG = {
@@ -9,10 +17,10 @@ OXYLABS_CONFIG = {
 
 # AI Filtering Configuration (Using OpenRouter)
 AI_CONFIG = {
-    'API_KEY': "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", # Updated API Key
+    'API_KEY': os.getenv('OPENROUTER_API_KEY'), # Load from environment variable
     'BASE_URL': "https://openrouter.ai/api/v1",
     'MODEL_NAME': "anthropic/claude-3-haiku" # Try simpler model ID for OpenRouter
-    # Do not commit API keys to version control!
+    # Do not commit API keys to version control! Ensure .env is in .gitignore
 }
 
 # Pre-filtering settings
