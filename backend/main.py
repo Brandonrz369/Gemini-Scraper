@@ -30,7 +30,8 @@ logging.info("Logging configured.")
 
 logging.info("Attempting module imports...")
 try:
-    from config.settings import OXYLABS_CONFIG, SEARCH_CONFIG, STATE_CONFIG, AI_CONFIG
+    # Import PRE_FILTER_CONFIG as well
+    from config.settings import OXYLABS_CONFIG, SEARCH_CONFIG, STATE_CONFIG, AI_CONFIG, PRE_FILTER_CONFIG
     from modules.city_manager import CityManager
     from modules.request_handler import RequestHandler
     from modules.content_analyzer import ContentAnalyzer
@@ -54,6 +55,22 @@ def process_single_lead(basic_lead_info, worker_request_handler, worker_content_
 
     # Use different log prefix for threaded operations
     log_prefix = f"[{worker_name}-Thread]"
+
+    # --- Add City Domain Check ---
+    # Extract city code from the worker_args passed to scrape_city_worker
+    # This requires modifying scrape_city_worker to pass city_code down or accessing it differently.
+    # Let's modify process_single_lead signature for simplicity here.
+    # We need city_code in this function scope. Let's pass it in worker_args and extract it.
+    # RETHINK: Modifying scrape_city_worker args is better. Let's assume city_code is passed down.
+    # We'll modify the call signature later. For now, assume city_code is available.
+    # --- This approach is complex. Let's check the URL domain directly ---
+    from urllib.parse import urlparse
+    parsed_url = urlparse(lead_url)
+    expected_domain = f"{basic_lead_info.get('city_code', 'unknown')}.craigslist.org" # Assume city_code is added to basic_lead_info
+    if parsed_url.netloc != expected_domain:
+        logging.warning(f"{log_prefix} Skipping lead from different city: {lead_url} (Expected domain: {expected_domain})")
+        return None, None # Indicate skip
+
     logging.info(f"{log_prefix} Fetching lead details: {basic_lead_info.get('title', 'Untitled')} ({lead_url})")
     lead_page_html = worker_request_handler.get_page(lead_url)
 
@@ -84,7 +101,8 @@ def scrape_city_worker(worker_args):
     Worker function to scrape categories (with pagination) for a single city.
     Uses ThreadPoolExecutor to process leads found on each page in parallel.
     """
-    city_info, config, limit_pages, limit_categories, num_threads = worker_args # Unpack args
+    # Unpack args (added limit_leads_per_page and search_scope)
+    city_info, config, limit_pages, limit_categories, limit_leads_per_page, num_threads, search_scope = worker_args
     city_code = city_info.get('code')
     city_name = city_info.get('name', city_code)
     worker_name = multiprocessing.current_process().name
@@ -125,16 +143,57 @@ def scrape_city_worker(worker_args):
                 logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
                 potential_leads_count_page = 0
                 processed_leads_count_page = 0
-                leads_on_page = worker_content_analyzer.parse_search_page(search_page_html, city_code)
+                # Pass limit_leads_per_page to the parser
+                leads_on_page_basic = worker_content_analyzer.parse_search_page(search_page_html, city_code, limit_leads_per_page)
 
-                # --- Process leads on this page in parallel using threads ---
+                # Add city_code to each basic lead info dict for domain checking later
+                leads_on_page = []
+                for lead in leads_on_page_basic:
+                    lead['city_code'] = city_code
+                    leads_on_page.append(lead)
+
+
+                # --- Pre-filter leads based on title/blacklist before AI pre-filter ---
+                pre_filtered_leads_basic = []
+                blacklist = config.get('PRE_FILTER_CONFIG', {}).get('BLACKLIST_TERMS', [])
                 if leads_on_page:
                     potential_leads_count_page = len(leads_on_page)
-                    logging.info(f"[{worker_name}] Processing {potential_leads_count_page} leads from page using {num_threads} threads...")
+                    logging.info(f"[{worker_name}] Basic Pre-filtering {potential_leads_count_page} leads from page...")
+                    for lead_info in leads_on_page:
+                        title = lead_info.get('title', '').lower()
+                        # Basic blacklist check
+                        if any(term in title for term in blacklist):
+                            logging.info(f"[{worker_name}] Basic pre-filtered out (blacklist term): {lead_info.get('url')}")
+                            continue # Skip this lead entirely
+                        pre_filtered_leads_basic.append(lead_info)
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_basic)} leads passed basic pre-filtering.")
+                else:
+                    pre_filtered_leads_basic = []
+
+                # --- AI Pre-filter remaining leads ---
+                pre_filtered_leads_ai = []
+                if pre_filtered_leads_basic:
+                    logging.info(f"[{worker_name}] AI Pre-filtering {len(pre_filtered_leads_basic)} leads...")
+                    for lead_info in pre_filtered_leads_basic:
+                        title = lead_info.get('title', '')
+                        # Using None for snippet as parse_search_page doesn't extract it yet
+                        is_potentially_relevant = worker_ai_handler.pre_filter_lead(title, None)
+                        if is_potentially_relevant:
+                            pre_filtered_leads_ai.append(lead_info)
+                        else:
+                            logging.info(f"[{worker_name}] AI pre-filtered out (junk/unrelated): {lead_info.get('url')}")
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_ai)} leads passed AI pre-filtering.")
+                else:
+                     pre_filtered_leads_ai = []
+
+
+                # --- Process AI-pre-filtered leads on this page in parallel using threads ---
+                if pre_filtered_leads_ai:
+                    logging.info(f"[{worker_name}] Processing {len(pre_filtered_leads_ai)} AI pre-filtered leads using {num_threads} threads...")
                     with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
                         future_to_lead = {
                             executor.submit(process_single_lead, lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name): lead_info
-                            for lead_info in leads_on_page
+                            for lead_info in pre_filtered_leads_ai # Use pre_filtered_leads_ai here
                         }
                         for future in concurrent.futures.as_completed(future_to_lead):
                             original_lead_info = future_to_lead[future]
@@ -142,9 +201,13 @@ def scrape_city_worker(worker_args):
                                 full_lead_details, ai_grade_result = future.result()
                                 if full_lead_details is None: continue # Skip if processing failed
 
+                                # Add the category code to the details before saving
+                                full_lead_details['category'] = category_code
+
                                 # Add lead to DB (still done sequentially by main worker thread after thread finishes)
+                                # Pass search_scope to add_lead
                                 if ai_grade_result is not None and not ai_grade_result.get('is_junk', True):
-                                    if worker_state_manager.add_lead(full_lead_details):
+                                    if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
                                         city_leads_found_total += 1
                                         processed_leads_count_page += 1
                                         score = ai_grade_result.get('profitability_score', 'N/A')
@@ -156,7 +219,10 @@ def scrape_city_worker(worker_args):
                                 elif ai_grade_result is None and worker_ai_handler and worker_ai_handler.client:
                                      logging.error(f"[{worker_name}] Skipping lead due to AI grading failure: {full_lead_details.get('url')}")
                                 elif not worker_ai_handler or not worker_ai_handler.client:
-                                     if worker_state_manager.add_lead(full_lead_details):
+                                     # Ensure category is added even if AI is disabled
+                                     full_lead_details['category'] = category_code
+                                     # Pass search_scope to add_lead
+                                     if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
                                         city_leads_found_total += 1
                                         processed_leads_count_page += 1
                                         logging.info(f"[{worker_name}] Added lead (AI Disabled): {full_lead_details.get('url')}")
@@ -256,7 +322,14 @@ def main(args):
     logging.info(f"--- Craigslist Lead Generation Agent Started (List Size: {args.list_size}) ---")
     os.chdir(project_root)
     logging.info(f"Working directory set to: {os.getcwd()}")
-    config = {'OXYLABS_CONFIG': OXYLABS_CONFIG, 'SEARCH_CONFIG': SEARCH_CONFIG, 'STATE_CONFIG': STATE_CONFIG, 'AI_CONFIG': AI_CONFIG}
+    # Include PRE_FILTER_CONFIG in the main config dict
+    config = {
+        'OXYLABS_CONFIG': OXYLABS_CONFIG,
+        'SEARCH_CONFIG': SEARCH_CONFIG,
+        'STATE_CONFIG': STATE_CONFIG,
+        'AI_CONFIG': AI_CONFIG,
+        'PRE_FILTER_CONFIG': PRE_FILTER_CONFIG
+    }
     state_manager = None
     try:
         logging.info("Initializing main manager instances...")
@@ -278,20 +351,56 @@ def main(args):
         del temp_request_handler
 
         logging.info("--- System Status & Setup ---")
-        cities_to_process_full = city_manager.get_cities_by_population(args.list_size)
+        # Determine which city list to load
+        list_to_load = 'large' if args.target_cities else args.list_size
+        logging.info(f"Loading city list: {list_to_load}.json")
+        cities_to_process_full = city_manager.get_cities_by_population(list_to_load)
         total_cities_in_list = len(cities_to_process_full)
-        logging.info(f"Found {total_cities_in_list} cities configured for list size '{args.list_size}'.")
+        logging.info(f"Loaded {total_cities_in_list} cities from {list_to_load}.json.")
 
-        if args.limit_cities is not None and args.limit_cities > 0:
-            cities_to_process = cities_to_process_full[:args.limit_cities]
-            logging.warning(f"Limiting run to the first {len(cities_to_process)} cities based on --limit-cities argument.")
+        target_city_codes = None
+        if args.target_cities:
+            target_city_codes = [code.strip() for code in args.target_cities.split(',') if code.strip()]
+            logging.info(f"Processing specific target cities based on --target-cities: {target_city_codes}")
+            # Filter the full list based on the provided codes
+            cities_to_process = [city for city in cities_to_process_full if city.get('code') in target_city_codes]
+            # Verify all requested cities were found
+            found_codes = {city.get('code') for city in cities_to_process}
+            missing_codes = set(target_city_codes) - found_codes
+            if missing_codes:
+                logging.warning(f"Could not find the following target cities in the configured list: {missing_codes}")
         else:
+            # Fallback to using the list_size if no target cities specified
+            logging.info(f"No specific target cities provided. Using list size: '{args.list_size}'.")
             cities_to_process = cities_to_process_full
 
         total_cities_to_process = len(cities_to_process)
-        logging.info(f"Processing {total_cities_to_process} cities.")
+        logging.info(f"Will process {total_cities_to_process} cities.")
         logging.info(f"Total leads currently in database: {state_manager._get_total_leads_count()}")
-        if not cities_to_process: logging.warning("No cities found to process. Exiting."); sys.exit(0)
+
+        # --- Checkpoint/Resumption Logic ---
+        last_completed_city = state_manager.get_last_completed_city()
+        if last_completed_city:
+            logging.warning(f"Resuming run. Last successfully completed city: {last_completed_city}")
+            try:
+                # Find the index of the last completed city + 1 to resume
+                resume_index = [i for i, city in enumerate(cities_to_process) if city.get('code') == last_completed_city][0] + 1
+                if resume_index < len(cities_to_process):
+                    logging.info(f"Skipping {resume_index} already processed cities.")
+                    cities_to_process = cities_to_process[resume_index:]
+                else:
+                    logging.info("All cities from the list were already processed in the previous run.")
+                    cities_to_process = [] # No cities left to process
+            except IndexError:
+                logging.warning(f"Last completed city '{last_completed_city}' not found in the current list. Processing all cities.")
+                # Optionally clear the invalid checkpoint: state_manager.set_last_completed_city(None)
+        else:
+            logging.info("Starting fresh run (no previous completed city found).")
+        # --- End Checkpoint Logic ---
+
+        total_cities_to_process = len(cities_to_process) # Recalculate after potential filtering
+        logging.info(f"Will process {total_cities_to_process} cities in this run.")
+        if not cities_to_process: logging.warning("No cities left to process for this run. Exiting."); sys.exit(0)
 
         # Determine max pages per category based on argument or default (3)
         max_pages = args.limit_pages if args.limit_pages is not None and args.limit_pages > 0 else 3
@@ -301,8 +410,19 @@ def main(args):
         # Pool size still based on number of cities to process
         pool_size = min((os.cpu_count() or 4) * 2, total_cities_to_process) if total_cities_to_process > 0 else 1
         logging.info(f"Initializing multiprocessing pool with {pool_size} workers.")
-        # Pass limits and thread count to each worker
-        worker_args_list = [(city_info, config, max_pages, args.limit_categories, args.num_threads) for city_info in cities_to_process]
+
+        # Determine search scope for tagging
+        if args.target_cities:
+            search_scope = 'single_city' if len(target_city_codes) == 1 else 'small_region'
+        else:
+            # If not targeting specific cities, scope depends on how many are processed from the list size
+            # For simplicity, let's default to 'list_size_run' if not specifically targeted
+            search_scope = f"{args.list_size}_list" # Or determine based on len(cities_to_process) if needed
+
+        logging.info(f"Setting search_scope tag for this run: '{search_scope}'")
+
+        # Pass limits, leads_per_page limit, thread count, and search_scope to each worker
+        worker_args_list = [(city_info, config, max_pages, args.limit_categories, args.limit_leads_per_page, args.num_threads, search_scope) for city_info in cities_to_process]
         total_leads_found_this_session = 0
         processed_cities_count = 0
 
@@ -314,6 +434,11 @@ def main(args):
                     city_code, leads_found = result
                     if leads_found > 0: total_leads_found_this_session += leads_found
                     logging.info(f"Worker finished for {city_code}. Found {leads_found} leads. ({processed_cities_count}/{total_cities_to_process} cities complete)")
+                    # --- Save progress after successful city completion ---
+                    if city_code: # Ensure city_code is valid before saving progress
+                         state_manager.set_last_completed_city(city_code)
+                         logging.debug(f"Checkpoint saved: Last completed city set to {city_code}")
+                    # --- End save progress ---
                 logging.info("All workers finished.")
             except KeyboardInterrupt: logging.warning("KeyboardInterrupt received. Terminating pool..."); pool.terminate(); pool.join(); logging.warning("Pool terminated."); sys.exit(1)
             except Exception as e: logging.error(f"Error during pool execution: {e}", exc_info=True); pool.terminate(); pool.join(); sys.exit(1)
@@ -347,10 +472,12 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Craigslist Lead Generation Agent")
-    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large'], default='small', help="Size of the city list to use. Default: small")
-    parser.add_argument('--limit-cities', type=int, default=None, metavar='N', help="Limit run to first N cities.")
+    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large', 'us'], default='us', help="Size of the city list to use (ignored if --target-cities is set). Default: us") # Added 'us', changed default
+    # parser.add_argument('--limit-cities', type=int, default=None, metavar='N', help="Limit run to first N cities.") # Replaced by --target-cities
+    parser.add_argument('--target-cities', type=str, default=None, metavar='city1,city2,...', help="Specify exact city codes to process (comma-separated). Overrides --list-size.")
     parser.add_argument('--limit-pages', type=int, default=None, metavar='P', help="Limit scraping to first P pages per category. Default: 3")
     parser.add_argument('--limit-categories', type=int, default=None, metavar='C', help="Limit run to first C categories per city.")
+    parser.add_argument('--limit-leads-per-page', type=int, default=None, metavar='L', help="Limit processing to first L leads per search page (for testing).") # Added limit-leads-per-page
     parser.add_argument('--num-threads', type=int, default=8, metavar='T', help="Number of threads for internal lead processing. Default: 8") # Added num-threads
     args = parser.parse_args()
 

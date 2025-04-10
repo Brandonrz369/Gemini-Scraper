@@ -41,14 +41,14 @@ class AIHandler:
         # Limit description length to avoid excessive token usage
         description_snippet = description[:2000]
 
-        system_prompt = """You are an expert lead evaluator for a web/graphic design agency. Your task is to analyze Craigslist posts and assess their potential profitability.
+        system_prompt = """You are an expert lead evaluator for a web/graphic design agency specializing in website development, graphic design, branding, and Photoshop services. Your task is to analyze Craigslist posts to identify potential clients *seeking these specific services*.
 
 Respond ONLY with a valid JSON object containing the following keys:
-- "is_junk": boolean (true if the post is spam, clearly unrelated to seeking services, selling items, etc., false otherwise)
-- "profitability_score": integer (1-10, higher means more profitable potential) or null (if is_junk is true). Base the score on factors like clarity of request, mention of budget, relevance to web/graphic design services, specificity, and professionalism.
-- "reasoning": string (a brief explanation for the score and junk status)."""
+- "is_junk": boolean. Set to `true` if the post is spam, selling unrelated items/services (like art pieces, supplies, classes), offering jobs *at* other companies, or is *not* clearly a request *for* web design, graphic design, or Photoshop services. Set to `false` ONLY if the post appears to be a genuine request *seeking* the agency's services.
+- "profitability_score": integer (1-10, higher means more profitable potential) or null (if is_junk is true). Base the score on factors like: clarity of the service request, mention of budget, direct relevance to the agency's core services (web design, graphic design, Photoshop), specificity of needs, and perceived professionalism of the poster. Posts just selling items, even related ones, should generally be junk or have a very low score.
+- "reasoning": string (a brief explanation for the score and junk status, specifically mentioning *why* it is or isn't a relevant service request for the agency)."""
 
-        user_prompt = f"""Please evaluate the following Craigslist post:
+        user_prompt = f"""Please evaluate the following Craigslist post based *strictly* on whether it represents a potential client seeking web design, graphic design, or Photoshop services:
 
 Title: {title}
 Description: {description_snippet}
@@ -141,3 +141,97 @@ Provide your evaluation in the specified JSON format."""
         # This part should ideally not be reached if the loop logic is correct
         logging.error(f"AI grading loop finished unexpectedly for '{title}'.")
         return None
+
+    def pre_filter_lead(self, title, snippet, max_retries=1, initial_delay=2):
+        """
+        Uses the configured AI model for a quick pre-filter based on title/snippet.
+        Returns True if potentially relevant, False if definitely junk/unrelated.
+        Defaults to True if the AI call fails, to avoid discarding good leads.
+        """
+        if not self.client:
+            logging.warning("AI client not initialized. Skipping pre-filtering, assuming relevant.")
+            return True # Default to potentially relevant if AI is disabled
+
+        # Use snippet if available, otherwise just title
+        content_to_analyze = f"Title: {title}"
+        if snippet:
+            # Limit snippet length for pre-filter efficiency
+            content_to_analyze += f"\nSnippet: {snippet[:300]}"
+
+        system_prompt = """You are a rapid lead pre-filter for a web/graphic design agency. Your task is to quickly determine if a Craigslist post *might* be relevant based ONLY on its title and snippet.
+
+Focus: Identify if the post is *definitely* junk (spam, selling unrelated items like art/furniture/supplies, offering jobs at other companies, user research studies, seeking dating advice, etc.) or if it *could possibly* be someone seeking web design, graphic design, or Photoshop services. Err on the side of caution; if unsure, mark as potentially relevant.
+
+Respond ONLY with a valid JSON object containing a single key:
+- "is_potentially_relevant": boolean (true if it *might* be relevant, false if it's *definitely* junk/unrelated)"""
+
+        user_prompt = f"""Quickly evaluate if the following post title/snippet could possibly be relevant to a web/graphic design agency seeking clients. Is it definitely junk/unrelated?
+
+{content_to_analyze}
+
+Provide your evaluation in the specified JSON format."""
+
+        retries = 0
+        delay = initial_delay
+        last_error = "Unknown error"
+        while retries <= max_retries:
+            try:
+                completion = self.client.chat.completions.create(
+                    model=self.model_name, # Consider using a faster/cheaper model if available for pre-filtering
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt},
+                    ],
+                    temperature=0.1, # Low temperature for more deterministic filtering
+                    max_tokens=50, # Smaller max tokens for faster response
+                    response_format={"type": "json_object"},
+                )
+
+                response_content = completion.choices[0].message.content.strip()
+                logging.debug(f"AI pre-filter raw response for '{title}': {response_content}")
+
+                try:
+                    # Parse the JSON response
+                    filter_data = json.loads(response_content)
+
+                    if "is_potentially_relevant" in filter_data and isinstance(filter_data["is_potentially_relevant"], bool):
+                        logging.debug(f"AI pre-filter successful for '{title}'. Potentially Relevant: {filter_data['is_potentially_relevant']}")
+                        return filter_data["is_potentially_relevant"]
+                    else:
+                        logging.warning(f"AI pre-filter response missing/invalid key for '{title}'. Response: {response_content}")
+                        last_error = "Invalid JSON response format from pre-filter AI"
+                        # Fall through to retry logic
+
+                except json.JSONDecodeError:
+                    logging.warning(f"AI pre-filter response was not valid JSON for '{title}'. Response: {response_content}")
+                    last_error = f"Invalid JSON response from pre-filter AI: {response_content}"
+                    # Fall through to retry logic
+
+            except RateLimitError as e:
+                last_error = f"AI API rate limit hit during pre-filter (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
+                logging.warning(last_error)
+            except APITimeoutError as e:
+                 last_error = f"AI API timeout during pre-filter (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
+                 logging.warning(last_error)
+            except APIError as e:
+                last_error = f"AI API error during pre-filter for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
+                logging.error(last_error, exc_info=False)
+                if "invalid_request_error" in str(e).lower():
+                     logging.error("Potential pre-filter prompt issue detected. Aborting retries.")
+                     return True # Default to relevant on unrecoverable error
+            except Exception as e:
+                last_error = f"Unexpected error during AI pre-filter for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
+                logging.error(last_error, exc_info=True)
+
+            # Retry logic
+            retries += 1
+            if retries <= max_retries:
+                logging.info(f"Waiting {delay:.1f} seconds before pre-filter retry {retries}/{max_retries}...")
+                time.sleep(delay)
+                delay *= 2
+            else:
+                logging.error(f"AI pre-filter failed after {max_retries + 1} attempts for '{title}'. Last error: {last_error}")
+                return True # Default to potentially relevant if pre-filter fails
+
+        logging.error(f"AI pre-filter loop finished unexpectedly for '{title}'.")
+        return True # Default to potentially relevant

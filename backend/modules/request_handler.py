@@ -3,7 +3,7 @@ import requests
 import time
 import random
 import logging # Import logging
-from fake_useragent import UserAgent # Note: fake-useragent might not be needed if Oxylabs handles it
+# from fake_useragent import UserAgent # Note: fake-useragent might not be needed if Oxylabs handles it (Removed import)
 
 class RequestHandler:
     def __init__(self, config):

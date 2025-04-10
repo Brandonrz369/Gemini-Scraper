@@ -10,10 +10,11 @@ class ContentAnalyzer:
         self.config = config
         logging.info("ContentAnalyzer initialized (Recreated Version).")
 
-    def parse_search_page(self, html_content, city_code):
+    def parse_search_page(self, html_content, city_code, limit_leads=None): # Added limit_leads parameter
         """
         Parses the HTML of a Craigslist search results page to find basic lead info.
         Returns a list of dictionaries, e.g., [{'url': '...', 'title': '...'}, ...]
+        Optionally limits the number of leads returned using limit_leads.
         NOTE: Selectors used here are common guesses and might need adjustment.
         """
         leads = []
@@ -29,7 +30,13 @@ class ContentAnalyzer:
 
             logging.info(f"Found {len(results)} potential result elements using 'div.cl-search-result'.")
 
+            count = 0 # Initialize counter for limiting leads
             for result in results:
+                # Apply limit if specified
+                if limit_leads is not None and count >= limit_leads:
+                    logging.warning(f"Reached lead limit ({limit_leads}) for this page. Stopping parse.")
+                    break
+
                 # Title and link are in <a class="posting-title">
                 title_element = result.find('a', class_='posting-title')
 
@@ -47,6 +54,7 @@ class ContentAnalyzer:
                         continue
 
                     leads.append({'url': url, 'title': title})
+                    count += 1 # Increment counter after successfully adding a lead
                 else:
                     logging.debug("Could not find title link element in result item.")
 

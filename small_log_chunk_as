@@ -1,0 +1,1000 @@
+2025-04-07 07:34:00062 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://akroncanton.craigslist.org/bus/d/canton-day-trader-no-experience/7839638343.html
+2025-04-07 07:34:00190 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:01381 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/bus/d/chicago-analyst-aml-investigator/7839615637.html
+2025-04-07 07:34:01469 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:02584 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/bus/d/columbus-grow-your-flatbed-business/7839298773.html
+2025-04-07 07:34:02684 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:03869 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/bus/d/blacklick-financial-transactions/7839010273.html
+2025-04-07 07:34:03969 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:04790 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/bus/d/chicago-we-business-advisors-now/7838999143.html
+2025-04-07 07:34:04908 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:06196 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/bus/d/chicago-chicago-chamber-of-commerce/7838875266.html
+2025-04-07 07:34:06280 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:06701 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/bus/d/elizabethtown-grow-your-business-with/7837964720.html
+2025-04-07 07:34:06795 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:07887 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/bus/d/columbus-175-paid-focus-group-for/7837670826.html
+2025-04-07 07:34:07966 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:08390 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nch/bus/d/wilmette-bookkeeper/7837320968.html
+2025-04-07 07:34:08576 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:09088 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://akroncanton.craigslist.org/search/wri
+2025-04-07 07:34:09095 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for akroncanton/wri...
+2025-04-07 07:34:09151 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/bus/d/indianapolis-new-social-media-platform/7837061994.html
+2025-04-07 07:34:09180 - ForkPoolWorker-1 - INFO - content_analyzer - Found 60 potential result elements using 'div.cl-search-result'.
+2025-04-07 07:34:09185 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 60 basic leads from search page.
+2025-04-07 07:34:09188 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 60 leads from page...
+2025-04-07 07:34:09189 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://akroncanton.craigslist.org/wri/d/akron-hiring-now-remote-part-time-job/7837317548.html
+2025-04-07 07:34:09190 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/wri/d/pittsburgh-executive-assistant/7839075075.html
+2025-04-07 07:34:09191 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/mcb/wri/d/sterling-heights-hiring-now-remote-part/7838115299.html
+2025-04-07 07:34:09191 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://erie.craigslist.org/wri/d/erie-hiring-now-remote-part-time-job/7837882490.html
+2025-04-07 07:34:09193 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/wri/d/granville-hiring-now-remote-part-time/7837882481.html
+2025-04-07 07:34:09194 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/wri/d/columbus-part-time-and-remote-position/7836316137.html
+2025-04-07 07:34:09195 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/wri/d/noblesville-part-time-and-remote/7835257279.html
+2025-04-07 07:34:09196 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/wri/d/pittsburgh-part-time-and-remote/7835257254.html
+2025-04-07 07:34:09197 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://cleveland.craigslist.org/wri/d/cleveland-part-time-and-remote-position/7835257238.html
+2025-04-07 07:34:09197 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://twintiers.craigslist.org/wri/d/olean-writing-assistant-wanted/7833965541.html
+2025-04-07 07:34:09198 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 50 leads passed basic pre-filtering.
+2025-04-07 07:34:09198 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 50 leads...
+2025-04-07 07:34:09260 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:09315 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:09827 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://akroncanton.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7833194107.html
+2025-04-07 07:34:09915 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:10995 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://flint.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7840163437.html
+2025-04-07 07:34:11079 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:11603 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://saginaw.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7840031729.html
+2025-04-07 07:34:11718 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:12098 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/bus/d/cincinnati-new-social-media-platform-is/7837061031.html
+2025-04-07 07:34:12201 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:13239 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nch/bus/d/wilmette-host-and-receptionist-needed/7837039789.html
+2025-04-07 07:34:13345 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:13870 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://sheboygan.craigslist.org/wri/d/westerville-freelance-writer-wanted-pay/7839770388.html
+2025-04-07 07:34:13953 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:14128 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nwi/bus/d/griffith-1099-merchandising-route/7836875737.html
+2025-04-07 07:34:14309 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:14791 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/bus/d/louisville-route-supervisor/7836117602.html
+2025-04-07 07:34:14875 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:15178 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://thumb.craigslist.org/wri/d/argyle-freelance-writer-wanted-pay-100/7839769521.html
+2025-04-07 07:34:15269 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:15745 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://ashtabula.craigslist.org/wri/d/kingsville-freelance-writer-wanted-pay/7839661384.html
+2025-04-07 07:34:15835 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:15933 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/bus/d/columbus-grow-your-business-with-menards/7835857686.html
+2025-04-07 07:34:16091 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:16257 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://morgantown.craigslist.org/wri/d/morgantown-freelance-writer-wanted-pay/7839550122.html
+2025-04-07 07:34:16344 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:17324 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:17332 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chillicothe.craigslist.org/wri/d/chillicothe-freelance-writer-wanted-pay/7839383056.html
+2025-04-07 07:34:17421 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:17813 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://battlecreek.craigslist.org/wri/d/battle-creek-freelance-writer-wanted/7839344821.html
+2025-04-07 07:34:17841 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://omaha.craigslist.org/bus/d/livonia-apartment-maintenance/7835732667.html
+2025-04-07 07:34:17904 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:17936 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:18443 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nwi/bus/d/merrillville-body-shop-estimator/7835326589.html
+2025-04-07 07:34:18527 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:18966 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chambersburg.craigslist.org/wri/d/chambersburg-freelance-writer-wanted/7839321554.html
+2025-04-07 07:34:19040 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:19062 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://cleveland.craigslist.org/bus/d/cleveland-new-social-media-platform-is/7835231131.html
+2025-04-07 07:34:19313 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:19606 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://swmi.craigslist.org/wri/d/paw-paw-freelance-writer-wanted-pay-100/7839294801.html
+2025-04-07 07:34:19711 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:20386 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://lexington.craigslist.org/bus/d/lexington-new-social-media-platform-is/7835230227.html
+2025-04-07 07:34:20467 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:20789 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://martinsburg.craigslist.org/wri/d/martinsburg-freelance-writer-wanted-pay/7839281918.html
+2025-04-07 07:34:20884 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:20890 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nch/bus/d/chicago-american-made-manufacturing-inc/7834253593.html
+2025-04-07 07:34:21003 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:21942 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://muncie.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839278001.html
+2025-04-07 07:34:22031 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:22041 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/bus/d/indianapolis-warehouse-supervisor/7834202379.html
+2025-04-07 07:34:22127 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:22638 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://toledo.craigslist.org/wri/d/toledo-freelance-writer-wanted-pay-100/7839274949.html
+2025-04-07 07:34:22723 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:23247 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://twintiers.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839274391.html
+2025-04-07 07:34:23273 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://fortwayne.craigslist.org/bus/d/fort-wayne-delivery-route-opening/7834075521.html
+2025-04-07 07:34:23275 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] 1 leads passed AI pre-filtering.
+2025-04-07 07:34:23276 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Processing 1 AI pre-filtered leads using 8 threads...
+2025-04-07 07:34:23279 - ForkPoolWorker-2 - WARNING - main - [ForkPoolWorker-2-Thread] Skipping lead from different city: https://chillicothe.craigslist.org/bus/d/batesville-social-media-strategist/7835851911.html (Expected domain: dayton.craigslist.org)
+2025-04-07 07:34:23281 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Page 1: Parsed 60 potential leads added 0 new graded leads for dayton/bus.
+2025-04-07 07:34:23283 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] No next page link found for dayton/bus.
+2025-04-07 07:34:23284 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Finished category bus for dayton. Added 0 leads.
+2025-04-07 07:34:23347 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:23896 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://harrisburg.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839036840.html
+2025-04-07 07:34:23969 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:23997 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Fetching category: wri (Page 1/3) -> https://dayton.craigslist.org/search/wri
+2025-04-07 07:34:25351 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://fortwayne.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839029603.html
+2025-04-07 07:34:25430 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:26466 - ForkPoolWorker-2 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/wri via Oxylabs...
+2025-04-07 07:34:26520 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://elmira.craigslist.org/wri/d/corning-freelance-writer-wanted-pay-100/7839028722.html
+2025-04-07 07:34:26656 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:28533 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/wri/d/cincinnati-freelance-writer-wanted-pay/7839026644.html
+2025-04-07 07:34:28632 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:29089 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://parkersburg.craigslist.org/wri/d/vienna-freelance-writer-wanted-pay-100/7838424378.html
+2025-04-07 07:34:29174 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:30295 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://williamsport.craigslist.org/wri/d/williamsport-freelance-writer-wanted/7838412991.html
+2025-04-07 07:34:30464 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:31469 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pittsburgh.craigslist.org/wri/d/pittsburgh-freelance-writer-wanted-pay/7838347393.html
+2025-04-07 07:34:31553 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:32734 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/wri/d/columbus-freelance-writer-wanted-pay/7838346989.html
+2025-04-07 07:34:32815 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:33840 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://frederick.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7837860746.html
+2025-04-07 07:34:33924 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:34379 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/wyn/wri/d/detroit-freelance-writer-wanted-pay-100/7837280043.html
+2025-04-07 07:34:34463 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:35701 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://zanesville.craigslist.org/wri/d/zanesville-mystery-shoppers-needed-for/7837046564.html
+2025-04-07 07:34:35790 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:36901 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://zanesville.craigslist.org/wri/d/zanesville-freelance-writer-wanted-pay/7836956634.html
+2025-04-07 07:34:37002 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:38125 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://huntington.craigslist.org/wri/d/barboursville-freelance-writer-wanted/7836763458.html
+2025-04-07 07:34:38210 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:39697 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://jxn.craigslist.org/wri/d/jackson-freelance-writer-wanted-pay-100/7836681199.html
+2025-04-07 07:34:39792 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:40222 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://rochester.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7836649873.html
+2025-04-07 07:34:40289 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:41883 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://limaohio.craigslist.org/wri/d/findlay-freelance-writer-wanted-pay-100/7836170696.html
+2025-04-07 07:34:42068 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:42628 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://athensohio.craigslist.org/wri/d/athens-freelance-writer-wanted-pay-100/7836161419.html
+2025-04-07 07:34:42739 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:43817 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chautauqua.craigslist.org/wri/d/chautauqua-freelance-writer-wanted-pay/7836133174.html
+2025-04-07 07:34:43914 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:44473 - ForkPoolWorker-2 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/wri
+2025-04-07 07:34:44504 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Parsing search results page 1 for dayton/wri...
+2025-04-07 07:34:44617 - ForkPoolWorker-2 - INFO - content_analyzer - Found 60 potential result elements using 'div.cl-search-result'.
+2025-04-07 07:34:44632 - ForkPoolWorker-2 - INFO - content_analyzer - Extracted 60 basic leads from search page.
+2025-04-07 07:34:44635 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic Pre-filtering 60 leads from page...
+2025-04-07 07:34:44635 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/wri/d/pittsburgh-executive-assistant/7839075075.html
+2025-04-07 07:34:44636 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/mcb/wri/d/sterling-heights-hiring-now-remote-part/7838115299.html
+2025-04-07 07:34:44636 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/wri/d/carmel-hiring-now-remote-part-time-job/7837882510.html
+2025-04-07 07:34:44637 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/wri/d/granville-hiring-now-remote-part-time/7837882481.html
+2025-04-07 07:34:44638 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://akroncanton.craigslist.org/wri/d/akron-hiring-now-remote-part-time-job/7837317548.html
+2025-04-07 07:34:44638 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://mattoon.craigslist.org/wri/d/mattoon-hiring-now-remote-part-time-job/7837317517.html
+2025-04-07 07:34:44639 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/wri/d/columbus-part-time-and-remote-position/7836316137.html
+2025-04-07 07:34:44641 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/wri/d/indianapolis-part-time-and-remote/7836315922.html
+2025-04-07 07:34:44641 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/wcl/wri/d/cicero-part-time-and-remote-position/7835494019.html
+2025-04-07 07:34:44642 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/wri/d/noblesville-part-time-and-remote/7835257279.html
+2025-04-07 07:34:44643 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/wri/d/pittsburgh-part-time-and-remote/7835257254.html
+2025-04-07 07:34:44644 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Basic pre-filtered out (blacklist term): https://cleveland.craigslist.org/wri/d/cleveland-part-time-and-remote-position/7835257238.html
+2025-04-07 07:34:44645 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] 48 leads passed basic pre-filtering.
+2025-04-07 07:34:44645 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI Pre-filtering 48 leads...
+2025-04-07 07:34:44729 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:45005 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://kokomo.craigslist.org/wri/d/kokomo-freelance-writer-wanted-pay-100/7835971299.html
+2025-04-07 07:34:45111 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:45796 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7833199029.html
+2025-04-07 07:34:45860 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:46142 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://wheeling.craigslist.org/wri/d/wheeling-freelance-writer-wanted-pay/7835933626.html
+2025-04-07 07:34:46230 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:46388 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://flint.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7840163437.html
+2025-04-07 07:34:46464 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:47494 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://holland.craigslist.org/wri/d/holland-freelance-writer-wanted-pay-100/7840038801.html
+2025-04-07 07:34:47557 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:47963 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://winchester.craigslist.org/wri/d/winchester-freelance-writer-wanted-pay/7835865174.html
+2025-04-07 07:34:48042 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:48133 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://evansville.craigslist.org/wri/d/evansville-freelance-writer-wanted-pay/7839786968.html
+2025-04-07 07:34:48208 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:49166 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://richmondin.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835462730.html
+2025-04-07 07:34:49300 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:49895 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://sheboygan.craigslist.org/wri/d/westerville-freelance-writer-wanted-pay/7839770388.html
+2025-04-07 07:34:49988 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:50415 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://swva.craigslist.org/wri/d/rose-hill-freelance-writer-wanted-pay/7839768479.html
+2025-04-07 07:34:50444 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cleveland.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835460413.html
+2025-04-07 07:34:50471 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:50526 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:51545 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://swv.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835222486.html
+2025-04-07 07:34:51613 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://ashtabula.craigslist.org/wri/d/kingsville-freelance-writer-wanted-pay/7839661384.html
+2025-04-07 07:34:51678 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:51703 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:52756 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://meadville.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835215934.html
+2025-04-07 07:34:52842 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:53671 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://owensboro.craigslist.org/wri/d/owensboro-freelance-writer-wanted-pay/7839655735.html
+2025-04-07 07:34:53879 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:53990 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://grandrapids.craigslist.org/wri/d/grand-rapids-freelance-writer-wanted/7835181907.html
+2025-04-07 07:34:54068 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:54947 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://morgantown.craigslist.org/wri/d/morgantown-freelance-writer-wanted-pay/7839550122.html
+2025-04-07 07:34:55012 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:55097 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://daytona.craigslist.org/wri/d/dayton-freelance-writer-wanted-pay-100/7835036312.html
+2025-04-07 07:34:55181 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:55817 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://charlestonwv.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834960709.html
+2025-04-07 07:34:55894 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:56035 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://wv.craigslist.org/wri/d/bluefield-freelance-writer-wanted-pay/7839418211.html
+2025-04-07 07:34:56121 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:56453 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://kalamazoo.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834839531.html
+2025-04-07 07:34:56527 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:56527 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chillicothe.craigslist.org/wri/d/chillicothe-freelance-writer-wanted-pay/7839383056.html
+2025-04-07 07:34:56585 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:56999 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://battlecreek.craigslist.org/wri/d/battle-creek-freelance-writer-wanted/7839344821.html
+2025-04-07 07:34:57071 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:57567 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pennstate.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834691771.html
+2025-04-07 07:34:57649 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:58129 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://lansing.craigslist.org/wri/d/lansing-freelance-writer-wanted-pay-100/7834684563.html
+2025-04-07 07:34:58203 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:58237 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://swmi.craigslist.org/wri/d/paw-paw-freelance-writer-wanted-pay-100/7839294801.html
+2025-04-07 07:34:58325 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:59273 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://southbend.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834139399.html
+2025-04-07 07:34:59383 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:34:59466 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://muncie.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839278001.html
+2025-04-07 07:34:59534 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:00496 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://porthuron.craigslist.org/wri/d/port-huron-freelance-writer-wanted-pay/7833922612.html
+2025-04-07 07:35:00603 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:00614 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://lexington.craigslist.org/wri/d/lexington-freelance-writer-wanted-pay/7839277034.html
+2025-04-07 07:35:00699 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:01887 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://toledo.craigslist.org/wri/d/toledo-freelance-writer-wanted-pay-100/7839274949.html
+2025-04-07 07:35:01953 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:02177 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://erie.craigslist.org/wri/d/erie-freelance-writer-wanted-pay-100/7833864188.html
+2025-04-07 07:35:02265 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:02810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://youngstown.craigslist.org/wri/d/youngstown-freelance-writer-wanted-pay/7833602488.html
+2025-04-07 07:35:02810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 0 leads passed AI pre-filtering.
+2025-04-07 07:35:02810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Page 1: Parsed 60 potential leads added 0 new graded leads for akroncanton/wri.
+2025-04-07 07:35:02810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] No next page link found for akroncanton/wri.
+2025-04-07 07:35:02810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished category wri for akroncanton. Added 0 leads.
+2025-04-07 07:35:03039 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://fortwayne.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7839029603.html
+2025-04-07 07:35:03124 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:03449 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished processing Akron / Canton. Found 1 new relevant leads in total.
+2025-04-07 07:35:03451 - ForkPoolWorker-1 - INFO - state_manager - Database connection closed.
+2025-04-07 07:35:03451 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Closed DB connection for city akroncanton.
+2025-04-07 07:35:03455 - MainProcess - INFO - main - Worker finished for akroncanton. Found 1 leads. (1/2 cities complete)
+2025-04-07 07:35:04263 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/wri/d/cincinnati-freelance-writer-wanted-pay/7839026644.html
+2025-04-07 07:35:04505 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:04984 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://parkersburg.craigslist.org/wri/d/vienna-freelance-writer-wanted-pay-100/7838424378.html
+2025-04-07 07:35:05040 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:05528 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://eastky.craigslist.org/wri/d/eastern-freelance-writer-wanted-pay-100/7838399608.html
+2025-04-07 07:35:05604 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:07227 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://pittsburgh.craigslist.org/wri/d/pittsburgh-freelance-writer-wanted-pay/7838347393.html
+2025-04-07 07:35:07314 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:08415 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/wri/d/columbus-freelance-writer-wanted-pay/7838346989.html
+2025-04-07 07:35:08476 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:09595 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://tippecanoe.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7837422421.html
+2025-04-07 07:35:09655 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:10106 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chambana.craigslist.org/wri/d/urbana-apartment-mystery-shopper/7837355837.html
+2025-04-07 07:35:10182 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:11215 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/wyn/wri/d/detroit-freelance-writer-wanted-pay-100/7837280043.html
+2025-04-07 07:35:11273 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:11747 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://zanesville.craigslist.org/wri/d/zanesville-mystery-shoppers-needed-for/7837046564.html
+2025-04-07 07:35:11819 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:12294 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://zanesville.craigslist.org/wri/d/zanesville-freelance-writer-wanted-pay/7836956634.html
+2025-04-07 07:35:12410 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:13482 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://huntington.craigslist.org/wri/d/barboursville-freelance-writer-wanted/7836763458.html
+2025-04-07 07:35:13544 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:13961 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://jxn.craigslist.org/wri/d/jackson-freelance-writer-wanted-pay-100/7836681199.html
+2025-04-07 07:35:14031 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:15030 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://limaohio.craigslist.org/wri/d/findlay-freelance-writer-wanted-pay-100/7836170696.html
+2025-04-07 07:35:15183 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:15585 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://athensohio.craigslist.org/wri/d/athens-freelance-writer-wanted-pay-100/7836161419.html
+2025-04-07 07:35:15644 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:17309 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://kokomo.craigslist.org/wri/d/kokomo-freelance-writer-wanted-pay-100/7835971299.html
+2025-04-07 07:35:17378 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:17753 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://mattoon.craigslist.org/wri/d/mattoon-freelance-writer-wanted-pay-100/7835968650.html
+2025-04-07 07:35:17808 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:18834 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://shoals.craigslist.org/wri/d/shoals-freelance-writer-wanted-pay-100/7835942848.html
+2025-04-07 07:35:18966 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:20033 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://wheeling.craigslist.org/wri/d/wheeling-freelance-writer-wanted-pay/7835933626.html
+2025-04-07 07:35:20090 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:20746 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://bloomington.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835573412.html
+2025-04-07 07:35:20817 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:22173 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://richmondin.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835462730.html
+2025-04-07 07:35:22251 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:23301 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://cleveland.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835460413.html
+2025-04-07 07:35:23380 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:24562 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835252685.html
+2025-04-07 07:35:24617 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:26426 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://swv.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835222486.html
+2025-04-07 07:35:26595 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:27024 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://meadville.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835215934.html
+2025-04-07 07:35:27082 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:28157 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://grandrapids.craigslist.org/wri/d/grand-rapids-freelance-writer-wanted/7835181907.html
+2025-04-07 07:35:28226 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:29240 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835159072.html
+2025-04-07 07:35:29315 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:29827 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://daytona.craigslist.org/wri/d/dayton-freelance-writer-wanted-pay-100/7835036312.html
+2025-04-07 07:35:29892 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:31810 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://terrehaute.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7835002149.html
+2025-04-07 07:35:31880 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:32914 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://charlestonwv.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834960709.html
+2025-04-07 07:35:32987 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:33416 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://chambana.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834951360.html
+2025-04-07 07:35:33486 - ForkPoolWorker-2 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 07:35:34584 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] AI pre-filtered out (junk/unrelated): https://kalamazoo.craigslist.org/wri/d/freelance-writer-wanted-pay-100-per/7834839531.html
+2025-04-07 07:35:34585 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] 0 leads passed AI pre-filtering.
+2025-04-07 07:35:34586 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Page 1: Parsed 60 potential leads added 0 new graded leads for dayton/wri.
+2025-04-07 07:35:34587 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] No next page link found for dayton/wri.
+2025-04-07 07:35:34587 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Finished category wri for dayton. Added 0 leads.
+2025-04-07 07:35:35874 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Finished processing Dayton / Springfield. Found 0 new relevant leads in total.
+2025-04-07 07:35:35875 - ForkPoolWorker-2 - INFO - state_manager - Database connection closed.
+2025-04-07 07:35:35883 - ForkPoolWorker-2 - INFO - main - [ForkPoolWorker-2] Closed DB connection for city dayton.
+2025-04-07 07:35:35885 - MainProcess - INFO - main - Worker finished for dayton. Found 0 leads. (2/2 cities complete)
+2025-04-07 07:35:35886 - MainProcess - INFO - main - All workers finished.
+2025-04-07 07:35:35911 - MainProcess - INFO - main - --- Scrape Finished ---
+2025-04-07 07:35:35921 - MainProcess - INFO - main - Processed 2 cities.
+2025-04-07 07:35:35922 - MainProcess - INFO - main - Found approx 1 new leads this session.
+2025-04-07 07:35:35923 - MainProcess - INFO - main - Generating final reports for 5 total leads...
+2025-04-07 07:35:35926 - MainProcess - INFO - output_generator - Generating CSV report at: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/data/daily_leads_2025-04-07.csv
+2025-04-07 07:35:35928 - MainProcess - INFO - output_generator - Successfully generated CSV report with 5 leads.
+2025-04-07 07:35:35928 - MainProcess - INFO - output_generator - Generating internal HTML dashboard at: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/data/leads_dashboard.html
+2025-04-07 07:35:35929 - MainProcess - INFO - output_generator - Successfully generated internal HTML dashboard.
+2025-04-07 07:35:35930 - MainProcess - INFO - output_generator - Generating graded JSON output for frontend at: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/../frontend/public/graded_leads.json
+2025-04-07 07:35:35934 - MainProcess - INFO - output_generator - Successfully generated graded JSON file with 5 leads.
+2025-04-07 07:35:35935 - MainProcess - INFO - main - --- Attempting GitHub Deployment ---
+2025-04-07 07:35:35935 - MainProcess - ERROR - main - GITHUB_PAT environment variable not set. Skipping deployment.
+2025-04-07 07:35:35935 - MainProcess - INFO - main - --- Agent Finished ---
+2025-04-07 07:35:35935 - MainProcess - INFO - main - Closing main database connection...
+2025-04-07 07:35:35936 - MainProcess - INFO - state_manager - Database connection closed.
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/7/2025, 7:37:26 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Excellent, Run B (targeting Dayton and Akron/Canton) has also completed successfully.
+
+Both runs of the A/B test have now been executed:
+*   **Run A (Dayton only):** Completed and tagged results with `search_scope='single_city'`. Found 1 new lead.
+*   **Run B (Dayton & Akron/Canton):** Completed and tagged results with `search_scope='small_region'`. Found 1 new lead (likely from Akron/Canton, as Dayton leads were processed in Run A).
+
+The database `backend/data/leads.db` now contains the results from both runs, tagged appropriately. You can now analyze this data to compare the effectiveness of the 'single\_city' scope versus the 'small\_region' scope for finding leads.
+
+The necessary code modifications and the execution of the A/B test runs are complete.
+
+```tool_code
+<attempt_completion>
+<result>
+The simplified A/B test comparing scraping a single city (Dayton) versus a small region (Dayton & Akron/Canton) has been successfully set up and executed.
+
+1.  **Code Modifications:** `backend/main.py` and `backend/modules/state_manager.py` were updated to handle the `--target-cities` argument and tag leads with a `search_scope` ('single_city' or 'small_region').
+2.  **Run A (Dayton):** Executed successfully, tagging leads with `search_scope='single_city'`. Found 1 new lead.
+3.  **Run B (Dayton & Akron/Canton):** Executed successfully, tagging leads with `search_scope='small_region'`. Found 1 new lead.
+
+The results from both test runs are now stored in the database `backend/data/leads.db` and tagged appropriately. You can analyze this database to compare the leads found by each search scope. The output files (CSV, HTML dashboard, JSON) have also been updated based on the latest run (Run B).
+</result>
+</attempt_completion>
+```
+
+---
+
+**User:**
+
+[TASK RESUMPTION] This task was interrupted 1 day ago. The conversation may have been incomplete. Be aware that the project state may have changed since then. The current working directory is now '/home/brandonruizmarketing/Desktop/Gemini-Scraper'.
+
+Note: If you previously attempted a tool use that the user did not provide a result for, you should assume the tool use was not successful. However you are in PLAN MODE, so rather than continuing the task, you must respond to the user's message.
+
+New message to respond to with plan_mode_respond tool (be sure to provide your response in the <response> parameter):
+<user_message>
+compare and run some more test with lost of differnt variables on both sides of the test. like 4 diffent varables that could effect the accome, so 4 tests for each A/B and after compare and contrast to see which one will do better. Use the mpc server to ask questions of criagslist url structring and waht might be more effective and how you should run these test and analize data and refactor based on what you know.
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:20:25 AM (UTC, UTC+0:00)
+
+# Current Working Directory (/home/brandonruizmarketing/Desktop/Gemini-Scraper) Files
+cline_task_apr-6-2025_5-38-40-am.md
+new york web_html_info design jobs - craigslist.html
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist.html
+Web_Html_Info Design Jobs near Croton, OH - craigslist.html
+backend/
+backend/main.py
+backend/requirements.txt
+backend/run.log
+backend/config/
+backend/config/__init__.py
+backend/config/settings.py
+backend/data/
+backend/data/cities_large.json
+backend/data/cities_medium.json
+backend/data/cities_small.json
+backend/data/daily_leads_2025-04-01.csv
+backend/data/daily_leads_2025-04-06.csv
+backend/data/daily_leads_2025-04-07.csv
+backend/data/leads_dashboard.html
+backend/data/leads.db
+backend/modules/
+backend/modules/__init__.py
+backend/modules/ai_handler.py
+backend/modules/city_manager.py
+backend/modules/content_analyzer.py
+backend/modules/output_generator.py
+backend/modules/request_handler.py
+backend/modules/state_manager.py
+frontend/
+frontend/index.html
+frontend/script.js
+frontend/style.css
+frontend/public/
+frontend/public/graded_leads.json
+new york web_html_info design jobs - craigslist_files/
+new york web_html_info design jobs - craigslist_files/00N0N_747nXvHEtIp_0as05U_50x50c.jpg
+new york web_html_info design jobs - craigslist_files/59219857f2acaf38f9f5507d73c66d097cefa075.js
+new york web_html_info design jobs - craigslist_files/localStorage-092e9f9e2f09450529e744902aa7cdb3a5cc868d.html
+new york web_html_info design jobs - craigslist_files/manifest.js
+new york web_html_info design jobs - craigslist_files/search-2025-03-31-14-03-5bdeda4af7be13ab95567dbefab8f0ddf69f1.js
+new york web_html_info design jobs - craigslist_files/www-2025-03-31-14-03-9ae1ece27ab3f4d31d0a9003954f15e2d207e51.css
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/00N0N_747nXvHEtIp_0as05U_600x450.jpg
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/6152_002.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/6152.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/6153_002.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/6153.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/59219857f2acaf38f9f5507d73c66d097cefa075.js
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/browsePostings-2025-03-14-07-08-f6311623383c04c253b32602edbf2.js
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/localStorage-092e9f9e2f09450529e744902aa7cdb3a5cc868d.html
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/manifest.js
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/marker-icon.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/marker-shadow.png
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist_files/posting-2025-03-31-14-03-f7cafa949c753004c3ac16b7ae1c29a7bdf.css
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00E0E_7nJSLSVFdVI_0CI0t2_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00h0h_Avo3LZOcMR_0wU0oM_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00i0i_8QdGRj8iucO_06s06O_50x50c_002.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00i0i_8QdGRj8iucO_06s06O_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00N0N_747nXvHEtIp_0as05U_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00s0s_96EdIwm1cZL_0jm0t2_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00606_b73PnXFj43S_0gw0gw_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/00707_aMIwPQSWPd5_0dL07K_50x50c.jpg
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/59219857f2acaf38f9f5507d73c66d097cefa075.js
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/localStorage-092e9f9e2f09450529e744902aa7cdb3a5cc868d.html
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/manifest.js
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/search-2025-03-31-14-03-5bdeda4af7be13ab95567dbefab8f0ddf69f1.js
+Web_Html_Info Design Jobs near Croton, OH - craigslist_files/www-2025-03-31-14-03-9ae1ece27ab3f4d31d0a9003954f15e2d207e51.css
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>Okay, you want to expand the A/B testing significantly to understand what factors most influence the lead generation results. This involves identifying key variables, running multiple test variations for both the single-city and small-region approaches, and then analyzing the outcomes. You also want me to leverage the Perplexity MCP server for insights into Craigslist URL structure and effective testing/analysis strategies.
+
+This is a good, methodical approach. Let's break it down:
+
+**Phase 1: Research & Variable Identification**
+
+1.  **Identify Potential Variables:** Based on our previous work and general scraping knowledge, variables that could affect results include:
+    *   **Search Query (`query` parameter):** Using specific vs. broad keywords (e.g., "WordPress website" vs. "website").
+    *   **Search Categories:** Targeting only core categories (like `web`, `sof`) vs. a wider set (`cpg`, `gig`, `mar`, etc.).
+    *   **Craigslist Filters:** Using parameters like `hasPic=1` (has image), `postedToday=1`, `bundleDuplicates=1`.
+    *   **Pagination Depth (`--limit-pages`):** Scraping only the first page vs. multiple pages.
+    *   **Geographic Scope:** Single city vs. small region (our existing A/B).
+    *   **(Less likely effective):** Geo-parameters like `search_distance`, `lat`, `lon`, `postal` (as Perplexity previously indicated these might not work as expected for cross-domain searching).
+2.  **Consult Perplexity:** I'll use the `researcher-mcp` to ask about:
+    *   Confirmed and potentially useful Craigslist search URL parameters and filters for job/gig searches.
+    *   The effectiveness of combining parameters (e.g., `query` + `postedToday`).
+    *   Recommended strategies for A/B testing web scraping results (isolating variables, key metrics).
+    *   Best ways to analyze the collected data (comparing lead volume, uniqueness, relevance, geographic spread).
+
+**Phase 2: Test Design & Planning**
+
+1.  **Define Test Variations:** Based on Perplexity's feedback and our variable list, we'll design 4 distinct variations for *each* scope (A: Dayton only, B: Dayton + Akron/Canton). For example:
+    *   **A1/B1:** Baseline (Current `SEARCH_CONFIG`, `--limit-pages 3`)
+    *   **A2/B2:** More Specific Query (e.g., "WordPress website needed")
+    *   **A3/B3:** Filtered Search (e.g., `&postedToday=1`)
+    *   **A4/B4:** Different Category Set (e.g., only `web`, `sof`, `cpg`)
+2.  **Refine Implementation:** Ensure the script can handle these variations (e.g., passing query/filters via CLI or config) and tag results appropriately (e.g., adding a `test_variation` tag like 'A1', 'B3', etc.).
+3.  **Execution Plan:** List the 8 specific commands to run.
+4.  **Analysis Plan:** Detail how we'll query `leads.db` using `search_scope` and `test_variation` tags to compare results (e.g., count unique leads per variation, average AI score, etc.).
+
+**Let's start with the research.** I will now formulate a query for Perplexity.
+
+```tool_code
+<use_mcp_tool>
+<server_name>researcher-mcp</server_name>
+<tool_name>reason</tool_name>
+<arguments>
+{
+  "query": "I am planning an A/B test for scraping Craigslist job/gig leads using a Python script. Method A scrapes a single city subdomain (e.g., dayton.craigslist.org), Method B scrapes multiple city subdomains (e.g., dayton, akroncanton). I want to test 4 variations for each method by changing one variable at a time.\n\n1.  **URL Parameters/Filters:** What are confirmed working Craigslist search URL parameters and filters relevant for job/gig searches (beyond basic category codes and `query`)? Examples: `postedToday`, `hasPic`, `bundleDuplicates`, `searchNearby`, specific location parameters (`postal`, `lat`, `lon`, `search_distance` - do these work reliably for filtering *within* subdomains or across them)?\n2.  **A/B Testing Strategy:** What are best practices for designing this A/B test? What specific variables (e.g., query specificity, filters, categories, page depth) would likely yield the most insightful comparisons between Method A and Method B?\n3.  **Data Analysis:** What are the best metrics and methods (e.g., SQL queries, statistical tests) to analyze the scraped data (stored in SQLite with columns like url, title, city, ai_grade, and a test tag) to determine which method/variation performs better in terms of lead volume, uniqueness, and relevance (using ai_grade as a proxy)?\n4.  **Refactoring:** Based on common Craigslist scraping challenges, are there potential refactoring opportunities in a Python scraper (using requests/bs4/multiprocessing) that this testing might reveal or necessitate?"
+}
+</arguments>
+</use_mcp_tool>
+```</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+and we arnt getting as many lease as we should so maybe break this down into multiple mpc calls as we dont want to overload it.
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:22:08 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>You're right, breaking down the research into smaller, focused questions for the Perplexity MCP server is a sensible approach. It avoids overwhelming the tool and should yield more specific insights, especially regarding the low lead volume concern.
+
+Here's the revised plan, starting with the first research query focused on URL parameters:
+
+**Phase 1: Research (Multiple MCP Calls)**
+
+1.  **MCP Call 1: URL Parameters & Filters:** I'll ask Perplexity specifically about confirmed working Craigslist search URL parameters and filters relevant for job/gig searches within subdomains. This might reveal filters we aren't using that could increase relevant lead volume.
+    ```tool_code
+    <use_mcp_tool>
+    <server_name>researcher-mcp</server_name>
+    <tool_name>reason</tool_name>
+    <arguments>
+    {
+      "query": "What are confirmed working Craigslist search URL parameters and filters (beyond basic category codes like 'web'/'sof' and the main 'query' parameter) that are effective for finding job/gig leads within specific city subdomains (e.g., dayton.craigslist.org)? Focus on parameters that filter results, such as `postedToday=1`, `hasPic=1`, `bundleDuplicates=1`, `searchNearby=1`, `min_price`, `max_price`, `employment_type`, etc. Also, clarify if geo-parameters like `postal`, `lat`, `lon`, `search_distance` reliably filter results *within* a single specified subdomain or if they have other effects."
+    }
+    </arguments>
+    </use_mcp_tool>
+    ```
+2.  **(Future MCP Calls):** Based on the results of Call 1, we will proceed with subsequent calls to Perplexity regarding:
+    *   A/B Test Variables & Design
+    *   Data Analysis Strategy
+    *   Potential Refactoring
+
+Let's start with this first query to understand the available filtering options better. I'll use the tool now.</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+you should be breaking up the mpc calls more and using the data it gives you to refactor your knowlogde for more questions
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:23:30 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>You are absolutely right. My apologies for not breaking that down sufficiently. A truly iterative approach is better.
+
+Let's start with a very focused query on just one potentially impactful parameter: `postedToday`. Understanding how this specific filter works might give us immediate clues about improving lead volume or freshness.
+
+**Revised Plan - Iterative MCP Calls (Take 2):**
+
+1.  **MCP Call 1: `postedToday` Parameter:** Ask Perplexity specifically about the `postedToday=1` parameter: Does it work reliably on Craigslist job/gig searches (like category `web` or `sof`)? What is its exact effect (e.g., strictly last 24 hours)?
+    ```tool_code
+    <use_mcp_tool>
+    <server_name>researcher-mcp</server_name>
+    <tool_name>search</tool_name>
+    <arguments>
+    {
+      "query": "Does the Craigslist search URL parameter `postedToday=1` work reliably for filtering job/gig category searches (e.g., 'web', 'sof', 'cpg') within a specific city subdomain? What is its exact filtering effect (e.g., strictly last 24 hours, calendar day)?"
+    }
+    </arguments>
+    </use_mcp_tool>
+    ```
+2.  **Analyze Result 1 & Plan Next Query:** Once we have the answer about `postedToday`, we can decide which parameter or filter to investigate next (e.g., `searchNearby`, `hasPic`, query structure) based on those findings and our goal of increasing relevant leads.
+
+This way, each step directly informs the next. I'll execute this first, more focused query now.</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+and then use that data to factor a plan to execute you ready
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:24:09 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>Yes, I'm ready. I will execute the first focused MCP query about the `postedToday=1` parameter. Once I receive the results, I will analyze them and propose a plan for the next step, which could be designing a specific test or asking the next targeted research question.
+
+Executing the query now:
+```tool_code
+<use_mcp_tool>
+<server_name>researcher-mcp</server_name>
+<tool_name>search</tool_name>
+<arguments>
+{
+  "query": "Does the Craigslist search URL parameter `postedToday=1` work reliably for filtering job/gig category searches (e.g., 'web', 'sof', 'cpg') within a specific city subdomain? What is its exact filtering effect (e.g., strictly last 24 hours, calendar day)?"
+}
+</arguments>
+</use_mcp_tool>
+```</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+no this is for the raduis delama for the a/b
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:24:34 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>You're absolutely right to push for a more iterative approach and to re-evaluate the radius search based on the low lead volume concern. My apologies for jumping ahead previously. Let's tackle this step-by-step, using Perplexity to refine our understanding as we go.
+
+**Revised Plan - Iterative A/B Test Design (Radius vs. Subdomain):**
+
+**Step 1: Re-confirm Radius Search Behavior (MCP Call 1)**
+
+Before designing complex tests around the radius search (Method B), let's get the clearest possible picture from Perplexity on whether it can actually pull leads posted to *different* subdomains when initiated from a single base subdomain. This is crucial.
+
+*   **Query:** "Revisiting Craigslist radius search: When querying a specific subdomain (e.g., `dayton.craigslist.org`) with geo-parameters (`lat`, `lon`, `search_distance`) that define a radius extending into areas covered by *other* subdomains (e.g., `akroncanton.craigslist.org`), will the results include listings posted *only* to those other subdomains, or is the search strictly limited to listings posted *within* the queried base subdomain (`dayton.craigslist.org`) that fall inside the geographic radius? Provide evidence or examples if possible."
+
+I will execute this query now to clarify the fundamental behavior of the radius search across subdomains. Based on the answer, we will decide if Method B (Radius) is viable for comparison or if we need to stick to comparing different *sets* of subdomains (like the simplified plan).
+
+```tool_code
+<use_mcp_tool>
+<server_name>researcher-mcp</server_name>
+<tool_name>reason</tool_name>
+<arguments>
+{
+  "query": "Revisiting Craigslist radius search: When querying a specific subdomain (e.g., `dayton.craigslist.org`) with geo-parameters (`lat`, `lon`, `search_distance`) that define a radius extending into areas covered by *other* subdomains (e.g., `akroncanton.craigslist.org`), will the results include listings posted *only* to those other subdomains, or is the search strictly limited to listings posted *within* the queried base subdomain (`dayton.craigslist.org`) that fall inside the geographic radius? Provide evidence or examples if possible."
+}
+</arguments>
+</use_mcp_tool>
+```</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+[The user has switched to ACT MODE, so you may now proceed with the task.]
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:39:35 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, I am now in ACT MODE. I will execute the MCP query to clarify the behavior of Craigslist's radius search across different subdomains.
+
+```tool_code
+<use_mcp_tool>
+<server_name>researcher-mcp</server_name>
+<tool_name>reason</tool_name>
+<arguments>
+{
+  "query": "Revisiting Craigslist radius search: When querying a specific subdomain (e.g., `dayton.craigslist.org`) with geo-parameters (`lat`, `lon`, `search_distance`) that define a radius extending into areas covered by *other* subdomains (e.g., `akroncanton.craigslist.org`), will the results include listings posted *only* to those other subdomains, or is the search strictly limited to listings posted *within* the queried base subdomain (`dayton.craigslist.org`) that fall inside the geographic radius? Provide evidence or examples if possible."
+}
+</arguments>
+</use_mcp_tool>
+```
+
+---
+
+**User:**
+
+[use_mcp_tool for 'researcher-mcp'] Result:
+<think>
+Okay, let's tackle this question about Craigslist's radius search across subdomains. The user wants to know if when you query a specific subdomain like dayton.craigslist.org with geographic parameters (latitude, longitude, search distance), do the results include listings from other subdomains that fall within that radius, or are they limited to the base subdomain's listings that are within the radius.
+
+First, I need to recall how Craigslist's architecture works. Each subdomain (like dayton.craigslist.org) typically corresponds to a specific geographic area. Users post to a particular subdomain based on their location. Now, the radius search feature allows users to set a distance from a specific point. But the key question is whether that search pulls from multiple subdomains or just the one being queried.
+
+Looking at the search results provided, result [1] mentions that Craigslist recently expanded its maximum search radius to 1000 miles. This suggests that the radius can cover a large area, but does that mean it crosses into other subdomains? The article in [1] talks about using specific locations like Bonanza, Utah, to cover the entire U.S., which implies that the search is still within the same subdomain's coverage area. Wait, but Craigslist has separate subdomains for different regions. For example, dayton.craigslist.org vs. akroncanton.craigslist.org. If the radius from Dayton extends into Akron's area, would it pull Akron's listings?
+
+Result [2] discusses searching by zip code and radius in Audience Builder, but it's more about selecting markets rather than how the search itself works. It mentions selecting markets manually, which might imply that the search doesn't automatically include adjacent subdomains.
+
+Result [4] from 2023 mentions that Craigslist changed the search function to no longer allow wider area searches and that it's more like a local search now. This could mean that even with a large radius, the search is limited to the subdomain you're querying. However, the user's question is about whether the radius crosses into other subdomains.
+
+Result [5] from 2005 talks about a third-party tool to search all Craigslist cities, which suggests that by default, Craigslist's search is per subdomain. The existence of tools like SearchTempest (result [6]) also indicates that native Craigslist searches don't cross subdomains, hence the need for aggregators.
+
+Putting this together, when you perform a radius search on a specific subdomain, the results are limited to listings posted within that subdomain's area, even if the radius extends into another subdomain's territory. For example, if you search dayton.craigslist.org with a radius that includes Akron, you won't see Akron's listings because they're posted under akroncanton.craigslist.org. To get those, you'd need to search the Akron subdomain or use a third-party tool that aggregates multiple subdomains.
+
+Evidence from [1] shows that expanding the radius covers a larger area within the same subdomain's coverage. The mention of using third-party sites in [1] and [5] to search across subdomains reinforces that Craigslist's native search doesn't do this. The practical implication is that users needing cross-subdomain results must use external tools or manually check adjacent subdomains. Alternatives include services like SearchTempest, which scrape multiple subdomains, or Craigslist's own "nearby areas" option, which might be limited.
+</think>
+
+Craigslist's radius search functionality operates within the constraints of its subdomain-based geographic segmentation. Here's a detailed analysis:
+
+### 1. **Subdomain-Centric Search Scope**  
+When querying a specific subdomain (e.g., `dayton.craigslist.org`) with geo-parameters (`lat`, `lon`, `search_distance`), results are **strictly limited to listings posted within the queried subdomain** that fall within the geographic radius. The search does not aggregate listings from neighboring subdomains, even if the radius overlaps their territories.  
+
+**Example**:  
+- A 100-mile radius search centered in Dayton, Ohio (using `dayton.craigslist.org`) may overlap with Akron-Canton's coverage area (handled by `akroncanton.craigslist.org`).  
+- Listings from Akron-Canton will **not** appear in Dayton-based results unless manually posted to the Dayton subdomain[1][4].
+
+---
+
+### 2. **Key Considerations**  
+- **Subdomain Boundaries**: Craigslist assigns listings to subdomains based on predefined geographic regions, not dynamic radius calculations. A listing’s visibility depends on the subdomain it was posted to[4][6].  
+- **Third-Party Tools**: Services like SearchTempest[6] or deprecated tools (e.g., AllOfCraigs) exist specifically to bypass subdomain limitations by aggregating results across regions.  
+- **Recent Updates**: Craigslist’s 2023 expansion to a 1,000-mile radius[1] improved intra-subdomain searches but did not enable cross-subdomain aggregation.  
+
+---
+
+### 3. **Evidence and Examples**  
+- A 2023 update allowed radius searches up to 1,020 miles within a single subdomain[1], but users still needed tools like AdHuntr to search nationally[1][5].  
+- Complaints in 2023 about Craigslist’s removal of cross-region sorting[4] highlight the platform’s focus on localized results.  
+- Coding Horror’s 2005 experiment[5] demonstrated that Craigslist’s native architecture requires per-subdomain queries, a limitation still present today.  
+
+---
+
+### 4. **Practical Implications**  
+- **For Buyers/Sellers**:  
+  - To ensure broad coverage, users must manually search adjacent subdomains or use third-party aggregators[6].  
+  - Missed opportunities arise when listings exist in overlapping regions but are posted to a different subdomain.  
+- **For Developers**:  
+  - APIs or scrapers targeting multiple subdomains are necessary for cross-region searches, risking rate limits or bans.  
+
+---
+
+### 5. **Alternatives**  
+- **SearchTempest[6]**: Aggregates results across Craigslist subdomains, eBay, and Facebook Marketplace.  
+- **Craigslist’s "Nearby Areas" Option**: A checkbox in some regions to include adjacent subdomains (e.g., "include Toledo" in a Detroit search), but coverage is inconsistent[3].  
+- **Manual Multi-Subdomain Queries**: Labor-intensive but precise for niche searches.  
+
+---
+
+In summary, Craigslist’s radius search is subdomain-bound, and cross-region visibility requires external tools or manual effort. This design preserves local market integrity but limits discoverability for users seeking broader geographic coverage.
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 4:47:12 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, the Perplexity results confirm our suspicion from earlier: **Craigslist's radius search (`lat`, `lon`, `search_distance`) does NOT pull results from other subdomains.** It only filters listings posted *within* the base subdomain you are querying (e.g., `dayton.craigslist.org`) that happen to fall within the specified radius.
+
+**Conclusion:** The original A/B test idea comparing a single subdomain to a radius search on that same subdomain is fundamentally flawed for testing broad regional coverage. It wouldn't show leads from nearby cities unless they were cross-posted to the base city's subdomain.
+
+**Recommendation:** We should stick with the **simplified A/B test plan** we decided on just before the last interruption:
+
+*   **Method A (Control):** Scrape *only* the target city (e.g., `dayton`).
+*   **Method B (Variant - Small Region):** Scrape the target city *plus* a predefined list of nearby cities (e.g., `dayton,akroncanton`).
+
+This accurately tests the difference between focusing on a single metropolitan area versus a slightly broader region by querying multiple relevant subdomains.
+
+**Next Steps:**
+
+We have already:
+1.  Modified the code to accept `--target-cities` and tag results with `search_scope`.
+2.  Fixed the `IndentationError` and `AttributeError`.
+3.  Successfully run Run A (`--target-cities dayton`).
+
+Now, I need to execute **Run B** using the corrected command and the virtual environment.
+
+**Executing Run B (Small Region - Dayton & Akron/Canton) with `python3` from `.venv`:**
+
+```tool_code
+<execute_command>
+<command>.venv/bin/python backend/main.py --target-cities dayton,akroncanton --limit-pages 3</command>
+<requires_approval>false</requires_approval>
+</execute_command>
+```
+
+---
+
+**User:**
+
+[TASK RESUMPTION] This task was interrupted 36 minutes ago. The conversation may have been incomplete. Be aware that the project state may have changed since then. The current working directory is now '/home/brandonruizmarketing/Desktop/Gemini-Scraper'.
+
+Note: If you previously attempted a tool use that the user did not provide a result for, you should assume the tool use was not successful. However you are in PLAN MODE, so rather than continuing the task, you must respond to the user's message.(The user did not provide a new message. Consider asking them how they'd like you to proceed, or to switch to Act mode to continue with the task.)
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 5:37:08 AM (UTC, UTC+0:00)
+
+# Current Working Directory (/home/brandonruizmarketing/Desktop/Gemini-Scraper) Files
+cline_task_apr-6-2025_5-38-40-am.md
+new york web_html_info design jobs - craigslist.html
+SoundCloud Web Developer - web _ html _ info design - job employment - craigslist.html
+Web_Html_Info Design Jobs near Croton, OH - craigslist.html
+backend/
+backend/main.py
+backend/requirements.txt
+backend/run.log
+backend/config/
+backend/config/__init__.py
+backend/config/settings.py
+backend/data/
+backend/data/cities_large.json
+backend/data/cities_medium.json
+backend/data/cities_small.json
+backend/data/daily_leads_2025-04-01.csv
+backend/data/daily_leads_2025-04-06.csv
+backend/data/daily_leads_2025-04-07.csv
+backend/data/daily_leads_2025-04-09.csv
+backend/data/leads_dashboard.html
+backend/data/leads.db

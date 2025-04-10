@@ -1,0 +1,1000 @@
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 7:56:03 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>You are persistent! Let me reconsider based on the file paths I've seen. You might be referring to the configuration file for the extension itself, potentially located at a path like `~/.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json`.
+
+**If** the primary API key used by the extension is stored within that JSON file (or a similar accessible file), then **theoretically**, it might be possible to *edit* that file using my tools (`read_file`, `replace_in_file`).
+
+**However, there are significant practical challenges to making this *fully autonomous*:**
+
+1.  **Error Detection:** I don't automatically receive structured error messages when *my own* API calls fail due to rate limits or invalid keys. The extension handles that communication with the AI provider. I would only know if *you* explicitly tell me, "Cline, your API key seems to have hit a limit."
+2.  **Key Storage:** To cycle keys, you would need to provide me with a list of alternative API keys. We would need a place to store this list. Perhaps we could add a new section within the `cline_mcp_settings.json` file itself to hold these alternate keys?
+3.  **Applying the Change:** Even if I successfully edit the settings file to insert a new key, the VS Code extension would likely need to be **reloaded or restarted** to actually start *using* that new key. This reload is something **I cannot trigger myself**; it would require manual action from you (e.g., using the "Developer: Reload Window" command in VS Code) or potentially restarting VS Code entirely.
+
+**So, while I *might* be able to edit the file containing the key, the process cannot be fully automated end-to-end by me alone.** It would require you to monitor for errors related to my API key and manually reload the extension after I edit the file.
+
+**Revised Plan Option (Semi-Automated Key Cycling):**
+
+1.  **Implement Checkpointing, Error Handling, US City List, Search Refinements:** Proceed with these steps as planned previously.
+2.  **Store Alternate Keys:** If you provide a list of alternate API keys, I can attempt to add them to the `cline_mcp_settings.json` file (e.g., under a new `clineApiKeys` list).
+3.  **Manual Trigger for Swap:** If *my* operations fail and you inform me it's likely an API key limit, I can then attempt to:
+    *   Read `cline_mcp_settings.json`.
+    *   Find the next available key from the stored list.
+    *   Use `replace_in_file` to update the *active* key field in the settings file.
+    *   **Inform you** that I've updated the key and that you need to **reload the VS Code window** for the change to take effect.
+4.  **Start/Resume Scan:** Once you confirm the reload, I can proceed with the scan.
+
+This is the closest I can get to automating the key cycling. It still requires your intervention to detect the error and reload the extension.
+
+Is this semi-automated approach acceptable, or should we stick to the plan without attempting key cycling for the extension itself?</response>
+<options>
+["Proceed with the semi-automated key cycling plan (Switch to ACT MODE)", "Proceed with the plan *without* key cycling (Switch to ACT MODE)", "Let's discuss this more"]
+</options>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+Error Detection: I don't automatically receive structured error messages when my own API calls fail due to rate limits or invalid keys. The extension handles that communication with the AI provider. I would only know if you explicitly tell me, "Cline, your API key seems to have hit a limit."
+Key Storage: To cycle keys, you would need to provide me with a list of alternative API keys. We would need a place to store this list. Perhaps we could add a new section within the cline_mcp_settings.json file itself to hold these alternate keys?
+Applying the Change: Even if I successfully edit the settings file to insert a new key, the VS Code extension would likely need to be reloaded or restarted to actually start using that new key. This reload is something I cannot trigger myself; it would require manual action from you (e.g., using the "Developer: Reload Window" command in VS Code) or potentially restarting VS Code entirely.
+
+
+create something that solves this after you finish everything else
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 7:57:50 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>Okay, I understand. We will first focus on implementing all the other planned improvements for the US-wide scan:
+1.  Checkpointing/Resumption logic.
+2.  Robust error handling review.
+3.  Getting and integrating the full US city list.
+4.  Refining search terms.
+5.  Setting up for autonomous execution (minimal approvals).
+6.  Starting the scan.
+
+**After** these steps are completed and the main scan is potentially running, we will then treat the problem of automating the Cline extension's API key cycling (detecting limits, storing keys, triggering reloads) as a **separate, subsequent task**. Tackling that complex issue requires a different approach, possibly involving helper scripts or even designing a dedicated MCP server, which we can explore once the primary scraping enhancements are done.
+
+Does this sequence sound good? Implement the scraper improvements and start the scan first, then address the extension's key cycling automation later?
+
+If yes, please ask me to "toggle to Act mode" so I can begin implementing the checkpointing logic in `StateManager`.</response>
+<options>
+["Yes, implement scraper improvements first, tackle key cycling later (Switch to ACT MODE)", "No, let's rethink the sequence"]
+</options>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+I think it will have to be a sepreate python that runs in the background of vscode or the terminal possibly within but this works go ahead
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 7:59:05 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>Agreed, tackling the extension's key cycling likely requires a separate process or script later.
+
+For now, I will focus on the core scraper enhancements and the US-wide scan setup.
+
+Please ask me to "toggle to Act mode" so I can begin the implementation, starting with the checkpointing logic in `StateManager`.</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+ok and before making that, debug and rerun if it doesnt work on the full city. run with min 8 workers
+</user_message>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 7:59:44 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>Understood. After implementing all the planned enhancements (checkpointing, US city list, refined search terms, etc.), I will run a test scan targeting a small subset of the US cities first to ensure everything works correctly before launching the full scan. I will use a minimum of 8 workers for the multiprocessing pool as requested (adjusting based on available CPU cores if necessary). If the test scan encounters errors, I will attempt to debug and fix them before proceeding with the full US scan.
+
+Please ask me to "toggle to Act mode" to start the implementation.</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+then youll build the implimentaion? is there anyway you can break the rule of limit of 25 auto aproved command in a row to infinite very important
+</user_message>
+<environment_details>
+# VSCode Visible Files
+(No visible files)
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 8:02:14 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>I understand you want maximum autonomy for this entire process.
+
+Regarding the auto-approval limit: I will set `requires_approval=false` for all the steps involved in implementing the plan we've discussed (editing the Python files, using the MCP server for research, running the test scan, and starting the final scan using the virtual environment). These actions are generally considered safe within the project's context.
+
+While I will operate with the intention of full autonomy for this sequence based on your consent, I cannot definitively guarantee there isn't an underlying system limit on consecutive auto-approved actions beyond my control. However, I will proceed with the plan and execute the steps sequentially without asking for approval for each one.
+
+Let's start the implementation. Please ask me to "toggle to Act mode".</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+<user_message>
+but the program is limited to 25 self queries right?
+</user_message>
+<environment_details>
+# VSCode Visible Files
+(No visible files)
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 8:03:07 AM (UTC, UTC+0:00)
+
+# Current Mode
+PLAN MODE
+In this mode you should focus on information gathering, asking questions, and architecting a solution. Once you have a plan, use the plan_mode_respond tool to engage in a conversational back and forth with the user. Do not use the plan_mode_respond tool until you've gathered all the information you need e.g. with read_file or ask_followup_question.
+(Remember: If it seems the user wants you to use tools only available in Act Mode, you should ask the user to "toggle to Act mode" (use those words) - they will have to manually do this themselves with the Plan/Act toggle button below. You do not have the ability to switch to Act Mode yourself, and must wait for the user to do it themselves once they are satisfied with the plan. You also cannot present an option to toggle to Act mode, as this will be something you need to direct the user to do manually themselves.)
+</environment_details>
+
+---
+
+**Assistant:**
+
+<plan_mode_respond>
+<response>I don't have specific information confirming a hard limit of exactly 25 consecutive auto-approved tool uses. My operational guidelines focus on setting `requires_approval` based on the nature of the command (safe vs. potentially impactful).
+
+For the plan we've outlined (implementing checkpointing, getting the city list, refining search terms, running the scan), the vast majority of steps involve editing local project files or running the Python script within the virtual environment, which are generally considered safe operations. I will set `requires_approval=false` for these steps as you've requested, aiming for maximum autonomy.
+
+While I will proceed with this approach, complex, long-running tasks can sometimes encounter unexpected situations or edge cases that might still require clarification or intervention, regardless of the approval settings. I will do my best to execute the entire sequence autonomously based on your consent.
+
+Shall we proceed? Please ask me to "toggle to Act mode" to begin.</response>
+</plan_mode_respond>
+
+---
+
+**User:**
+
+[plan_mode_respond] Result:
+[The user has switched to ACT MODE, so you may now proceed with the task.]
+<environment_details>
+# VSCode Visible Files
+(No visible files)
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 8:03:41 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, I am now in ACT MODE and will proceed with the implementation autonomously, setting `requires_approval=false` for the planned steps.
+
+**Step 1: Implement Checkpointing/Resumption Logic**
+
+**1a. Modify `StateManager` to add checkpointing functions.**
+
+I will add `get_last_completed_city` and `set_last_completed_city` methods to `backend/modules/state_manager.py`. I will also ensure the `search_scope` column migration logic added previously is still present.
+
+```tool_code
+<replace_in_file>
+<path>backend/modules/state_manager.py</path>
+<diff>
+<<<<<<< SEARCH
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
+=======
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def get_last_completed_city(self):
+        """Retrieves the code of the last successfully completed city."""
+        if not self.conn: return None
+        try:
+            self.cursor.execute("SELECT value FROM progress WHERE key = 'last_completed_city'")
+            result = self.cursor.fetchone()
+            # Check if result is not None and access the first element
+            return result[0] if result else None
+        except sqlite3.Error as e:
+            logging.error(f"Error getting last completed city: {e}", exc_info=True)
+            return None
+        except IndexError: # Handle cases where fetchone() might return an empty tuple unexpectedly
+             logging.warning("IndexError while fetching last completed city likely no value set.")
+             return None
+
+
+    def set_last_completed_city(self, city_code):
+        """Sets the code of the last successfully completed city."""
+        self._set_progress_value('last_
+
+[Response interrupted by a tool use result. Only one tool may be used at a time and should be placed at the end of the message.]
+
+---
+
+**User:**
+
+[replace_in_file for 'backend/modules/state_manager.py'] Result:
+The tool execution failed with the following error:
+<error>
+The SEARCH block:
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
+...does not match anything in the file.
+
+This is likely because the SEARCH block content doesn't match exactly with what's in the file, or if you used multiple SEARCH/REPLACE blocks they may not have been in the order they appear in the file.
+
+The file was reverted to its original state:
+
+<file_content path="backend/modules/state_manager.py">
+# modules/state_manager.py (Recreated)
+import sqlite3
+import logging
+import os
+import json # For handling potential JSON in DB later if needed
+from datetime import datetime
+
+class StateManager:
+    def __init__(self, config):
+        self.db_path = config.get('STATE_CONFIG', {}).get('DATABASE_FILE', 'data/leads.db')
+        # Ensure the path is relative to the backend directory
+        self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.db_path = os.path.join(self.backend_dir, self.db_path)
+
+        # Ensure data directory exists
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+
+        self.conn = None
+        self.cursor = None
+        self._connect_db()
+        self._initialize_schema()
+
+    def _connect_db(self):
+        """Establishes connection to the SQLite database."""
+        try:
+            self.conn = sqlite3.connect(self.db_path)
+            # Use Row factory for dictionary-like access
+            self.conn.row_factory = sqlite3.Row
+            self.cursor = self.conn.cursor()
+            logging.info(f"Connected to database: {self.db_path}")
+        except sqlite3.Error as e:
+            logging.error(f"Error connecting to database {self.db_path}: {e}", exc_info=True)
+            raise # Re-raise the exception
+
+    def _initialize_schema(self):
+        """Creates necessary tables if they don't exist."""
+        if not self.conn: return
+        try:
+            # Leads table - adjust columns as needed based on full_lead_details structure
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS leads (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    url TEXT UNIQUE NOT NULL,
+                    title TEXT,
+                    description TEXT,
+                    city TEXT,
+                    category TEXT,
+                    date_posted_iso TEXT,
+                    scraped_timestamp TEXT,
+                    estimated_value TEXT,
+                    contact_method TEXT,
+                    contact_info TEXT,
+                    has_been_contacted BOOLEAN DEFAULT 0,
+                    follow_up_date TEXT,
+                    ai_is_junk BOOLEAN,
+                    ai_profitability_score INTEGER,
+                    ai_reasoning TEXT,
+                    search_scope TEXT  -- Added for A/B testing
+                )
+            ''')
+            # Progress table
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS progress (
+                    key TEXT PRIMARY KEY,
+                    value TEXT
+                )
+            ''')
+            self.conn.commit()
+            logging.info("Database schema initialized/verified.")
+
+            # --- Add migration logic for existing databases ---
+            # Check if the search_scope column exists
+            self.cursor.execute("PRAGMA table_info(leads)")
+            columns = [column[1] for column in self.cursor.fetchall()]
+            if 'search_scope' not in columns:
+                logging.info("Adding 'search_scope' column to existing 'leads' table...")
+                self.cursor.execute("ALTER TABLE leads ADD COLUMN search_scope TEXT")
+                self.conn.commit()
+                logging.info("'search_scope' column added successfully.")
+            # --- End migration logic ---
+
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def get_last_completed_city(self):
+        """Retrieves the code of the last successfully completed city."""
+        if not self.conn: return None
+        try:
+            self.cursor.execute("SELECT value FROM progress WHERE key = 'last_completed_city'")
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+        except sqlite3.Error as e:
+            logging.error(f"Error getting last completed city: {e}", exc_info=True)
+            return None
+
+    def set_last_completed_city(self, city_code):
+        """Sets the code of the last successfully completed city."""
+        self._set_progress_value('last_completed_city', city_code)
+
+    def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
+        """Adds a lead to the database if the URL is unique."""
+        if not self.conn:
+            logging.error("Database not connected. Cannot add lead.")
+            return False
+
+        url = lead_details.get('url')
+        if not url:
+            logging.warning("Skipping lead: Missing URL.")
+            return False
+
+        # Flatten AI grade details
+        ai_grade = lead_details.get('ai_grade', {})
+        ai_is_junk = ai_grade.get('is_junk') if isinstance(ai_grade, dict) else None
+        ai_score = ai_grade.get('profitability_score') if isinstance(ai_grade, dict) else None
+        ai_reasoning = ai_grade.get('reasoning') if isinstance(ai_grade, dict) else None
+
+        # Prepare data for insertion, ensuring keys match table columns
+        # Use .get() with default None for safety
+        data_to_insert = {
+            'url': url,
+            'title': lead_details.get('title'),
+            'description': lead_details.get('description'),
+            'city': lead_details.get('city'),
+            'category': lead_details.get('category'),
+            'date_posted_iso': lead_details.get('date_posted_iso'),
+            'scraped_timestamp': lead_details.get('scraped_timestamp', datetime.now().isoformat()),
+            'estimated_value': lead_details.get('estimated_value'),
+            'contact_method': lead_details.get('contact_method'),
+            'contact_info': lead_details.get('contact_info'),
+            'has_been_contacted': lead_details.get('has_been_contacted', False),
+            'follow_up_date': lead_details.get('follow_up_date'),
+            'ai_is_junk': ai_is_junk,
+            'ai_profitability_score': ai_score,
+            'ai_reasoning': ai_reasoning,
+            'search_scope': search_scope # Include search_scope
+        }
+
+        # Define columns explicitly for the INSERT statement
+        columns = list(data_to_insert.keys())
+        placeholders = ', '.join('?' * len(columns))
+        sql = f"INSERT OR IGNORE INTO leads ({', '.join(columns)}) VALUES ({placeholders})"
+        values = tuple(data_to_insert[col] for col in columns)
+
+        try:
+            self.cursor.execute(sql, values)
+            self.conn.commit()
+            # Check if a row was actually inserted (IGNORE means 0 changes if duplicate)
+            if self.cursor.rowcount > 0:
+                logging.debug(f"Lead added to DB: {url}")
+                return True
+            else:
+                logging.debug(f"Lead already exists (duplicate URL): {url}")
+                return False
+        except sqlite3.Error as e:
+            logging.error(f"Error adding lead {url} to database: {e}", exc_info=True)
+            return False
+
+    def get_leads(self):
+        """Retrieves all leads from the database."""
+        if not self.conn: return []
+        try:
+            self.cursor.execute("SELECT * FROM leads ORDER BY scraped_timestamp DESC")
+            rows = self.cursor.fetchall()
+            # Convert sqlite3.Row objects to dictionaries
+            return [dict(row) for row in rows]
+        except sqlite3.Error as e:
+            logging.error(f"Error retrieving leads: {e}", exc_info=True)
+            return []
+
+    def _get_total_leads_count(self):
+        """Gets the total number of leads in the database."""
+        if not self.conn: return 0
+        try:
+            self.cursor.execute("SELECT COUNT(*) FROM leads")
+            count = self.cursor.fetchone()[0]
+            return count
+        except sqlite3.Error as e:
+            logging.error(f"Error getting lead count: {e}", exc_info=True)
+            return 0
+
+    def _set_progress_value(self, key, value):
+        """Sets a progress key-value pair."""
+        if not self.conn: return
+        try:
+            sql = "INSERT OR REPLACE INTO progress (key, value) VALUES (?, ?)"
+            self.cursor.execute(sql, (key, str(value))) # Ensure value is string
+            self.conn.commit()
+        except sqlite3.Error as e:
+
+</file_content>
+
+Now that you have the latest state of the file, try the operation again with fewer/more precise SEARCH blocks.
+(If you run into this error 3 times in a row, you may use the write_to_file tool as a fallback. Keep in mind, the write_to_file fallback is far from ideal, as this means you'll be re-writing the entire contents of the file just to make a few edits, which takes time and money. So let's bias towards using replace_in_file as effectively as possible)
+</error>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+
+# Current Time
+4/9/2025, 8:04:08 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+You are absolutely correct. My apologies. The error message indicates that the `replace_in_file` command failed because the file `backend/modules/state_manager.py` *already contains* the changes I was trying to make (the `get_last_completed_city` and `set_last_completed_city` methods). This means the previous edits were successful, and the file is already correctly set up for the state manager part of the checkpointing.
+
+My mistake was trying to re-apply changes that were already present.
+
+**Step 1b: Modify `main.py` to use the checkpointing functions.**
+
+Now I need to modify `main.py` to:
+1.  Get the last completed city from the `StateManager` at the start.
+2.  Filter the list of cities to process, skipping those already completed.
+3.  Save the city code as the last completed city *after* its corresponding worker process finishes successfully.
+
+First, I'll read the current state of `main.py`.
+
+```tool_code
+<read_file>
+<path>backend/main.py</path>
+</read_file>
+```
+
+---
+
+**User:**
+
+[read_file for 'backend/main.py'] Result:
+# main.py (in backend/)
+import time
+import sys
+import os
+import random
+import logging
+import multiprocessing
+import shutil
+import subprocess
+import argparse
+import concurrent.futures # Added for ThreadPoolExecutor
+from datetime import datetime
+from urllib.parse import urljoin
+
+# --- Project Root Definition ---
+project_root = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.dirname(project_root)
+
+# --- Configure Logging ---
+log_file = os.path.join(project_root, 'run.log')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(processName)s - %(levelname)s - %(module)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, mode='w', encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
+logging.info("Logging configured.")
+
+logging.info("Attempting module imports...")
+try:
+    # Import PRE_FILTER_CONFIG as well
+    from config.settings import OXYLABS_CONFIG, SEARCH_CONFIG, STATE_CONFIG, AI_CONFIG, PRE_FILTER_CONFIG
+    from modules.city_manager import CityManager
+    from modules.request_handler import RequestHandler
+    from modules.content_analyzer import ContentAnalyzer
+    from modules.state_manager import StateManager
+    from modules.output_generator import OutputGenerator
+    from modules.ai_handler import AIHandler
+    logging.info("Module imports successful.")
+except ImportError as e:
+    logging.critical(f"Error importing modules: {e}", exc_info=True)
+    logging.critical("Ensure you are running this script from the 'Gemini-Scraper/backend' directory")
+    logging.critical("or that the necessary modules/config are in the correct subdirectories.")
+    sys.exit(1)
+
+# --- Lead Processing Helper Function (for ThreadPoolExecutor) ---
+def process_single_lead(basic_lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name):
+    """Fetches details grades and prepares a single lead dictionary."""
+    lead_url = basic_lead_info.get('url')
+    if not lead_url:
+        logging.warning(f"[{worker_name}] Skipping potential lead: Missing URL.")
+        return None, None # Indicate failure/skip
+
+    # Use different log prefix for threaded operations
+    log_prefix = f"[{worker_name}-Thread]"
+
+    # --- Add City Domain Check ---
+    # Extract city code from the worker_args passed to scrape_city_worker
+    # This requires modifying scrape_city_worker to pass city_code down or accessing it differently.
+    # Let's modify process_single_lead signature for simplicity here.
+    # We need city_code in this function scope. Let's pass it in worker_args and extract it.
+    # RETHINK: Modifying scrape_city_worker args is better. Let's assume city_code is passed down.
+    # We'll modify the call signature later. For now, assume city_code is available.
+    # --- This approach is complex. Let's check the URL domain directly ---
+    from urllib.parse import urlparse
+    parsed_url = urlparse(lead_url)
+    expected_domain = f"{basic_lead_info.get('city_code', 'unknown')}.craigslist.org" # Assume city_code is added to basic_lead_info
+    if parsed_url.netloc != expected_domain:
+        logging.warning(f"{log_prefix} Skipping lead from different city: {lead_url} (Expected domain: {expected_domain})")
+        return None, None # Indicate skip
+
+    logging.info(f"{log_prefix} Fetching lead details: {basic_lead_info.get('title', 'Untitled')} ({lead_url})")
+    lead_page_html = worker_request_handler.get_page(lead_url)
+
+    if not lead_page_html:
+        logging.warning(f"{log_prefix} Failed to fetch lead detail page: {lead_url}. Skipping lead.")
+        return None, None # Indicate failure/skip
+
+    full_lead_details = worker_content_analyzer.analyze_lead_details(lead_page_html, basic_lead_info)
+
+    # AI Grading Step
+    ai_grade_result = None
+    if worker_ai_handler and worker_ai_handler.client:
+        logging.debug(f"{log_prefix} Sending lead to AI for grading: {lead_url}")
+        ai_grade_result = worker_ai_handler.grade_lead(
+            full_lead_details.get('title', ''),
+            full_lead_details.get('description', '')
+        )
+        full_lead_details['ai_grade'] = ai_grade_result
+    else:
+        full_lead_details['ai_grade'] = {"is_junk": False, "profitability_score": None, "reasoning": "AI disabled"}
+
+    # Return processed details (including grade) and the grade result separately for filtering logic
+    return full_lead_details, ai_grade_result
+
+# --- Worker Function for Parallel Processing (Refactored for Threading) ---
+def scrape_city_worker(worker_args):
+    """
+    Worker function to scrape categories (with pagination) for a single city.
+    Uses ThreadPoolExecutor to process leads found on each page in parallel.
+    """
+    # Unpack args (added limit_leads_per_page and search_scope)
+    city_info, config, limit_pages, limit_categories, limit_leads_per_page, num_threads, search_scope = worker_args
+    city_code = city_info.get('code')
+    city_name = city_info.get('name', city_code)
+    worker_name = multiprocessing.current_process().name
+    logging.info(f"[{worker_name}] Starting worker for city: {city_name} ({city_code})")
+
+    worker_state_manager = None
+    worker_ai_handler = None
+    city_leads_found_total = 0
+    try:
+        worker_state_manager = StateManager(config)
+        worker_request_handler = RequestHandler(config['OXYLABS_CONFIG'])
+        worker_content_analyzer = ContentAnalyzer(config)
+        worker_ai_handler = AIHandler(config)
+
+        if not city_code:
+            logging.warning(f"[{worker_name}] Skipping city: Missing 'code' in city_info {city_info}")
+            return (city_code, 0)
+
+        # Determine categories to process
+        all_categories = config['SEARCH_CONFIG'].get('CATEGORIES', [])
+        categories_to_process = all_categories[:limit_categories] if limit_categories is not None else all_categories
+        if limit_categories is not None:
+             logging.warning(f"[{worker_name}] Limiting to first {len(categories_to_process)} categories based on --limit-categories argument.")
+
+        for category_code in categories_to_process:
+            current_page = 1
+            next_page_url = f"https://{city_code}.craigslist.org/search/{category_code}"
+            processed_category_leads = 0
+            max_pages_to_scrape = limit_pages # Use the passed limit
+
+            while next_page_url and current_page <= max_pages_to_scrape:
+                logging.info(f"[{worker_name}] Fetching category: {category_code} (Page {current_page}/{max_pages_to_scrape}) -> {next_page_url}")
+                search_page_html = worker_request_handler.get_page(next_page_url)
+                if not search_page_html:
+                    logging.warning(f"[{worker_name}] Failed to fetch search page {current_page} for {city_code}/{category_code}. Skipping rest of category.")
+                    break
+
+                logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
+                potential_leads_count_page = 0
+                processed_leads_count_page = 0
+                # Pass limit_leads_per_page to the parser
+                leads_on_page_basic = worker_content_analyzer.parse_search_page(search_page_html, city_code, limit_leads_per_page)
+
+                # Add city_code to each basic lead info dict for domain checking later
+                leads_on_page = []
+                for lead in leads_on_page_basic:
+                    lead['city_code'] = city_code
+                    leads_on_page.append(lead)
+
+
+                # --- Pre-filter leads based on title/blacklist before AI pre-filter ---
+                pre_filtered_leads_basic = []
+                blacklist = config.get('PRE_FILTER_CONFIG', {}).get('BLACKLIST_TERMS', [])
+                if leads_on_page:
+                    potential_leads_count_page = len(leads_on_page)
+                    logging.info(f"[{worker_name}] Basic Pre-filtering {potential_leads_count_page} leads from page...")
+                    for lead_info in leads_on_page:
+                        title = lead_info.get('title', '').lower()
+                        # Basic blacklist check
+                        if any(term in title for term in blacklist):
+                            logging.info(f"[{worker_name}] Basic pre-filtered out (blacklist term): {lead_info.get('url')}")
+                            continue # Skip this lead entirely
+                        pre_filtered_leads_basic.append(lead_info)
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_basic)} leads passed basic pre-filtering.")
+                else:
+                    pre_filtered_leads_basic = []
+
+                # --- AI Pre-filter remaining leads ---
+                pre_filtered_leads_ai = []
+                if pre_filtered_leads_basic:
+                    logging.info(f"[{worker_name}] AI Pre-filtering {len(pre_filtered_leads_basic)} leads...")
+                    for lead_info in pre_filtered_leads_basic:
+                        title = lead_info.get('title', '')
+                        # Using None for snippet as parse_search_page doesn't extract it yet
+                        is_potentially_relevant = worker_ai_handler.pre_filter_lead(title, None)
+                        if is_potentially_relevant:
+                            pre_filtered_leads_ai.append(lead_info)
+                        else:
+                            logging.info(f"[{worker_name}] AI pre-filtered out (junk/unrelated): {lead_info.get('url')}")
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_ai)} leads passed AI pre-filtering.")
+                else:
+                     pre_filtered_leads_ai = []
+
+
+                # --- Process AI-pre-filtered leads on this page in parallel using threads ---
+                if pre_filtered_leads_ai:
+                    logging.info(f"[{worker_name}] Processing {len(pre_filtered_leads_ai)} AI pre-filtered leads using {num_threads} threads...")
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+                        future_to_lead = {
+                            executor.submit(process_single_lead, lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name): lead_info
+                            for lead_info in pre_filtered_leads_ai # Use pre_filtered_leads_ai here
+                        }
+                        for future in concurrent.futures.as_completed(future_to_lead):
+                            original_lead_info = future_to_lead[future]
+                            try:
+                                full_lead_details, ai_grade_result = future.result()
+                                if full_lead_details is None: continue # Skip if processing failed
+
+                                # Add the category code to the details before saving
+                                full_lead_details['category'] = category_code
+
+                                # Add lead to DB (still done sequentially by main worker thread after thread finishes)
+                                # Pass search_scope to add_lead
+                                if ai_grade_result is not None and not ai_grade_result.get('is_junk', True):
+                                    if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
+                                        city_leads_found_total += 1
+                                        processed_leads_count_page += 1
+                                        score = ai_grade_result.get('profitability_score', 'N/A')
+                                        logging.info(f"[{worker_name}] Added graded lead (Score: {score}): {full_lead_details.get('url')}")
+                                elif ai_grade_result and ai_grade_result.get('is_junk'):
+                                    score = ai_grade_result.get('profitability_score', 'N/A')
+                                    reason = ai_grade_result.get('reasoning', 'No reason provided')
+                                    logging.info(f"[{worker_name}] Skipping junk lead (AI Filter Score: {score}, Reason: {reason}): {full_lead_details.get('url')}")
+                                elif ai_grade_result is None and worker_ai_handler and worker_ai_handler.client:
+                                     logging.error(f"[{worker_name}] Skipping lead due to AI grading failure: {full_lead_details.get('url')}")
+                                elif not worker_ai_handler or not worker_ai_handler.client:
+                                     # Ensure category is added even if AI is disabled
+                                     full_lead_details['category'] = category_code
+                                     # Pass search_scope to add_lead
+                                     if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
+                                        city_leads_found_total += 1
+                                        processed_leads_count_page += 1
+                                        logging.info(f"[{worker_name}] Added lead (AI Disabled): {full_lead_details.get('url')}")
+                            except Exception as exc:
+                                lead_url = original_lead_info.get('url', 'unknown URL')
+                                logging.error(f'[{worker_name}] Lead {lead_url} generated an exception during threaded processing: {exc}', exc_info=True)
+                # --- End of parallel processing block ---
+
+                logging.info(f"[{worker_name}] Page {current_page}: Parsed {potential_leads_count_page} potential leads, added {processed_leads_count_page} new graded leads for {city_code}/{category_code}.")
+                processed_category_leads += processed_leads_count_page
+
+                # Find next page link (Placeholder)
+                next_page_relative = None
+                if current_page < max_pages_to_scrape: pass # Keep next_page_relative as None
+
+                if next_page_relative and current_page < max_pages_to_scrape:
+                    next_page_url = urljoin(next_page_url, next_page_relative)
+                    current_page += 1
+                    time.sleep(random.uniform(1.0, 2.5))
+                else:
+                    if current_page >= max_pages_to_scrape: logging.info(f"[{worker_name}] Reached page limit ({max_pages_to_scrape}) for {city_code}/{category_code}.")
+                    elif not next_page_relative and current_page < max_pages_to_scrape: logging.info(f"[{worker_name}] No next page link found for {city_code}/{category_code}.")
+                    next_page_url = None # Stop pagination
+
+            logging.info(f"[{worker_name}] Finished category {category_code} for {city_code}. Added {processed_category_leads} leads.")
+            time.sleep(random.uniform(0.5, 1.5))
+
+        logging.info(f"[{worker_name}] Finished processing {city_name}. Found {city_leads_found_total} new relevant leads in total.")
+        return (city_code, city_leads_found_total)
+
+    except Exception as e:
+        logging.error(f"[{worker_name}] Error processing city {city_code}: {e}", exc_info=True)
+        return (city_code, 0)
+    finally:
+        if worker_state_manager and worker_state_manager.conn:
+            worker_state_manager.close_db()
+            logging.info(f"[{worker_name}] Closed DB connection for city {city_code}.")
+
+# --- GitHub Deployment Function ---
+def deploy_to_github():
+    """Adds all changes, commits, and pushes to the GitHub remote."""
+    # (Deployment logic remains the same - uses environment variable)
+    github_pat = os.environ.get('GITHUB_PAT')
+    if not github_pat:
+        logging.error("GITHUB_PAT environment variable not set. Skipping deployment.")
+        return
+    github_username = "Brandonrz369"
+    repo_name = "Gemini-Scraper"
+    logging.info(f"Attempting to commit and push changes to GitHub repo: {github_username}/{repo_name}")
+    try:
+        logging.info(f"Running Git commands in: {repo_root}")
+        status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
+        if not status_result.stdout and "graded_leads.json" not in status_result.stdout: # Check if only JSON changed potentially
+             # Double check if graded_leads.json exists and was modified recently
+             json_path = os.path.join(repo_root, 'frontend', 'public', 'graded_leads.json')
+             if not os.path.exists(json_path):
+                 logging.info("No changes detected and no JSON file found to commit.")
+                 return
+             # If only JSON changed git status might be empty if .gitignore ignores it, force add
+             logging.info("Staging potential JSON update...")
+             subprocess.run(['git', 'add', os.path.join('frontend', 'public', 'graded_leads.json')], check=True, cwd=repo_root, capture_output=True, text=True)
+             # Check status again
+             status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
+             if not status_result.stdout:
+                 logging.info("No changes detected to commit after attempting to stage JSON.")
+                 return
+
+        logging.info("Staging all changes...")
+        subprocess.run(['git', 'add', '.'], check=True, cwd=repo_root, capture_output=True, text=True)
+        commit_message = f"Update leads dashboard - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
+        logging.info(f"Committing changes with message: '{commit_message}'")
+        subprocess.run(['git', 'commit', '-m', commit_message], check=True, cwd=repo_root, capture_output=True, text=True)
+        logging.info("Pushing changes to remote 'origin'...")
+        push_env = os.environ.copy()
+        push_env['GITHUB_PAT'] = github_pat
+        try:
+            subprocess.run(['git', 'push', 'origin'], check=True, cwd=repo_root, capture_output=True, text=True, env=push_env)
+            logging.info("Changes pushed to GitHub successfully via origin.")
+        except subprocess.CalledProcessError as e_push:
+             logging.warning(f"Push to origin failed (maybe auth issue?): {e_push.stderr}. Trying fallback push with PAT in URL (less secure)...")
+             try:
+                 authenticated_repo_url = f"https://{github_pat}@github.com/{github_username}/{repo_name}.git"
+                 branch_result = subprocess.run(['git', 'rev-parse', '--abbrev-ref', 'HEAD'], check=True, cwd=repo_root, capture_output=True, text=True)
+                 current_branch = branch_result.stdout.strip()
+                 subprocess.run(['git', 'push', authenticated_repo_url, current_branch], check=True, cwd=repo_root, capture_output=True, text=True)
+                 logging.info("Changes pushed to GitHub successfully via authenticated URL.")
+             except subprocess.CalledProcessError as e_fallback:
+                  logging.error(f"Fallback Git push failed! Stderr: {e_fallback.stderr}")
+             except Exception as e_fallback_unexpected:
+                  logging.error(f"An unexpected error occurred during fallback GitHub push: {e_fallback_unexpected}", exc_info=True)
+    except FileNotFoundError: logging.error("Git command not found. Ensure Git is installed and in PATH.")
+    except subprocess.CalledProcessError as e: logging.error(f"Git operation failed! Stderr: {e.stderr}")
+    except Exception as e: logging.error(f"An unexpected error during GitHub deployment: {e}", exc_info=True)
+
+# --- Main Execution ---
+def main(args):
+    logging.info(f"--- Craigslist Lead Generation Agent Started (List Size: {args.list_size}) ---")
+    os.chdir(project_root)
+    logging.info(f"Working directory set to: {os.getcwd()}")
+    # Include PRE_FILTER_CONFIG in the main config dict
+    config = {
+        'OXYLABS_CONFIG': OXYLABS_CONFIG,
+        'SEARCH_CONFIG': SEARCH_CONFIG,
+        'STATE_CONFIG': STATE_CONFIG,
+        'AI_CONFIG': AI_CONFIG,
+        'PRE_FILTER_CONFIG': PRE_FILTER_CONFIG
+    }
+    state_manager = None
+    try:

@@ -1,0 +1,1000 @@
+```
+
+---
+
+**User:**
+
+[replace_in_file for 'backend/modules/state_manager.py'] Result:
+The content was successfully saved to backend/modules/state_manager.py.
+
+Here is the full, updated content of the file that was saved:
+
+<final_file_content path="backend/modules/state_manager.py">
+# modules/state_manager.py (Recreated)
+import sqlite3
+import logging
+import os
+import json # For handling potential JSON in DB later if needed
+from datetime import datetime
+
+class StateManager:
+    def __init__(self, config):
+        self.db_path = config.get('STATE_CONFIG', {}).get('DATABASE_FILE', 'data/leads.db')
+        # Ensure the path is relative to the backend directory
+        self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.db_path = os.path.join(self.backend_dir, self.db_path)
+
+        # Ensure data directory exists
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+
+        self.conn = None
+        self.cursor = None
+        self._connect_db()
+        self._initialize_schema()
+
+    def _connect_db(self):
+        """Establishes connection to the SQLite database."""
+        try:
+            self.conn = sqlite3.connect(self.db_path)
+            # Use Row factory for dictionary-like access
+            self.conn.row_factory = sqlite3.Row
+            self.cursor = self.conn.cursor()
+            logging.info(f"Connected to database: {self.db_path}")
+        except sqlite3.Error as e:
+            logging.error(f"Error connecting to database {self.db_path}: {e}", exc_info=True)
+            raise # Re-raise the exception
+
+    def _initialize_schema(self):
+        """Creates necessary tables if they don't exist."""
+        if not self.conn: return
+        try:
+            # Leads table - adjust columns as needed based on full_lead_details structure
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS leads (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    url TEXT UNIQUE NOT NULL,
+                    title TEXT,
+                    description TEXT,
+                    city TEXT,
+                    category TEXT,
+                    date_posted_iso TEXT,
+                    scraped_timestamp TEXT,
+                    estimated_value TEXT,
+                    contact_method TEXT,
+                    contact_info TEXT,
+                    has_been_contacted BOOLEAN DEFAULT 0,
+                    follow_up_date TEXT,
+                    ai_is_junk BOOLEAN,
+                    ai_profitability_score INTEGER,
+                    ai_reasoning TEXT,
+                    search_scope TEXT  -- Added for A/B testing
+                )
+            ''')
+            # Progress table
+            self.cursor.execute('''
+                CREATE TABLE IF NOT EXISTS progress (
+                    key TEXT PRIMARY KEY,
+                    value TEXT
+                )
+            ''')
+            self.conn.commit()
+            logging.info("Database schema initialized/verified.")
+
+            # --- Add migration logic for existing databases ---
+            # Check if the search_scope column exists
+            self.cursor.execute("PRAGMA table_info(leads)")
+            columns = [column[1] for column in self.cursor.fetchall()]
+            if 'search_scope' not in columns:
+                logging.info("Adding 'search_scope' column to existing 'leads' table...")
+                self.cursor.execute("ALTER TABLE leads ADD COLUMN search_scope TEXT")
+                self.conn.commit()
+                logging.info("'search_scope' column added successfully.")
+            # --- End migration logic ---
+
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
+        """Adds a lead to the database if the URL is unique."""
+        if not self.conn:
+            logging.error("Database not connected. Cannot add lead.")
+            return False
+
+        url = lead_details.get('url')
+        if not url:
+            logging.warning("Skipping lead: Missing URL.")
+            return False
+
+        # Flatten AI grade details
+        ai_grade = lead_details.get('ai_grade', {})
+        ai_is_junk = ai_grade.get('is_junk') if isinstance(ai_grade, dict) else None
+        ai_score = ai_grade.get('profitability_score') if isinstance(ai_grade, dict) else None
+        ai_reasoning = ai_grade.get('reasoning') if isinstance(ai_grade, dict) else None
+
+        # Prepare data for insertion, ensuring keys match table columns
+        # Use .get() with default None for safety
+        data_to_insert = {
+            'url': url,
+            'title': lead_details.get('title'),
+            'description': lead_details.get('description'),
+            'city': lead_details.get('city'),
+            'category': lead_details.get('category'),
+            'date_posted_iso': lead_details.get('date_posted_iso'),
+            'scraped_timestamp': lead_details.get('scraped_timestamp', datetime.now().isoformat()),
+            'estimated_value': lead_details.get('estimated_value'),
+            'contact_method': lead_details.get('contact_method'),
+            'contact_info': lead_details.get('contact_info'),
+            'has_been_contacted': lead_details.get('has_been_contacted', False),
+            'follow_up_date': lead_details.get('follow_up_date'),
+            'ai_is_junk': ai_is_junk,
+            'ai_profitability_score': ai_score,
+            'ai_reasoning': ai_reasoning,
+            'search_scope': search_scope # Include search_scope
+        }
+
+        # Define columns explicitly for the INSERT statement
+        columns = list(data_to_insert.keys())
+        placeholders = ', '.join('?' * len(columns))
+        sql = f"INSERT OR IGNORE INTO leads ({', '.join(columns)}) VALUES ({placeholders})"
+        values = tuple(data_to_insert[col] for col in columns)
+
+        try:
+            self.cursor.execute(sql, values)
+            self.conn.commit()
+            # Check if a row was actually inserted (IGNORE means 0 changes if duplicate)
+            if self.cursor.rowcount > 0:
+                logging.debug(f"Lead added to DB: {url}")
+                return True
+            else:
+                logging.debug(f"Lead already exists (duplicate URL): {url}")
+                return False
+        except sqlite3.Error as e:
+            logging.error(f"Error adding lead {url} to database: {e}", exc_info=True)
+            return False
+
+    def get_leads(self):
+        """Retrieves all leads from the database."""
+        if not self.conn: return []
+        try:
+            self.cursor.execute("SELECT * FROM leads ORDER BY scraped_timestamp DESC")
+            rows = self.cursor.fetchall()
+            # Convert sqlite3.Row objects to dictionaries
+            return [dict(row) for row in rows]
+        except sqlite3.Error as e:
+            logging.error(f"Error retrieving leads: {e}", exc_info=True)
+            return []
+
+    def _get_total_leads_count(self):
+        """Gets the total number of leads in the database."""
+        if not self.conn: return 0
+        try:
+            self.cursor.execute("SELECT COUNT(*) FROM leads")
+            count = self.cursor.fetchone()[0]
+            return count
+        except sqlite3.Error as e:
+            logging.error(f"Error getting lead count: {e}", exc_info=True)
+            return 0
+
+    def _set_progress_value(self, key, value):
+        """Sets a progress key-value pair."""
+        if not self.conn: return
+        try:
+            sql = "INSERT OR REPLACE INTO progress (key, value) VALUES (?, ?)"
+            self.cursor.execute(sql, (key, str(value))) # Ensure value is string
+            self.conn.commit()
+        except sqlite3.Error as e:
+            logging.error(f"Error setting progress value for key '{key}': {e}", exc_info=True)
+
+    def close_db(self):
+        """Closes the database connection."""
+        if self.conn:
+            self.conn.close()
+            logging.info("Database connection closed.")
+            self.conn = None
+            self.cursor = None
+
+    def __del__(self):
+        """Ensure DB connection is closed when object is destroyed."""
+        self.close_db()
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Current Time
+4/7/2025, 4:55:37 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, the database schema update logic has been added to `state_manager.py`.
+
+Let's retry Run A again. This time, it should add the `search_scope` column to the existing database table if needed, and then proceed with the scrape.
+
+**Executing Run A (Single City - Dayton) with `python3` from `.venv`:**
+
+```tool_code
+<execute_command>
+<command>.venv/bin/python backend/main.py --target-cities dayton --limit-pages 3</command>
+<requires_approval>false</requires_approval>
+</execute_command>
+```
+
+---
+
+**User:**
+
+[execute_command for '.venv/bin/python backend/main.py --target-cities dayton --limit-pages 3'] Result:
+Command is still running in the user's terminal.
+Here's the output so far:
+2025-04-07 04:55:52823 - MainProcess - INFO - main - Logging configured.
+2025-04-07 04:55:52824 - MainProcess - INFO - main - Attempting module imports...
+2025-04-07 04:55:54567 - MainProcess - INFO - main - Module imports successful.
+2025-04-07 04:55:54569 - MainProcess - INFO - main - Executing main block...
+2025-04-07 04:55:54569 - MainProcess - INFO - main - --- Craigslist Lead Generation Agent Started (List Size: small) ---
+2025-04-07 04:55:54570 - MainProcess - INFO - main - Working directory set to: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend
+2025-04-07 04:55:54570 - MainProcess - INFO - main - Initializing main manager instances...
+2025-04-07 04:55:54570 - MainProcess - INFO - state_manager - Connected to database: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/data/leads.db
+2025-04-07 04:55:54571 - MainProcess - INFO - state_manager - Database schema initialized/verified.
+2025-04-07 04:55:54572 - MainProcess - INFO - state_manager - Adding 'search_scope' column to existing 'leads' table...
+2025-04-07 04:55:54584 - MainProcess - INFO - state_manager - 'search_scope' column added successfully.
+2025-04-07 04:55:54585 - MainProcess - INFO - city_manager - CityManager initialized (Recreated Version).
+2025-04-07 04:55:54585 - MainProcess - INFO - main - Main manager instances initialized.
+2025-04-07 04:55:54585 - MainProcess - INFO - main - Testing connection to Oxylabs...
+2025-04-07 04:55:56994 - MainProcess - INFO - request_handler - Attempt 1/1: Fetching https://newyork.craigslist.org/search/web via Oxylabs...
+
+You will be updated on the terminal status and new output in the future.
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Actively Running Terminals
+## Original command: `.venv/bin/python backend/main.py --target-cities dayton --limit-pages 3`
+
+# Current Time
+4/7/2025, 4:56:07 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, the script for Run A is now running. It successfully added the `search_scope` column to the database and is proceeding with the scrape for Dayton.
+
+I will wait for this command to finish. You'll receive an update when it completes, and then I will execute the command for Run B.
+
+---
+
+**User:**
+
+[ERROR] You did not use a tool in your previous response! Please retry with a tool use.
+
+# Reminder: Instructions for Tool Use
+
+Tool uses are formatted using XML-style tags. The tool name is enclosed in opening and closing tags, and each parameter is similarly enclosed within its own set of tags. Here's the structure:
+
+<tool_name>
+<parameter1_name>value1</parameter1_name>
+<parameter2_name>value2</parameter2_name>
+...
+</tool_name>
+
+For example:
+
+<attempt_completion>
+<result>
+I have completed the task...
+</result>
+</attempt_completion>
+
+Always adhere to this format for all tool uses to ensure proper parsing and execution.
+
+# Next Steps
+
+If you have completed the user's task, use the attempt_completion tool. 
+If you require additional information from the user, use the ask_followup_question tool. 
+Otherwise, if you have not completed the task and do not need additional information, then proceed with the next step of the task. 
+(This is an automated message, so do not respond to it conversationally.)
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Actively Running Terminals
+## Original command: `.venv/bin/python backend/main.py --target-cities dayton --limit-pages 3`
+
+# Current Time
+4/7/2025, 4:56:14 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+You are correct. My apologies. I should have used a tool.
+
+Since Run A is currently executing, I will wait for it to complete. You will receive an update on its status.
+
+```tool_code
+<ask_followup_question>
+<question>Run A is currently executing in the terminal. Would you like me to check the `backend/run.log` file periodically for updates while it runs, or should I just wait for the command to complete?</question>
+<options>
+["Check run.log periodically", "Just wait for completion"]
+</options>
+</ask_followup_question>
+```
+
+---
+
+**User:**
+
+[ask_followup_question for 'Run A is currently executing in the terminal. Would you like me to check the `backend/run.log` file periodically for updates while it runs, or should I just wait for the command to complete?'] Result:
+<answer>
+Just wait for completion
+</answer>
+<environment_details>
+# VSCode Visible Files
+backend/modules/state_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/main.py
+backend/modules/output_generator.py
+backend/modules/state_manager.py
+
+# Inactive Terminals
+## .venv/bin/python backend/main.py --target-cities dayton --limit-pages 3
+### New Output
+2025-04-07 04:56:14744 - MainProcess - INFO - request_handler - Success fetching https://newyork.craigslist.org/search/web
+2025-04-07 04:56:14758 - MainProcess - INFO - main - ✅ Oxylabs connection successful.
+2025-04-07 04:56:14765 - MainProcess - INFO - main - --- System Status & Setup ---
+2025-04-07 04:56:14765 - MainProcess - INFO - main - Loading city list: large.json
+2025-04-07 04:56:14765 - MainProcess - INFO - city_manager - Loading city list: cities_large.json
+2025-04-07 04:56:14768 - MainProcess - INFO - city_manager - Loaded 141 valid cities from /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/data/cities_large.json.
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Loaded 141 cities from large.json.
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Processing specific target cities based on --target-cities: ['dayton']
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Will process 1 cities.
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Total leads currently in database: 3
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Scraping up to 3 pages per category.
+2025-04-07 04:56:14769 - MainProcess - INFO - main - --- Starting Parallel Scrape ---
+2025-04-07 04:56:14769 - MainProcess - INFO - main - Initializing multiprocessing pool with 1 workers.
+2025-04-07 04:56:14770 - MainProcess - INFO - main - Setting search_scope tag for this run: 'single_city'
+2025-04-07 04:56:14808 - MainProcess - INFO - main - Distributing 1 cities/tasks to workers...
+2025-04-07 04:56:14824 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Starting worker for city: Dayton / Springfield (dayton)
+2025-04-07 04:56:14833 - ForkPoolWorker-1 - INFO - state_manager - Connected to database: /home/brandonruizmarketing/Desktop/Gemini-Scraper/backend/data/leads.db
+2025-04-07 04:56:14840 - ForkPoolWorker-1 - INFO - state_manager - Database schema initialized/verified.
+2025-04-07 04:56:14844 - ForkPoolWorker-1 - INFO - content_analyzer - ContentAnalyzer initialized (Recreated Version).
+2025-04-07 04:56:15041 - ForkPoolWorker-1 - INFO - ai_handler - AI Handler initialized for model: anthropic/claude-3-haiku
+2025-04-07 04:56:15042 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Fetching category: web (Page 1/3) -> https://dayton.craigslist.org/search/web
+2025-04-07 04:56:17703 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/web via Oxylabs...
+2025-04-07 04:56:33515 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/web
+2025-04-07 04:56:33516 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for dayton/web...
+2025-04-07 04:56:33532 - ForkPoolWorker-1 - INFO - content_analyzer - Found 4 potential result elements using 'div.cl-search-result'.
+2025-04-07 04:56:33533 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 4 basic leads from search page.
+2025-04-07 04:56:33533 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 4 leads from page...
+2025-04-07 04:56:33533 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/chc/web/d/chicago-learn-to-code-get-paid/7838385270.html
+2025-04-07 04:56:33533 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 3 leads passed basic pre-filtering.
+2025-04-07 04:56:33534 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 3 leads...
+2025-04-07 04:56:33858 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:34492 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:35032 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:36880 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 3 leads passed AI pre-filtering.
+2025-04-07 04:56:36881 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Processing 3 AI pre-filtered leads using 8 threads...
+2025-04-07 04:56:36882 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://sarasota.craigslist.org/web/d/spring-lake-wordpress-developer/7840433946.html (Expected domain: dayton.craigslist.org)
+2025-04-07 04:56:36882 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/chc/web/d/spring-lake-wordpress-developer/7840433710.html (Expected domain: dayton.craigslist.org)
+2025-04-07 04:56:36883 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/chc/web/d/chicago-graphic-design-output-specialist/7837670567.html (Expected domain: dayton.craigslist.org)
+2025-04-07 04:56:36885 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Page 1: Parsed 4 potential leads added 0 new graded leads for dayton/web.
+2025-04-07 04:56:36885 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] No next page link found for dayton/web.
+2025-04-07 04:56:36885 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished category web for dayton. Added 0 leads.
+2025-04-07 04:56:37837 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Fetching category: art (Page 1/3) -> https://dayton.craigslist.org/search/art
+2025-04-07 04:56:39166 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/art via Oxylabs...
+2025-04-07 04:56:55919 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/art
+2025-04-07 04:56:55920 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for dayton/art...
+2025-04-07 04:56:56041 - ForkPoolWorker-1 - INFO - content_analyzer - Found 110 potential result elements using 'div.cl-search-result'.
+2025-04-07 04:56:56050 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 107 basic leads from search page.
+2025-04-07 04:56:56050 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 107 leads from page...
+2025-04-07 04:56:56051 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/art/d/farmersville-home-decor-mixed-lot-for/7839017980.html
+2025-04-07 04:56:56051 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/art/d/dayton-dritz-floor-model-quilting-frame/7831282920.html
+2025-04-07 04:56:56052 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/art/d/dayton-ship-model-kit-1960s-wood-metal/7837570822.html
+2025-04-07 04:56:56052 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/art/d/dayton-junk-journaling-mixed-media/7836144250.html
+2025-04-07 04:56:56052 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/art/d/dayton-picture-ford-factory-1959-f100/7834710216.html
+2025-04-07 04:56:56052 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 102 leads passed basic pre-filtering.
+2025-04-07 04:56:56052 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 102 leads...
+2025-04-07 04:56:56264 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:56713 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/farmersville-framed-canvas-print-39-19/7839014212.html
+2025-04-07 04:56:56801 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:57875 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-real-wood-window-with-grids/7837189562.html
+2025-04-07 04:56:58047 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:56:59107 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-top-and-bottom-stash-real-wood/7837190811.html
+2025-04-07 04:56:59211 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:00293 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-bronze-manwoman-on-marble-21/7840291232.html
+2025-04-07 04:57:00373 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:00857 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/arcanum-bull-skull/7825426534.html
+2025-04-07 04:57:00949 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:01507 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/xenia-wicked-dragon-drift-wood/7831394681.html
+2025-04-07 04:57:01616 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:02680 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/brookville-john-wayne-picture-in-wooden/7838523322.html
+2025-04-07 04:57:02774 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:03343 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/brookville-john-wayne-picture-in-wooden/7839012301.html
+2025-04-07 04:57:03439 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:03924 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/brookville-john-wayne-picture-in-wooden/7838521432.html
+2025-04-07 04:57:04034 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:05143 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-box-of-fabric/7840187634.html
+2025-04-07 04:57:05253 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:06311 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/springfield-bells/7840080862.html
+2025-04-07 04:57:06434 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:07641 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/springfield-john-deere-bell/7840068422.html
+2025-04-07 04:57:07837 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:08580 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-painting-the-source-by-kenneth/7834648840.html
+2025-04-07 04:57:08708 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:09154 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-painting-the-dowry-by-kenneth/7834648492.html
+2025-04-07 04:57:09231 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:10616 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-framed-painting-blackfoot-chiefs/7834431070.html
+2025-04-07 04:57:10716 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:11188 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-framed-painting-cohise-by-kenneth/7834430506.html
+2025-04-07 04:57:11280 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:12390 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-framed-painting-the-encounter-by/7834430434.html
+2025-04-07 04:57:12485 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:13649 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-painting-mandan-gold-by-kenneth/7834430100.html
+2025-04-07 04:57:13741 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:14295 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/mason-american-eagle-dayton-artist-pat/7840035577.html
+2025-04-07 04:57:14390 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:14895 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-50-thread-and-bead-bracelet-kits/7839987241.html
+2025-04-07 04:57:14982 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:15503 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-22issues-american-patchwork/7831250491.html
+2025-04-07 04:57:15627 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:16088 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-notebooks-with-quilt-magazines/7831277465.html
+2025-04-07 04:57:16176 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:17298 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-rolls-of-white-lace-white-tulle/7831277552.html
+2025-04-07 04:57:17380 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:18466 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-counted-cross-stitch-kits-and/7831286852.html
+2025-04-07 04:57:18743 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:19839 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-specialty-yarn-group/7831285711.html
+2025-04-07 04:57:19912 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:20417 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-scrapbooking-items/7831285672.html
+2025-04-07 04:57:20530 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:21002 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/urbana-tattoo-power-source-ans-some/7839894125.html
+2025-04-07 04:57:21074 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:22150 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-spools-of-lacing-cord/7827464656.html
+2025-04-07 04:57:22232 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:23306 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-older-patterns-for-doll-clothes/7827469199.html
+2025-04-07 04:57:23384 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:23874 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-full-bags-of-dmc-and-iris/7827473303.html
+2025-04-07 04:57:24001 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:24519 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-new-framed-canvases/7827473414.html
+2025-04-07 04:57:24625 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:25813 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-rolls-florist-ribbons/7824202963.html
+2025-04-07 04:57:25922 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:27080 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:28150 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-latch-hook-rug-kit/7826147427.html
+2025-04-07 04:57:28232 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:29547 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:30064 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-knitting-needles-and-more/7832384720.html
+2025-04-07 04:57:30175 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:31273 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-aida-14-count-fabric-new-cut/7832384635.html
+2025-04-07 04:57:31390 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:33471 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-ready-to-quilt-applique-tulip/7832377571.html
+2025-04-07 04:57:33547 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:34649 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-ann-marie-roberts/7839803344.html
+2025-04-07 04:57:34747 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:35805 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-ann-marie-roberts-76/7839803140.html
+2025-04-07 04:57:35882 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:36507 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-dreidel-lead-crystal/7839803048.html
+2025-04-07 04:57:36695 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:37156 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/franklin-lights/7827957588.html
+2025-04-07 04:57:37247 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:38304 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/sidney-ohio-state-football-bench/7839786294.html
+2025-04-07 04:57:38395 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:39546 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-watercolor-homestead-32x26/7839532957.html
+2025-04-07 04:57:39629 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:40732 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-title-card-some-came-running/7839532811.html
+2025-04-07 04:57:40932 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:41980 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/troy-jesus-tempted-by-the-devil/7837428062.html
+2025-04-07 04:57:42071 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:43165 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/fairborn-snow-blower/7839520661.html
+2025-04-07 04:57:43282 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:44358 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-free-glass-table-top/7838744738.html
+2025-04-07 04:57:44462 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:45511 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-alva-studios-1950-horse/7839293081.html
+2025-04-07 04:57:45607 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:46674 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-bowl-ann-marie-roberts/7839292594.html
+2025-04-07 04:57:46835 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:47879 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-railroad-framed-print-nyc/7839053049.html
+2025-04-07 04:57:47964 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:48473 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-chunky-yarn/7838943293.html
+2025-04-07 04:57:48556 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:49635 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/franklin-wine-press-press-grapes-and/7829872783.html
+2025-04-07 04:57:49728 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:50213 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/fairborn-sea-turtle/7829729404.html
+2025-04-07 04:57:50313 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:50882 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-hyacinth-kuller-baron-original/7838177733.html
+2025-04-07 04:57:50979 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:51474 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-noel-espinoza-oil-painting-on/7838175990.html
+2025-04-07 04:57:51701 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:52208 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-bronze-proud-and-fit-dog/7838097264.html
+2025-04-07 04:57:52300 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:53367 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-wall-sculpture-custom-metal/7837841561.html
+2025-04-07 04:57:53442 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:54049 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:54720 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/sidney-woodcrafts-engraving/7825385487.html
+2025-04-07 04:57:54840 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:56117 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/sidney-cedar-planters/7829319361.html
+2025-04-07 04:57:56309 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:57465 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-steve-madden-crossbodys-nwt-nwot/7836882170.html
+2025-04-07 04:57:57557 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:58039 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-costume-jewelry-fashion-jewelry/7836148006.html
+2025-04-07 04:57:58149 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:58617 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/miamisburg-claude-monet-framed-prints/7831756492.html
+2025-04-07 04:57:58687 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:57:59797 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-sculpture-jeff-rutledge/7836559827.html
+2025-04-07 04:57:59882 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:00937 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-heroic-head-bronze-resin/7836559445.html
+2025-04-07 04:58:01023 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:02153 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-ski-sculpture-hand-made/7836559234.html
+2025-04-07 04:58:02354 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:03454 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-statue-quill-and-ink-well/7836559146.html
+2025-04-07 04:58:03536 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:04626 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-art-glass-platter-on-stand/7836559072.html
+2025-04-07 04:58:04739 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:05305 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-frames-and-mat-board-supplies/7836427831.html
+2025-04-07 04:58:05419 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:05900 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-beautiful-collector-lion-and/7836125212.html
+2025-04-07 04:58:06021 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:06881 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-fresh-2024-small-med-large-mixed/7836123242.html
+2025-04-07 04:58:06969 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:07702 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-new-ooak-crafted-retro-boho/7836094207.html
+2025-04-07 04:58:07883 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:09004 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-photo-fdr-12x14/7835714716.html
+2025-04-07 04:58:09084 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:10203 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/fairborn-serger-simplicity-easy-lock-804/7824525699.html
+2025-04-07 04:58:10301 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:10886 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/troy-orange-pedal-baby-100-and-orange/7823453159.html
+2025-04-07 04:58:10993 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:12053 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-oil-painting-ruth-lyons-daughter/7835466745.html
+2025-04-07 04:58:12147 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:12630 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-bull-mcm-custom-metal-nickel/7835465981.html
+2025-04-07 04:58:12717 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:13767 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-rooster-16-folk-art-by-edith-john/7835200335.html
+2025-04-07 04:58:13937 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:15146 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-ann-marie-roberts-76/7834710380.html
+2025-04-07 04:58:15233 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:15657 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-crystal-bowl-orrefors-sweden-1125/7834710305.html
+2025-04-07 04:58:15735 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:17026 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-bronze-peggy-mach-le-ponseur/7834419716.html
+2025-04-07 04:58:17140 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:18221 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/london-tines-hay/7834147746.html
+2025-04-07 04:58:18308 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:18737 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/london-hay-tines/7833600345.html
+2025-04-07 04:58:18895 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:19748 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/springboro-1965-hersch-jones-oil-on/7833598563.html
+2025-04-07 04:58:19831 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:21401 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/springboro-hawaiian-flowers-artificial/7818060706.html
+2025-04-07 04:58:21482 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:21956 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-ohio-state-michigan/7833074812.html
+2025-04-07 04:58:22074 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:22534 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-mcm-abstract-ceramic/7832837965.html
+2025-04-07 04:58:22625 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:23778 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-various-leather-pieces-cowhide/7832745128.html
+2025-04-07 04:58:23876 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:24412 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-porcelain-colonial-figurine/7832237681.html
+2025-04-07 04:58:24587 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:25106 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-autographed-photo-of-jane-adams/7831927211.html
+2025-04-07 04:58:25191 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:25586 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/wapakoneta-ceramic-molds-garden/7831920883.html
+2025-04-07 04:58:25675 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:26775 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-card-making-stamps/7831811551.html
+2025-04-07 04:58:26881 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:27361 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-craft-materials-all/7828414677.html
+2025-04-07 04:58:27458 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:28558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-print-grand-slam-peter-darro/7831331601.html
+2025-04-07 04:58:28645 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:30449 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-raised-flower-beds/7831250165.html
+2025-04-07 04:58:30539 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:30983 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/fairborn-hand-painted-american-glass/7831065059.html
+2025-04-07 04:58:31091 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:32635 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-print-real-estate-framed/7830810140.html
+2025-04-07 04:58:32736 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:33398 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/pleasant-hill-easy-rider-canvas-art/7830217524.html
+2025-04-07 04:58:33522 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:34152 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/middletown-tattoos/7829627154.html
+2025-04-07 04:58:34274 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:35495 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-glass-rose-decor/7829518031.html
+2025-04-07 04:58:35705 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:36174 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/art/d/dayton-pet-picture-frame/7829494260.html
+2025-04-07 04:58:36174 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 3 leads passed AI pre-filtering.
+2025-04-07 04:58:36174 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Processing 3 AI pre-filtered leads using 8 threads...
+2025-04-07 04:58:36175 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1-Thread] Fetching lead details: DREAM catcher (https://dayton.craigslist.org/art/d/dayton-dream-catcher/7824196920.html)
+2025-04-07 04:58:36175 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1-Thread] Fetching lead details: Lettering sets new (https://dayton.craigslist.org/art/d/dayton-lettering-sets-new/7832390932.html)
+2025-04-07 04:58:36176 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1-Thread] Fetching lead details: Drawing (https://dayton.craigslist.org/art/d/sidney-drawing/7827053025.html)
+2025-04-07 04:58:37734 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/art/d/dayton-lettering-sets-new/7832390932.html via Oxylabs...
+2025-04-07 04:58:37906 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/art/d/sidney-drawing/7827053025.html via Oxylabs...
+2025-04-07 04:58:38394 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/art/d/dayton-dream-catcher/7824196920.html via Oxylabs...
+2025-04-07 04:58:54634 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/art/d/dayton-dream-catcher/7824196920.html
+2025-04-07 04:58:54687 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/art/d/sidney-drawing/7827053025.html
+2025-04-07 04:58:54991 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:54999 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:55887 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/art/d/dayton-lettering-sets-new/7832390932.html
+2025-04-07 04:58:56043 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:58:56094 - ForkPoolWorker-1 - INFO - ai_handler - AI grading successful for 'DREAM catcher'. Score: None Junk: True
+2025-04-07 04:58:56096 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Skipping junk lead (AI Filter Score: None Reason: This post is selling a physical dream catcher item which is not related to the agency's core services of web design graphic design or Photoshop. The post does not indicate any request for these services so it is not a relevant lead for the agency.): https://dayton.craigslist.org/art/d/dayton-dream-catcher/7824196920.html
+2025-04-07 04:58:56296 - ForkPoolWorker-1 - INFO - ai_handler - AI grading successful for 'Drawing'. Score: None Junk: True
+2025-04-07 04:58:56296 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Skipping junk lead (AI Filter Score: None Reason: This post is selling an art piece which is not a request for web design graphic design or Photoshop services. It is unrelated to the agency's core services.): https://dayton.craigslist.org/art/d/sidney-drawing/7827053025.html
+2025-04-07 04:58:57059 - ForkPoolWorker-1 - INFO - ai_handler - AI grading successful for 'Lettering sets new'. Score: None Junk: True
+2025-04-07 04:58:57059 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Skipping junk lead (AI Filter Score: None Reason: This post is selling lettering sets which are physical art supplies and not a request for web design graphic design or Photoshop services. It does not appear to be a relevant service request for the agency.): https://dayton.craigslist.org/art/d/dayton-lettering-sets-new/7832390932.html
+2025-04-07 04:58:57060 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Page 1: Parsed 107 potential leads added 0 new graded leads for dayton/art.
+2025-04-07 04:58:57060 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] No next page link found for dayton/art.
+2025-04-07 04:58:57060 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished category art for dayton. Added 0 leads.
+2025-04-07 04:58:58257 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Fetching category: crg (Page 1/3) -> https://dayton.craigslist.org/search/crg
+2025-04-07 04:59:00591 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/crg via Oxylabs...
+2025-04-07 04:59:17587 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/crg
+2025-04-07 04:59:17589 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for dayton/crg...
+2025-04-07 04:59:17641 - ForkPoolWorker-1 - INFO - content_analyzer - Found 60 potential result elements using 'div.cl-search-result'.
+2025-04-07 04:59:17649 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 60 basic leads from search page.
+2025-04-07 04:59:17649 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 60 leads from page...
+2025-04-07 04:59:17650 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/crg/d/dayton-focus-group-participant-join-fast/7837627937.html
+2025-04-07 04:59:17651 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://cincinnati.craigslist.org/crg/d/middletown-female-actresses-needed-for/7840326445.html
+2025-04-07 04:59:17651 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/okl/crg/d/commerce-township-gothic-emo-punk-models/7840020961.html
+2025-04-07 04:59:17652 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://meadville.craigslist.org/crg/d/meadville-get-paid-to-play-game-tester/7839856986.html
+2025-04-07 04:59:17652 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chillicothe.craigslist.org/crg/d/chillicothe-research-study-participant/7839823965.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://owensboro.craigslist.org/crg/d/owensboro-research-study-participant/7839551002.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://terrehaute.craigslist.org/crg/d/terre-haute-research-study-participant/7839550598.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://zanesville.craigslist.org/crg/d/zanesville-research-study-participant/7839550171.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://wheeling.craigslist.org/crg/d/napier-research-study-participant-join/7839547401.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://richmondin.craigslist.org/crg/d/richmond-participate-in-online-surveys/7839528406.html
+2025-04-07 04:59:17653 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://cleveland.craigslist.org/crg/d/brookpark-female-model-wanted/7839496148.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://cleveland.craigslist.org/crg/d/cleveland-photographer-seeking-models/7839175805.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/chc/crg/d/chicago-looking-for-photography-model/7839174447.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://charlestonwv.craigslist.org/crg/d/charleston-job-title-photographer-for/7839166544.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://cincinnati.craigslist.org/crg/d/cincinnati-participate-in-research-that/7839090502.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://swv.craigslist.org/crg/d/beckley-focus-group-participant-join/7839075094.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://akroncanton.craigslist.org/crg/d/canton-participate-in-online-surveys/7839053401.html
+2025-04-07 04:59:17654 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/nch/crg/d/chicago-famale-models-wanted/7838299771.html
+2025-04-07 04:59:17655 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 42 leads passed basic pre-filtering.
+2025-04-07 04:59:17655 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 42 leads...
+2025-04-07 04:59:17947 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:19403 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:20470 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/crg/d/dayton-remote-phone-mystery-shoppers/7835590895.html
+2025-04-07 04:59:20578 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:21259 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:22360 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pittsburgh.craigslist.org/crg/d/pittsburgh-pittsburgh-pt-portrait/7840418069.html
+2025-04-07 04:59:22454 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:22885 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/crg/d/louisville-louisville-pt-portrait/7840418041.html
+2025-04-07 04:59:22991 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:23525 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:24582 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/crg/d/columbus-columbus-pt-portrait/7840418039.html
+2025-04-07 04:59:24675 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:26208 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cleveland.craigslist.org/crg/d/cleveland-cleveland-pt-portrait/7840418034.html
+2025-04-07 04:59:26301 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:27500 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:27968 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://bloomington.craigslist.org/crg/d/bloomington-sewing-slipcovers-for-bench/7840103162.html
+2025-04-07 04:59:28042 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:29395 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:30560 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:31223 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:32337 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://jxn.craigslist.org/crg/d/jackson-show-your-gaming-talent-earn/7839861420.html
+2025-04-07 04:59:32419 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:33493 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://annarbor.craigslist.org/crg/d/ann-arbor-show-your-gaming-talent-earn/7839858013.html
+2025-04-07 04:59:33577 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:34224 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://grandrapids.craigslist.org/crg/d/grand-rapids-show-your-gaming-talent/7839856602.html
+2025-04-07 04:59:34307 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:34984 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:36166 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:37273 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://lexington.craigslist.org/crg/d/nicholasville-photos-of-property/7839568488.html
+2025-04-07 04:59:37369 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:38461 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/wyn/crg/d/southfield-appointment-setter/7839536807.html
+2025-04-07 04:59:38552 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:39065 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:39618 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:40212 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/crg/d/cincinnati-cincinnati-pt-portrait/7839430612.html
+2025-04-07 04:59:40401 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:42104 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:43248 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://lansing.craigslist.org/crg/d/charlotte-online-mock-trial-for-eaton/7839304338.html
+2025-04-07 04:59:43446 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:45480 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/crg/d/louisville-participate-in-onsite-facial/7839282005.html
+2025-04-07 04:59:45723 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:46517 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:47825 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://toledo.craigslist.org/crg/d/toledo-labor-skilled-worker/7839247663.html
+2025-04-07 04:59:47963 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:49130 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:50364 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:51035 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:52306 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:52853 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://charlestonwv.craigslist.org/crg/d/fairmont-earn-extra-cash-by-referring/7838818982.html
+2025-04-07 04:59:52948 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:54160 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:55418 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:55903 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://youngstown.craigslist.org/crg/d/youngstown-sound-engineer-entry-level/7838274887.html
+2025-04-07 04:59:56084 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:56734 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:57355 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:58550 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 04:59:59618 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://knoxville.craigslist.org/crg/d/new-tazewell-looking-for-someone-to/7838153445.html
+2025-04-07 04:59:59721 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:00742 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://knoxville.craigslist.org/crg/d/la-follette-looking-for-someone-to-take/7838150035.html
+2025-04-07 05:00:00891 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:02002 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://knoxville.craigslist.org/crg/d/la-follette-looking-for-someone-to-take/7838146065.html
+2025-04-07 05:00:02002 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 22 leads passed AI pre-filtering.
+2025-04-07 05:00:02002 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Processing 22 AI pre-filtered leads using 8 threads...
+2025-04-07 05:00:02003 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1-Thread] Fetching lead details: looking for an editor (https://dayton.craigslist.org/crg/d/richwood-looking-for-an-editor/7836840173.html)
+2025-04-07 05:00:02003 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://grandrapids.craigslist.org/crg/d/grand-rapids-grand-rapids-pt-portrait/7840425623.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02004 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://indianapolis.craigslist.org/crg/d/indianapolis-indy-pt-portrait/7840418042.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02005 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/nwc/crg/d/wood-dale-logo-creation-needed/7840218459.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02005 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/chc/crg/d/chicago-photographer-for-building/7840059733.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02006 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://grandrapids.craigslist.org/crg/d/grand-rapids-photographer-needed-to/7840057676.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02006 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/wyn/crg/d/southgate-photographer-needed-to-shoot/7840056463.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02007 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://cleveland.craigslist.org/crg/d/cleveland-need-photos-they-need-to-be/7839700175.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02007 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://columbus.craigslist.org/crg/d/columbus-social-media-marketing-brand/7839620077.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02008 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/chc/crg/d/chicago-freelance-content-creator/7839435767.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02007 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://columbus.craigslist.org/crg/d/columbus-freelance-content-creator/7839437889.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02008 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://annarbor.craigslist.org/crg/d/ann-arbor-graphic-artist-needed-to/7839372261.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02009 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://cincinnati.craigslist.org/crg/d/cincinnati-need-to-make-reel-essentially/7839263836.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02009 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/mcb/crg/d/detroit-progressive-creative/7839216720.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02011 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://grandrapids.craigslist.org/crg/d/grand-rapids-photographer-needed-to/7839135412.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02012 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://annarbor.craigslist.org/crg/d/ypsilanti-reliable-helper/7839062616.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02012 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/wyn/crg/d/southgate-photographer-needed-to-shoot/7839020768.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02012 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://columbus.craigslist.org/crg/d/columbus-ipad-artists-and-procreate-pros/7838619109.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02013 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://pittsburgh.craigslist.org/crg/d/greensburg-video-person-needed-to-take/7838231732.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02012 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://pittsburgh.craigslist.org/crg/d/greensburg-techie-needed-to-help-senior/7838301364.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02013 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://columbus.craigslist.org/crg/d/columbus-freelance-content-creator/7838219515.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:02013 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/chc/crg/d/chicago-freelance-content-creator/7838212238.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:00:03365 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/crg/d/richwood-looking-for-an-editor/7836840173.html via Oxylabs...
+2025-04-07 05:00:19655 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/crg/d/richwood-looking-for-an-editor/7836840173.html
+2025-04-07 05:00:20026 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:23343 - ForkPoolWorker-1 - WARNING - ai_handler - AI grading response was not valid JSON for 'looking for an editor'. Response: {
+  "is_junk": false
+  "profitability_score": 8
+  "reasoning": "This post appears to be a genuine request for a long-term on-call photography editor/contractor to work closely with the poster's company. The poster is looking for someone with a strong portfolio covering various photography styles who can edit the company's photos remotely and occasionally in-person. The post emphasizes building a trusting long-term relationship which suggests the poster is seeking a reliable skilled professional to fulfill their photography editing needs. This aligns well with the agency's core services of web design graphic design and Photoshop making it a potentially profitable opportunity
+2025-04-07 05:00:23344 - ForkPoolWorker-1 - INFO - ai_handler - Waiting 5.0 seconds before retry 1/2...
+2025-04-07 05:00:28480 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:29916 - ForkPoolWorker-1 - INFO - ai_handler - AI grading successful for 'looking for an editor'. Score: 7 Junk: False
+2025-04-07 05:00:29922 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Added graded lead (Score: 7): https://dayton.craigslist.org/crg/d/richwood-looking-for-an-editor/7836840173.html
+2025-04-07 05:00:29923 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Page 1: Parsed 60 potential leads added 1 new graded leads for dayton/crg.
+2025-04-07 05:00:29923 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] No next page link found for dayton/crg.
+2025-04-07 05:00:29923 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished category crg for dayton. Added 1 leads.
+2025-04-07 05:00:31297 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Fetching category: cpg (Page 1/3) -> https://dayton.craigslist.org/search/cpg
+2025-04-07 05:00:34046 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/cpg via Oxylabs...
+2025-04-07 05:00:51503 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/cpg
+2025-04-07 05:00:51505 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for dayton/cpg...
+2025-04-07 05:00:51553 - ForkPoolWorker-1 - INFO - content_analyzer - Found 60 potential result elements using 'div.cl-search-result'.
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 60 basic leads from search page.
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 60 leads from page...
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/cpg/d/dayton-sis4-research-study-using-an-app/7839418583.html
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/cpg/d/dayton-fast-cash-for-sharing-your/7839052282.html
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/cpg/d/miamisburg-hiring-construction-project/7837638305.html
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/cpg/d/dayton-need-south-korean-exchange/7834071477.html
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/mcb/cpg/d/detroit-casino-website-game-tester-work/7840332711.html
+2025-04-07 05:00:51557 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/wyn/cpg/d/detroit-casino-website-game-tester-work/7840332406.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://up.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840319002.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://thumb.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840318709.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://swmi.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840318407.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://southbend.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840318081.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://saginaw.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840317774.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://porthuron.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840317334.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://nmi.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840316799.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://muskegon.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840316472.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://monroemi.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840316230.html
+2025-04-07 05:00:51558 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lansing.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840316003.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://kalamazoo.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840315764.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://jxn.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840315488.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://holland.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840315175.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://grandrapids.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840314858.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://flint.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840314354.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/okl/cpg/d/detroit-casino-website-game-tester-work/7840314113.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://centralmich.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840313731.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://battlecreek.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840313372.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://annarbor.craigslist.org/cpg/d/detroit-casino-website-game-tester-work/7840313095.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://meadville.craigslist.org/cpg/d/meadville-casino-website-game-tester/7840311058.html
+2025-04-07 05:00:51559 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/cpg/d/pittsburgh-casino-website-game-tester/7840310399.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/cpg/d/pittsburgh-computer-creatives-sales/7840293587.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/wcl/cpg/d/chicago-hybrid-or-100-remote-talent-for/7840133773.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/cpg/d/columbus-looking-for-flexible-work-from/7840046807.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://annarbor.craigslist.org/cpg/d/ann-arbor-work-from-homeultimate-side/7840041993.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://swv.craigslist.org/cpg/d/athens-sis4-research-study-using-an-app/7839964216.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://louisville.craigslist.org/cpg/d/bagdad-sis4-research-study-using-an-app/7839963821.html
+2025-04-07 05:00:51560 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lansing.craigslist.org/cpg/d/lansing-fast-cash-for-sharing-your/7839822365.html
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/cpg/d/indianapolis-part-time-position-same/7839821411.html
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/cpg/d/indianapolis-fast-cash-for-sharing-your/7839820253.html
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://annarbor.craigslist.org/cpg/d/ann-arbor-ai-usage-research-earn-100/7839754010.html
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/cpg/d/blacklick-social-media-intern/7839746920.html
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 22 leads passed basic pre-filtering.
+2025-04-07 05:00:51561 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 22 leads...
+2025-04-07 05:00:51748 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:52810 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/cpg/d/vandalia-remote-travel-consultant-agent/7840084949.html
+2025-04-07 05:00:52880 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:53935 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/cpg/d/dayton-evaluate-products-for-companies/7833604150.html
+2025-04-07 05:00:54014 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:54619 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:55699 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/okl/cpg/d/fenton-what-is-the-dark-web/7840287585.html
+2025-04-07 05:00:55874 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:56978 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://columbus.craigslist.org/cpg/d/columbus-house-cleaner-females/7840123846.html
+2025-04-07 05:00:57043 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:57638 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/mcb/cpg/d/birmingham-300-pm-est-today-be-there-or/7840073405.html
+2025-04-07 05:00:57709 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:58172 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pittsburgh.craigslist.org/cpg/d/pittsburgh-work-from-home-vacation/7840046555.html
+2025-04-07 05:00:58232 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:00:59244 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:00251 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:01299 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/cpg/d/chicago-earn-easy-passive-income-turn/7840004348.html
+2025-04-07 05:01:01502 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:02587 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/cpg/d/florence-work-from-home-day-focus-group/7839972522.html
+2025-04-07 05:01:02748 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:03778 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/cpg/d/chicago-vacation-booking-specialist/7839971997.html
+2025-04-07 05:01:03855 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:04758 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:06289 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:07341 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/cpg/d/chicago-crt-tv-repair-and-calibration/7839914514.html
+2025-04-07 05:01:07408 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:08486 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://meadville.craigslist.org/cpg/d/meadville-earn-money-by-doing-simple/7839859028.html
+2025-04-07 05:01:08569 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:09050 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://porthuron.craigslist.org/cpg/d/port-huron-get-paid-for-completing/7839858221.html
+2025-04-07 05:01:09117 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:10179 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://kalamazoo.craigslist.org/cpg/d/kalamazoo-get-paid-for-completing/7839858117.html
+2025-04-07 05:01:10259 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:10760 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://jxn.craigslist.org/cpg/d/jackson-get-paid-for-completing-online/7839856378.html
+2025-04-07 05:01:10832 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:11735 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:12841 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:13457 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 8 leads passed AI pre-filtering.
+2025-04-07 05:01:13457 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Processing 8 AI pre-filtered leads using 8 threads...
+2025-04-07 05:01:13458 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://chicago.craigslist.org/nch/cpg/d/chicago-need-facebook-help-need-an/7840319205.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13459 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://pittsburgh.craigslist.org/cpg/d/pittsburgh-work-from-home-remote-wfh/7840028870.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13459 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/wyn/cpg/d/detroit-work-from-home-remote-wfh-avg/7840028802.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13459 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/mcb/cpg/d/detroit-website-game-testing-with/7839927949.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13460 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/wyn/cpg/d/detroit-website-game-testing-with/7839925814.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13460 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://grandrapids.craigslist.org/cpg/d/detroit-website-game-testing-with/7839845120.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13460 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://detroit.craigslist.org/okl/cpg/d/detroit-website-game-testing-with/7839842973.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13461 - ForkPoolWorker-1 - WARNING - main - [ForkPoolWorker-1-Thread] Skipping lead from different city: https://pittsburgh.craigslist.org/cpg/d/pittsburgh-website-game-testing-with/7839842031.html (Expected domain: dayton.craigslist.org)
+2025-04-07 05:01:13462 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Page 1: Parsed 60 potential leads added 0 new graded leads for dayton/cpg.
+2025-04-07 05:01:13462 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] No next page link found for dayton/cpg.
+2025-04-07 05:01:13462 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Finished category cpg for dayton. Added 0 leads.
+2025-04-07 05:01:14922 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Fetching category: mar (Page 1/3) -> https://dayton.craigslist.org/search/mar
+2025-04-07 05:01:17090 - ForkPoolWorker-1 - INFO - request_handler - Attempt 1/3: Fetching https://dayton.craigslist.org/search/mar via Oxylabs...
+2025-04-07 05:01:33490 - ForkPoolWorker-1 - INFO - request_handler - Success fetching https://dayton.craigslist.org/search/mar
+2025-04-07 05:01:33492 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Parsing search results page 1 for dayton/mar...
+2025-04-07 05:01:33603 - ForkPoolWorker-1 - INFO - content_analyzer - Found 57 potential result elements using 'div.cl-search-result'.
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - content_analyzer - Extracted 57 basic leads from search page.
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic Pre-filtering 57 leads from page...
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://dayton.craigslist.org/mar/d/vandalia-remote-appointment-setter-high/7839645282.html
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://grandrapids.craigslist.org/mar/d/grand-rapids-remote-appointment-setter/7839643285.html
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lexington.craigslist.org/mar/d/lexington-remote-appointment-setter/7839630855.html
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/mar/d/blacklick-remote-appointment-setter/7839628258.html
+2025-04-07 05:01:33607 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://pittsburgh.craigslist.org/mar/d/homestead-remote-appointment-setter/7839624123.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://louisville.craigslist.org/mar/d/eastwood-remote-appointment-setter-high/7839621960.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/mar/d/zionsville-remote-appointment-setter/7839615160.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://indianapolis.craigslist.org/mar/d/indianapolis-expo-booth-assistant/7839350096.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://grandrapids.craigslist.org/mar/d/caledonia-marketing-representative-admin/7839305937.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/mcb/mar/d/macomb-remote-appointment-setter-high/7839292138.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/chc/mar/d/chicago-now-hiring-bilingual-secretary/7839181792.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/mar/d/blacklick-marketing-intern-another/7838266225.html
+2025-04-07 05:01:33608 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://columbus.craigslist.org/mar/d/new-albany-research-telemarketer-part/7837623147.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lexington.craigslist.org/mar/d/lexington-clinical-research-study-for/7837383806.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://detroit.craigslist.org/okl/mar/d/dearborn-heights-remote-appointment/7836358978.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/nwc/mar/d/chicago-remote-appointment-setter-high/7836347833.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lexington.craigslist.org/mar/d/richmond-lifeline-government-program/7836329240.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/nwi/mar/d/east-chicago-now-hiring-experienced/7836146930.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://lexington.craigslist.org/mar/d/lexington-clinical-research-study-for/7835225380.html
+2025-04-07 05:01:33609 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://chicago.craigslist.org/chc/mar/d/chicago-part-time-digital-marketing/7834369069.html
+2025-04-07 05:01:33610 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://grandrapids.craigslist.org/mar/d/lowell-now-hiring-marketing-canvassers/7834330486.html
+2025-04-07 05:01:33610 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] Basic pre-filtered out (blacklist term): https://akroncanton.craigslist.org/mar/d/canal-fulton-hiring-experience-social/7834261163.html
+2025-04-07 05:01:33610 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] 35 leads passed basic pre-filtering.
+2025-04-07 05:01:33610 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI Pre-filtering 35 leads...
+2025-04-07 05:01:33924 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:34995 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://dayton.craigslist.org/mar/d/vandalia-event-brand-ambassador-18-hr/7838800912.html
+2025-04-07 05:01:35090 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:35513 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cleveland.craigslist.org/mar/d/cleveland-from-your-home-local-area/7840050966.html
+2025-04-07 05:01:35621 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:36730 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/mar/d/cincinnati-from-your-home-local-area/7840050465.html
+2025-04-07 05:01:36853 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:37475 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:38747 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/mar/d/chicago-boost-your-brand-get-paid-earn/7839117744.html
+2025-04-07 05:01:38852 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:39976 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/chc/mar/d/chicago-marketing-communications/7838580326.html
+2025-04-07 05:01:40071 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:40635 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nwc/mar/d/bensenville-drivers-wanted-full-time/7838139250.html
+2025-04-07 05:01:40732 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:41874 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://cincinnati.craigslist.org/mar/d/cincinnati-event-lead-generator-17-hr/7838053617.html
+2025-04-07 05:01:42017 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:43247 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/wyn/mar/d/southgate-multimedia-account-exec/7837801000.html
+2025-04-07 05:01:43325 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:44481 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/okl/mar/d/detroit-flyer-distributor/7837750468.html
+2025-04-07 05:01:44749 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:45858 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://indianapolis.craigslist.org/mar/d/indianapolis-permanent-full-part-time/7837409607.html
+2025-04-07 05:01:45946 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:47081 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://toledo.craigslist.org/mar/d/toledo-amish-person-booth-marketer/7837353722.html
+2025-04-07 05:01:47177 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:48227 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://kokomo.craigslist.org/mar/d/kokomo-turn-social-media-into-your/7836665325.html
+2025-04-07 05:01:48322 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:49387 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://detroit.craigslist.org/wyn/mar/d/southgate-multimedia-account-exec/7836514233.html
+2025-04-07 05:01:49468 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:50581 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://bloomington.craigslist.org/mar/d/bloomington-college-students-earn-1000/7836382374.html
+2025-04-07 05:01:50728 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:52787 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pittsburgh.craigslist.org/mar/d/delmont-canvasser/7836347913.html
+2025-04-07 05:01:52871 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:54028 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:55095 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://pennstate.craigslist.org/mar/d/sutersville-month-in-your-pajamas/7835300582.html
+2025-04-07 05:01:55295 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:56514 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:57629 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://louisville.craigslist.org/mar/d/louisville-immediate-hire/7835200089.html
+2025-04-07 05:01:57743 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:01:58946 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:00637 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://swmi.craigslist.org/mar/d/grand-rapids-brand-ambassador/7834536604.html
+2025-04-07 05:02:00725 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:01759 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://jxn.craigslist.org/mar/d/jackson-brand-ambassador-appointment/7834535792.html
+2025-04-07 05:02:01857 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:02959 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://centralmich.craigslist.org/mar/d/grandville-brand-ambassador-appointment/7834535240.html
+2025-04-07 05:02:03053 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:04205 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://kalamazoo.craigslist.org/mar/d/kalamazoo-brand-ambassador-appointment/7834534780.html
+2025-04-07 05:02:04317 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:05536 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:06582 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://battlecreek.craigslist.org/mar/d/battle-creek-brand-ambassador/7834533500.html
+2025-04-07 05:02:06805 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:07861 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://grandrapids.craigslist.org/mar/d/grand-rapids-brand-ambassador/7834532702.html
+2025-04-07 05:02:07989 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:09245 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"
+2025-04-07 05:02:09705 - ForkPoolWorker-1 - INFO - main - [ForkPoolWorker-1] AI pre-filtered out (junk/unrelated): https://chicago.craigslist.org/nch/mar/d/evanston-door-knocker-canvasser-for/7833897883.html
+2025-04-07 05:02:09806 - ForkPoolWorker-1 - INFO - _client - HTTP Request: POST https://openrouter.ai/api/v1/chat/completions "HTTP/1.1 200 OK"

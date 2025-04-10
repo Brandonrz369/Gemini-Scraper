@@ -54,7 +54,8 @@ class StateManager:
                     follow_up_date TEXT,
                     ai_is_junk BOOLEAN,
                     ai_profitability_score INTEGER,
-                    ai_reasoning TEXT
+                    ai_reasoning TEXT,
+                    search_scope TEXT  -- Added for A/B testing
                 )
             ''')
             # Progress table
@@ -66,10 +67,37 @@ class StateManager:
             ''')
             self.conn.commit()
             logging.info("Database schema initialized/verified.")
-        except sqlite3.Error as e:
-            logging.error(f"Error initializing database schema: {e}", exc_info=True)
 
-    def add_lead(self, lead_details):
+            # --- Add migration logic for existing databases ---
+            # Check if the search_scope column exists
+            self.cursor.execute("PRAGMA table_info(leads)")
+            columns = [column[1] for column in self.cursor.fetchall()]
+            if 'search_scope' not in columns:
+                logging.info("Adding 'search_scope' column to existing 'leads' table...")
+                self.cursor.execute("ALTER TABLE leads ADD COLUMN search_scope TEXT")
+                self.conn.commit()
+                logging.info("'search_scope' column added successfully.")
+            # --- End migration logic ---
+
+        except sqlite3.Error as e:
+            logging.error(f"Error initializing/migrating database schema: {e}", exc_info=True)
+
+    def get_last_completed_city(self):
+        """Retrieves the code of the last successfully completed city."""
+        if not self.conn: return None
+        try:
+            self.cursor.execute("SELECT value FROM progress WHERE key = 'last_completed_city'")
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+        except sqlite3.Error as e:
+            logging.error(f"Error getting last completed city: {e}", exc_info=True)
+            return None
+
+    def set_last_completed_city(self, city_code):
+        """Sets the code of the last successfully completed city."""
+        self._set_progress_value('last_completed_city', city_code)
+
+    def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
         """Adds a lead to the database if the URL is unique."""
         if not self.conn:
             logging.error("Database not connected. Cannot add lead.")
@@ -103,7 +131,8 @@ class StateManager:
             'follow_up_date': lead_details.get('follow_up_date'),
             'ai_is_junk': ai_is_junk,
             'ai_profitability_score': ai_score,
-            'ai_reasoning': ai_reasoning
+            'ai_reasoning': ai_reasoning,
+            'search_scope': search_scope # Include search_scope
         }
 
         # Define columns explicitly for the INSERT statement
@@ -158,15 +187,3 @@ class StateManager:
             self.conn.commit()
         except sqlite3.Error as e:
             logging.error(f"Error setting progress value for key '{key}': {e}", exc_info=True)
-
-    def close_db(self):
-        """Closes the database connection."""
-        if self.conn:
-            self.conn.close()
-            logging.info("Database connection closed.")
-            self.conn = None
-            self.cursor = None
-
-    def __del__(self):
-        """Ensure DB connection is closed when object is destroyed."""
-        self.close_db()

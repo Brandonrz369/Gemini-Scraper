@@ -20,10 +20,11 @@ class CityManager:
         filename_map = {
             'small': 'cities_small.json',
             'medium': 'cities_medium.json',
-            'large': 'cities_large.json'
+            'large': 'cities_large.json',
+            'us': 'cities_us.json' # Added 'us' list size
         }
-        # Default to small if invalid size is given
-        filename = filename_map.get(list_size, 'cities_small.json')
+        # Default to 'us' if invalid size is given, or maybe small? Let's default to 'us' for comprehensive scan goal.
+        filename = filename_map.get(list_size, 'cities_us.json')
         cities_file_path = os.path.join(self.data_dir, filename)
 
         logging.info(f"Loading city list: {filename}")

@@ -47,16 +47,16 @@ $(document).ready(function() {
                     }
                 },
                 { data: 'category', defaultContent: 'N/A' },
-                { data: 'ai_grade.profitability_score', defaultContent: 'N/A' },
+                { data: 'ai_profitability_score', defaultContent: 'N/A' }, // Access flattened field
                 {
-                    data: 'ai_grade.is_junk',
+                    data: 'ai_is_junk', // Access flattened field
                     render: function(data) {
                         const isJunk = getSafe(() => data, false); // Default to false if missing/null
                         return isJunk ? 'Yes' : 'No';
                     }
                 },
                 {
-                    data: 'ai_grade.reasoning',
+                    data: 'ai_reasoning', // Access flattened field
                     render: function(data) {
                         const reasoning = getSafe(() => data, 'N/A');
                         // Add tooltip and ellipsis
@@ -72,24 +72,56 @@ $(document).ready(function() {
         });
     }
 
+    // Function to populate category filter
+    function populateCategoryFilter(data) {
+        const categories = new Set();
+        data.forEach(lead => {
+            const category = getSafe(() => lead.category, null);
+            if (category && category !== 'N/A') {
+                categories.add(category);
+            }
+        });
+
+        const categoryFilter = $('#category-filter');
+        // Clear existing options except the first 'All Categories' one
+        categoryFilter.find('option:not(:first)').remove();
+
+        categories.forEach(category => {
+            categoryFilter.append($('<option>', {
+                value: category,
+                text: category // Display the category code directly, could map to names later
+            }));
+        });
+    }
+
     // Custom filtering function
     function applyFilters() {
         const minScore = parseInt($('#min-score').val()) || 1;
         const maxScore = parseInt($('#max-score').val()) || 10;
         const junkFilter = $('#junk-filter').val(); // 'all', 'yes', 'no'
+        const categoryFilter = $('#category-filter').val(); // 'all' or specific category code
 
         const filteredData = allLeadsData.filter(lead => {
-            const score = getSafe(() => lead.ai_grade.profitability_score, null);
-            const isJunk = getSafe(() => lead.ai_grade.is_junk, false);
+            const score = getSafe(() => lead.ai_profitability_score, null); // Access flattened field
+            const isJunk = getSafe(() => lead.ai_is_junk, false); // Access flattened field
+            const category = getSafe(() => lead.category, null);
 
-            // Score filtering (only apply if score is not null)
-            let scoreMatch = true;
-            if (score !== null) {
-                 scoreMatch = score >= minScore && score <= maxScore;
+            // Score filtering (Revised Logic)
+            let scoreMatch = false; // Default to false unless criteria met
+            if (junkFilter === 'yes') {
+                 // If specifically filtering FOR junk, include all junk regardless of score (or lack thereof)
+                 if (isJunk) {
+                     scoreMatch = true;
+                 }
             } else {
-                 // If score is null, only include if min is 1 and max is 10 (i.e., no score filter applied)
-                 // Or if filtering specifically for 'junk' which might not have scores
-                 scoreMatch = (minScore === 1 && maxScore === 10) || junkFilter === 'yes';
+                 // If showing 'all' or 'no' junk:
+                 if (score !== null) {
+                     // If score exists, check if it's within the selected range
+                     scoreMatch = score >= minScore && score <= maxScore;
+                 } else {
+                     // If score is null, only include if the filter range is effectively "all" (1-10)
+                     scoreMatch = (minScore === 1 && maxScore === 10);
+                 }
             }
 
 
@@ -101,7 +133,13 @@ $(document).ready(function() {
                 junkMatch = isJunk === false;
             } // 'all' means junkMatch remains true
 
-            return scoreMatch && junkMatch;
+            // Category filtering
+            let categoryMatch = true;
+            if (categoryFilter !== 'all') {
+                categoryMatch = category === categoryFilter;
+            }
+
+            return scoreMatch && junkMatch && categoryMatch;
         });
 
         initializeDataTable(filteredData); // Re-initialize table with filtered data
@@ -109,9 +147,8 @@ $(document).ready(function() {
 
 
     // Fetch data and initialize
-    // Assumes graded_leads.json is in the 'public' folder within the Vercel Root Directory ('frontend').
-    // Vercel serves 'public' folder contents at the root URL path.
-    fetch('/graded_leads.json') // Fetch from the root path
+    // Assumes graded_leads.json is in the 'public' folder relative to index.html
+    fetch('/public/graded_leads.json') // Use absolute path from server root (frontend dir) - Correct for Vercel/http-server
         .then(response => {
             if (!response.ok) {
                 // Provide more context in the error message
@@ -124,6 +161,7 @@ $(document).ready(function() {
         })
         .then(data => {
             allLeadsData = data; // Store all data
+            populateCategoryFilter(allLeadsData); // Populate the category dropdown
             applyFilters(); // Apply initial filters and populate table
         })
         .catch(error => {

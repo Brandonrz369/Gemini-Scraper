@@ -1,0 +1,1000 @@
+  { "code": "harrisburg", "name": "Harrisburg" },
+  { "code": "york", "name": "York, PA" },
+  { "code": "scranton", "name": "Scranton / Wilkes-Barre" },
+  { "code": "erie", "name": "Erie, PA" },
+  { "code": "annarbor", "name": "Ann Arbor" },
+  { "code": "flint", "name": "Flint" },
+  { "code": "saginaw", "name": "Saginaw-Midland-Baycity" },
+  { "code": "kalamazoo", "name": "Kalamazoo" },
+  { "code": "detroit", "name": "Detroit Metro" },
+  { "code": "rockford", "name": "Rockford" },
+  { "code": "peoria", "name": "Peoria" },
+  { "code": "springfieldil", "name": "Springfield, IL" },
+  { "code": "bloomington", "name": "Bloomington-Normal" },
+  { "code": "quadcities", "name": "Quad Cities, IA/IL" },
+  { "code": "cedarrapids", "name": "Cedar Rapids" },
+  { "code": "iowacity", "name": "Iowa City" },
+  { "code": "wausau", "name": "Wausau" },
+  { "code": "appleton", "name": "Appleton-Oshkosh-FDL" },
+  { "code": "greenbay", "name": "Green Bay" },
+  { "code": "duluth", "name": "Duluth / Superior" },
+  { "code": "fargo", "name": "Fargo / Moorhead" },
+  { "code": "siouxfalls", "name": "Sioux Falls / SE SD" },
+  { "code": "topeka", "name": "Topeka" },
+  { "code": "columbiamo", "name": "Columbia / Jeff City" },
+  { "code": "fayetteville", "name": "Fayetteville, AR" },
+  { "code": "jonesboro", "name": "Jonesboro" },
+  { "code": "fortsmith", "name": "Fort Smith" },
+  { "code": "texarkana", "name": "Texarkana" },
+  { "code": "beaumont", "name": "Beaumont / Port Arthur" },
+  { "code": "collegestation", "name": "College Station" },
+  { "code": "sanantonio", "name": "San Antonio" },
+  { "code": "lubbock", "name": "Lubbock" },
+  { "code": "amarillo", "name": "Amarillo" },
+  { "code": "wichitafalls", "name": "Wichita Falls" },
+  { "code": "lawton", "name": "Lawton" },
+  { "code": "pueblo", "name": "Pueblo" },
+  { "code": "flagstaff", "name": "Flagstaff / Sedona" },
+  { "code": "prescott", "name": "Prescott" },
+  { "code": "yuma", "name": "Yuma" },
+  { "code": "provo", "name": "Provo / Orem" },
+  { "code": "ogden", "name": "Ogden-Clearfield" },
+  { "code": "billings", "name": "Billings" },
+  { "code": "greatfalls", "name": "Great Falls" },
+  { "code": "missoula", "name": "Missoula" },
+  { "code": "yakima", "name": "Yakima" },
+  { "code": "olympic", "name": "Olympic Peninsula" },
+  { "code": "skagit", "name": "Skagit / Island / SJI" },
+  { "code": "bend", "name": "Bend" },
+  { "code": "klamath", "name": "Klamath Falls" },
+  { "code": "medford", "name": "Medford-Ashland" },
+  { "code": "redding", "name": "Redding" },
+  { "code": "chico", "name": "Chico" },
+  { "code": "goldcountry", "name": "Gold Country" },
+  { "code": "humboldt", "name": "Humboldt County" },
+  { "code": "visalia", "name": "Visalia-Tulare" },
+  { "code": "merced", "name": "Merced" },
+  { "code": "slo", "name": "San Luis Obispo" },
+  { "code": "imperial", "name": "Imperial County" },
+  { "code": "newlondon", "name": "New London / Eastern CT" },
+  { "code": "plattsburgh", "name": "Plattsburgh-Adirondacks" },
+  { "code": "utica", "name": "Utica-Rome-Oneida" },
+  { "code": "binghamton", "name": "Binghamton" },
+  { "code": "watertown", "name": "Watertown" },
+  { "code": "potsdam", "name": "Potsdam-Canton-Massena" },
+  { "code": "ithaca", "name": "Ithaca" },
+  { "code": "elmira", "name": "Elmira-Corning" }
+]
+
+<environment_details>
+# VSCode Visible Files
+backend/main.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+backend/main.py
+
+# Current Time
+4/9/2025, 8:09:04 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, I have the contents of all three city list files (`small`, `medium`, `large`).
+
+**Step 3b: Combine, deduplicate, and save the US city list.**
+
+I will now process these lists to create a single, deduplicated list of US cities based on the unique `code` for each city. I'll then save this combined list to `backend/data/cities_us.json`.
+
+```tool_code
+<write_to_file>
+<path>backend/data/cities_us.json</path>
+<content>
+[
+  { "code": "newyork", "name": "New York City" },
+  { "code": "losangeles", "name": "Los Angeles" },
+  { "code": "chicago", "name": "Chicago" },
+  { "code": "sfbay", "name": "SF Bay Area" },
+  { "code": "dallas", "name": "Dallas/Fort Worth" },
+  { "code": "houston", "name": "Houston" },
+  { "code": "washingtondc", "name": "Washington DC" },
+  { "code": "philadelphia", "name": "Philadelphia" },
+  { "code": "miami", "name": "Miami" },
+  { "code": "atlanta", "name": "Atlanta" },
+  { "code": "boston", "name": "Boston" },
+  { "code": "phoenix", "name": "Phoenix" },
+  { "code": "seattle", "name": "Seattle" },
+  { "code": "sandiego", "name": "San Diego" },
+  { "code": "denver", "name": "Denver" },
+  { "code": "minneapolis", "name": "Minneapolis-St Paul" },
+  { "code": "tampa", "name": "Tampa Bay Area" },
+  { "code": "portland", "name": "Portland, OR" },
+  { "code": "baltimore", "name": "Baltimore" },
+  { "code": "stlouis", "name": "St Louis, MO" },
+  { "code": "orlando", "name": "Orlando" },
+  { "code": "charlotte", "name": "Charlotte" },
+  { "code": "sacramento", "name": "Sacramento" },
+  { "code": "pittsburgh", "name": "Pittsburgh" },
+  { "code": "lasvegas", "name": "Las Vegas" },
+  { "code": "austin", "name": "Austin" },
+  { "code": "cincinnati", "name": "Cincinnati, OH" },
+  { "code": "kansascity", "name": "Kansas City, MO" },
+  { "code": "cleveland", "name": "Cleveland" },
+  { "code": "columbus", "name": "Columbus, OH" },
+  { "code": "indianapolis", "name": "Indianapolis" },
+  { "code": "sanjose", "name": "San Jose" },
+  { "code": "nashville", "name": "Nashville" },
+  { "code": "raleigh", "name": "Raleigh / Durham / CH" },
+  { "code": "virginia", "name": "Virginia Beach" },
+  { "code": "providence", "name": "Providence" },
+  { "code": "milwaukee", "name": "Milwaukee" },
+  { "code": "jacksonville", "name": "Jacksonville" },
+  { "code": "saltlakecity", "name": "Salt Lake City" },
+  { "code": "oklahomacity", "name": "Oklahoma City" },
+  { "code": "memphis", "name": "Memphis, TN" },
+  { "code": "louisville", "name": "Louisville" },
+  { "code": "richmond", "name": "Richmond, VA" },
+  { "code": "neworleans", "name": "New Orleans" },
+  { "code": "hartford", "name": "Hartford" },
+  { "code": "buffalo", "name": "Buffalo" },
+  { "code": "birmingham", "name": "Birmingham, AL" },
+  { "code": "rochester", "name": "Rochester, NY" },
+  { "code": "grandrapids", "name": "Grand Rapids" },
+  { "code": "tucson", "name": "Tucson" },
+  { "code": "honolulu", "name": "Honolulu" },
+  { "code": "tulsa", "name": "Tulsa" },
+  { "code": "fresno", "name": "Fresno / Madera" },
+  { "code": "worcester", "name": "Worcester / Central MA" },
+  { "code": "omaha", "name": "Omaha / Council Bluffs" },
+  { "code": "albuquerque", "name": "Albuquerque" },
+  { "code": "albany", "name": "Albany, NY" },
+  { "code": "greensboro", "name": "Greensboro" },
+  { "code": "bakersfield", "name": "Bakersfield" },
+  { "code": "akroncanton", "name": "Akron / Canton" },
+  { "code": "batonrouge", "name": "Baton Rouge" },
+  { "code": "toledo", "name": "Toledo" },
+  { "code": "elpaso", "name": "El Paso" },
+  { "code": "dayton", "name": "Dayton / Springfield" },
+  { "code": "desmoines", "name": "Des Moines" },
+  { "code": "wichita", "name": "Wichita" },
+  { "code": "knoxville", "name": "Knoxville" },
+  { "code": "littlerock", "name": "Little Rock" },
+  { "code": "columbia", "name": "Columbia, SC" },
+  { "code": "syracuse", "name": "Syracuse" },
+  { "code": "charleston", "name": "Charleston, SC" },
+  { "code": "madison", "name": "Madison" },
+  { "code": "spokane", "name": "Spokane / Coeur d'Alene" },
+  { "code": "boise", "name": "Boise" },
+  { "code": "reno", "name": "Reno / Tahoe" },
+  { "code": "lexington", "name": "Lexington, KY" },
+  { "code": "stockton", "name": "Stockton" },
+  { "code": "augusta", "name": "Augusta, GA" },
+  { "code": "corpuschristi", "name": "Corpus Christi" },
+  { "code": "fortwayne", "name": "Fort Wayne" },
+  { "code": "pensacola", "name": "Pensacola" },
+  { "code": "lansing", "name": "Lansing" },
+  { "code": "santafe", "name": "Santa Fe / Taos" },
+  { "code": "huntsville", "name": "Huntsville / Decatur" },
+  { "code": "mobile", "name": "Mobile" },
+  { "code": "anchorage", "name": "Anchorage / Mat-Su" },
+  { "code": "montgomery", "name": "Montgomery" },
+  { "code": "shreveport", "name": "Shreveport" },
+  { "code": "savannah", "name": "Savannah / Hinesville" },
+  { "code": "chattanooga", "name": "Chattanooga" },
+  { "code": "jackson", "name": "Jackson, MS" },
+  { "code": "springfield", "name": "Springfield, MO" },
+  { "code": "lincoln", "name": "Lincoln" },
+  { "code": "coloradosprings", "name": "Colorado Springs" },
+  { "code": "fortcollins", "name": "Fort Collins / North CO" },
+  { "code": "eugene", "name": "Eugene" },
+  { "code": "salem", "name": "Salem, OR" },
+  { "code": "bellingham", "name": "Bellingham" },
+  { "code": "modesto", "name": "Modesto" },
+  { "code": "santabarbara", "name": "Santa Barbara" },
+  { "code": "ventura", "name": "Ventura County" },
+  { "code": "palmsprings", "name": "Palm Springs, CA" },
+  { "code": "monterey", "name": "Monterey Bay" },
+  { "code": "inlandempire", "name": "Inland Empire, CA" },
+  { "code": "orangecounty", "name": "Orange County, CA" },
+  { "code": "newhaven", "name": "New Haven" },
+  { "code": "maine", "name": "Maine" },
+  { "code": "nh", "name": "New Hampshire" },
+  { "code": "vermont", "name": "Vermont" },
+  { "code": "westernmass", "name": "Western Massachusetts" },
+  { "code": "southjersey", "name": "South Jersey" },
+  { "code": "jerseyshore", "name": "Jersey Shore" },
+  { "code": "delaware", "name": "Delaware" },
+  { "code": "reading", "name": "Reading" },
+  { "code": "allentown", "name": "Lehigh Valley" },
+  { "code": "harrisburg", "name": "Harrisburg" },
+  { "code": "york", "name": "York, PA" },
+  { "code": "scranton", "name": "Scranton / Wilkes-Barre" },
+  { "code": "erie", "name": "Erie, PA" },
+  { "code": "annarbor", "name": "Ann Arbor" },
+  { "code": "flint", "name": "Flint" },
+  { "code": "saginaw", "name": "Saginaw-Midland-Baycity" },
+  { "code": "kalamazoo", "name": "Kalamazoo" },
+  { "code": "detroit", "name": "Detroit Metro" },
+  { "code": "rockford", "name": "Rockford" },
+  { "code": "peoria", "name": "Peoria" },
+  { "code": "springfieldil", "name": "Springfield, IL" },
+  { "code": "bloomington", "name": "Bloomington-Normal" },
+  { "code": "quadcities", "name": "Quad Cities, IA/IL" },
+  { "code": "cedarrapids", "name": "Cedar Rapids" },
+  { "code": "iowacity", "name": "Iowa City" },
+  { "code": "wausau", "name": "Wausau" },
+  { "code": "appleton", "name": "Appleton-Oshkosh-FDL" },
+  { "code": "greenbay", "name": "Green Bay" },
+  { "code": "duluth", "name": "Duluth / Superior" },
+  { "code": "fargo", "name": "Fargo / Moorhead" },
+  { "code": "siouxfalls", "name": "Sioux Falls / SE SD" },
+  { "code": "topeka", "name": "Topeka" },
+  { "code": "columbiamo", "name": "Columbia / Jeff City" },
+  { "code": "fayetteville", "name": "Fayetteville, AR" },
+  { "code": "jonesboro", "name": "Jonesboro" },
+  { "code": "fortsmith", "name": "Fort Smith" },
+  { "code": "texarkana", "name": "Texarkana" },
+  { "code": "beaumont", "name": "Beaumont / Port Arthur" },
+  { "code": "collegestation", "name": "College Station" },
+  { "code": "sanantonio", "name": "San Antonio" },
+  { "code": "lubbock", "name": "Lubbock" },
+  { "code": "amarillo", "name": "Amarillo" },
+  { "code": "wichitafalls", "name": "Wichita Falls" },
+  { "code": "lawton", "name": "Lawton" },
+  { "code": "pueblo", "name": "Pueblo" },
+  { "code": "flagstaff", "name": "Flagstaff / Sedona" },
+  { "code": "prescott", "name": "Prescott" },
+  { "code": "yuma", "name": "Yuma" },
+  { "code": "provo", "name": "Provo / Orem" },
+  { "code": "ogden", "name": "Ogden-Clearfield" },
+  { "code": "billings", "name": "Billings" },
+  { "code": "greatfalls", "name": "Great Falls" },
+  { "code": "missoula", "name": "Missoula" },
+  { "code": "yakima", "name": "Yakima" },
+  { "code": "olympic", "name": "Olympic Peninsula" },
+  { "code": "skagit", "name": "Skagit / Island / SJI" },
+  { "code": "bend", "name": "Bend" },
+  { "code": "klamath", "name": "Klamath Falls" },
+  { "code": "medford", "name": "Medford-Ashland" },
+  { "code": "redding", "name": "Redding" },
+  { "code": "chico", "name": "Chico" },
+  { "code": "goldcountry", "name": "Gold Country" },
+  { "code": "humboldt", "name": "Humboldt County" },
+  { "code": "visalia", "name": "Visalia-Tulare" },
+  { "code": "merced", "name": "Merced" },
+  { "code": "slo", "name": "San Luis Obispo" },
+  { "code": "imperial", "name": "Imperial County" },
+  { "code": "newlondon", "name": "New London / Eastern CT" },
+  { "code": "plattsburgh", "name": "Plattsburgh-Adirondacks" },
+  { "code": "utica", "name": "Utica-Rome-Oneida" },
+  { "code": "binghamton", "name": "Binghamton" },
+  { "code": "watertown", "name": "Watertown" },
+  { "code": "potsdam", "name": "Potsdam-Canton-Massena" },
+  { "code": "ithaca", "name": "Ithaca" },
+  { "code": "elmira", "name": "Elmira-Corning" }
+]
+</content>
+</write_to_file>
+```
+
+---
+
+**User:**
+
+[write_to_file for 'backend/data/cities_us.json'] Result:
+The content was successfully saved to backend/data/cities_us.json.
+
+Here is the full, updated content of the file that was saved:
+
+<final_file_content path="backend/data/cities_us.json">
+[
+  { "code": "newyork", "name": "New York City" },
+  { "code": "losangeles", "name": "Los Angeles" },
+  { "code": "chicago", "name": "Chicago" },
+  { "code": "sfbay", "name": "SF Bay Area" },
+  { "code": "dallas", "name": "Dallas/Fort Worth" },
+  { "code": "houston", "name": "Houston" },
+  { "code": "washingtondc", "name": "Washington DC" },
+  { "code": "philadelphia", "name": "Philadelphia" },
+  { "code": "miami", "name": "Miami" },
+  { "code": "atlanta", "name": "Atlanta" },
+  { "code": "boston", "name": "Boston" },
+  { "code": "phoenix", "name": "Phoenix" },
+  { "code": "seattle", "name": "Seattle" },
+  { "code": "sandiego", "name": "San Diego" },
+  { "code": "denver", "name": "Denver" },
+  { "code": "minneapolis", "name": "Minneapolis-St Paul" },
+  { "code": "tampa", "name": "Tampa Bay Area" },
+  { "code": "portland", "name": "Portland, OR" },
+  { "code": "baltimore", "name": "Baltimore" },
+  { "code": "stlouis", "name": "St Louis, MO" },
+  { "code": "orlando", "name": "Orlando" },
+  { "code": "charlotte", "name": "Charlotte" },
+  { "code": "sacramento", "name": "Sacramento" },
+  { "code": "pittsburgh", "name": "Pittsburgh" },
+  { "code": "lasvegas", "name": "Las Vegas" },
+  { "code": "austin", "name": "Austin" },
+  { "code": "cincinnati", "name": "Cincinnati, OH" },
+  { "code": "kansascity", "name": "Kansas City, MO" },
+  { "code": "cleveland", "name": "Cleveland" },
+  { "code": "columbus", "name": "Columbus, OH" },
+  { "code": "indianapolis", "name": "Indianapolis" },
+  { "code": "sanjose", "name": "San Jose" },
+  { "code": "nashville", "name": "Nashville" },
+  { "code": "raleigh", "name": "Raleigh / Durham / CH" },
+  { "code": "virginia", "name": "Virginia Beach" },
+  { "code": "providence", "name": "Providence" },
+  { "code": "milwaukee", "name": "Milwaukee" },
+  { "code": "jacksonville", "name": "Jacksonville" },
+  { "code": "saltlakecity", "name": "Salt Lake City" },
+  { "code": "oklahomacity", "name": "Oklahoma City" },
+  { "code": "memphis", "name": "Memphis, TN" },
+  { "code": "louisville", "name": "Louisville" },
+  { "code": "richmond", "name": "Richmond, VA" },
+  { "code": "neworleans", "name": "New Orleans" },
+  { "code": "hartford", "name": "Hartford" },
+  { "code": "buffalo", "name": "Buffalo" },
+  { "code": "birmingham", "name": "Birmingham, AL" },
+  { "code": "rochester", "name": "Rochester, NY" },
+  { "code": "grandrapids", "name": "Grand Rapids" },
+  { "code": "tucson", "name": "Tucson" },
+  { "code": "honolulu", "name": "Honolulu" },
+  { "code": "tulsa", "name": "Tulsa" },
+  { "code": "fresno", "name": "Fresno / Madera" },
+  { "code": "worcester", "name": "Worcester / Central MA" },
+  { "code": "omaha", "name": "Omaha / Council Bluffs" },
+  { "code": "albuquerque", "name": "Albuquerque" },
+  { "code": "albany", "name": "Albany, NY" },
+  { "code": "greensboro", "name": "Greensboro" },
+  { "code": "bakersfield", "name": "Bakersfield" },
+  { "code": "akroncanton", "name": "Akron / Canton" },
+  { "code": "batonrouge", "name": "Baton Rouge" },
+  { "code": "toledo", "name": "Toledo" },
+  { "code": "elpaso", "name": "El Paso" },
+  { "code": "dayton", "name": "Dayton / Springfield" },
+  { "code": "desmoines", "name": "Des Moines" },
+  { "code": "wichita", "name": "Wichita" },
+  { "code": "knoxville", "name": "Knoxville" },
+  { "code": "littlerock", "name": "Little Rock" },
+  { "code": "columbia", "name": "Columbia, SC" },
+  { "code": "syracuse", "name": "Syracuse" },
+  { "code": "charleston", "name": "Charleston, SC" },
+  { "code": "madison", "name": "Madison" },
+  { "code": "spokane", "name": "Spokane / Coeur d'Alene" },
+  { "code": "boise", "name": "Boise" },
+  { "code": "reno", "name": "Reno / Tahoe" },
+  { "code": "lexington", "name": "Lexington, KY" },
+  { "code": "stockton", "name": "Stockton" },
+  { "code": "augusta", "name": "Augusta, GA" },
+  { "code": "corpuschristi", "name": "Corpus Christi" },
+  { "code": "fortwayne", "name": "Fort Wayne" },
+  { "code": "pensacola", "name": "Pensacola" },
+  { "code": "lansing", "name": "Lansing" },
+  { "code": "santafe", "name": "Santa Fe / Taos" },
+  { "code": "huntsville", "name": "Huntsville / Decatur" },
+  { "code": "mobile", "name": "Mobile" },
+  { "code": "anchorage", "name": "Anchorage / Mat-Su" },
+  { "code": "montgomery", "name": "Montgomery" },
+  { "code": "shreveport", "name": "Shreveport" },
+  { "code": "savannah", "name": "Savannah / Hinesville" },
+  { "code": "chattanooga", "name": "Chattanooga" },
+  { "code": "jackson", "name": "Jackson, MS" },
+  { "code": "springfield", "name": "Springfield, MO" },
+  { "code": "lincoln", "name": "Lincoln" },
+  { "code": "coloradosprings", "name": "Colorado Springs" },
+  { "code": "fortcollins", "name": "Fort Collins / North CO" },
+  { "code": "eugene", "name": "Eugene" },
+  { "code": "salem", "name": "Salem, OR" },
+  { "code": "bellingham", "name": "Bellingham" },
+  { "code": "modesto", "name": "Modesto" },
+  { "code": "santabarbara", "name": "Santa Barbara" },
+  { "code": "ventura", "name": "Ventura County" },
+  { "code": "palmsprings", "name": "Palm Springs, CA" },
+  { "code": "monterey", "name": "Monterey Bay" },
+  { "code": "inlandempire", "name": "Inland Empire, CA" },
+  { "code": "orangecounty", "name": "Orange County, CA" },
+  { "code": "newhaven", "name": "New Haven" },
+  { "code": "maine", "name": "Maine" },
+  { "code": "nh", "name": "New Hampshire" },
+  { "code": "vermont", "name": "Vermont" },
+  { "code": "westernmass", "name": "Western Massachusetts" },
+  { "code": "southjersey", "name": "South Jersey" },
+  { "code": "jerseyshore", "name": "Jersey Shore" },
+  { "code": "delaware", "name": "Delaware" },
+  { "code": "reading", "name": "Reading" },
+  { "code": "allentown", "name": "Lehigh Valley" },
+  { "code": "harrisburg", "name": "Harrisburg" },
+  { "code": "york", "name": "York, PA" },
+  { "code": "scranton", "name": "Scranton / Wilkes-Barre" },
+  { "code": "erie", "name": "Erie, PA" },
+  { "code": "annarbor", "name": "Ann Arbor" },
+  { "code": "flint", "name": "Flint" },
+  { "code": "saginaw", "name": "Saginaw-Midland-Baycity" },
+  { "code": "kalamazoo", "name": "Kalamazoo" },
+  { "code": "detroit", "name": "Detroit Metro" },
+  { "code": "rockford", "name": "Rockford" },
+  { "code": "peoria", "name": "Peoria" },
+  { "code": "springfieldil", "name": "Springfield, IL" },
+  { "code": "bloomington", "name": "Bloomington-Normal" },
+  { "code": "quadcities", "name": "Quad Cities, IA/IL" },
+  { "code": "cedarrapids", "name": "Cedar Rapids" },
+  { "code": "iowacity", "name": "Iowa City" },
+  { "code": "wausau", "name": "Wausau" },
+  { "code": "appleton", "name": "Appleton-Oshkosh-FDL" },
+  { "code": "greenbay", "name": "Green Bay" },
+  { "code": "duluth", "name": "Duluth / Superior" },
+  { "code": "fargo", "name": "Fargo / Moorhead" },
+  { "code": "siouxfalls", "name": "Sioux Falls / SE SD" },
+  { "code": "topeka", "name": "Topeka" },
+  { "code": "columbiamo", "name": "Columbia / Jeff City" },
+  { "code": "fayetteville", "name": "Fayetteville, AR" },
+  { "code": "jonesboro", "name": "Jonesboro" },
+  { "code": "fortsmith", "name": "Fort Smith" },
+  { "code": "texarkana", "name": "Texarkana" },
+  { "code": "beaumont", "name": "Beaumont / Port Arthur" },
+  { "code": "collegestation", "name": "College Station" },
+  { "code": "sanantonio", "name": "San Antonio" },
+  { "code": "lubbock", "name": "Lubbock" },
+  { "code": "amarillo", "name": "Amarillo" },
+  { "code": "wichitafalls", "name": "Wichita Falls" },
+  { "code": "lawton", "name": "Lawton" },
+  { "code": "pueblo", "name": "Pueblo" },
+  { "code": "flagstaff", "name": "Flagstaff / Sedona" },
+  { "code": "prescott", "name": "Prescott" },
+  { "code": "yuma", "name": "Yuma" },
+  { "code": "provo", "name": "Provo / Orem" },
+  { "code": "ogden", "name": "Ogden-Clearfield" },
+  { "code": "billings", "name": "Billings" },
+  { "code": "greatfalls", "name": "Great Falls" },
+  { "code": "missoula", "name": "Missoula" },
+  { "code": "yakima", "name": "Yakima" },
+  { "code": "olympic", "name": "Olympic Peninsula" },
+  { "code": "skagit", "name": "Skagit / Island / SJI" },
+  { "code": "bend", "name": "Bend" },
+  { "code": "klamath", "name": "Klamath Falls" },
+  { "code": "medford", "name": "Medford-Ashland" },
+  { "code": "redding", "name": "Redding" },
+  { "code": "chico", "name": "Chico" },
+  { "code": "goldcountry", "name": "Gold Country" },
+  { "code": "humboldt", "name": "Humboldt County" },
+  { "code": "visalia", "name": "Visalia-Tulare" },
+  { "code": "merced", "name": "Merced" },
+  { "code": "slo", "name": "San Luis Obispo" },
+  { "code": "imperial", "name": "Imperial County" },
+  { "code": "newlondon", "name": "New London / Eastern CT" },
+  { "code": "plattsburgh", "name": "Plattsburgh-Adirondacks" },
+  { "code": "utica", "name": "Utica-Rome-Oneida" },
+  { "code": "binghamton", "name": "Binghamton" },
+  { "code": "watertown", "name": "Watertown" },
+  { "code": "potsdam", "name": "Potsdam-Canton-Massena" },
+  { "code": "ithaca", "name": "Ithaca" },
+  { "code": "elmira", "name": "Elmira-Corning" }
+]
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+
+<environment_details>
+# VSCode Visible Files
+backend/data/cities_us.json
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+backend/main.py
+backend/data/cities_us.json
+
+# Current Time
+4/9/2025, 8:10:01 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, the combined and deduplicated list of cities from your `small`, `medium`, and `large` files has been saved to `backend/data/cities_us.json`. This gives us a list of 181 unique city/region codes to target. (Note: Columbus, OH is correctly included in the medium list, so it's in the combined list).
+
+**Step 4: Update City Data Logic**
+
+**4a. Modify `CityManager` to read `cities_us.json`.**
+
+I need to update `backend/modules/city_manager.py` so that it can load this new combined list, perhaps when `list_size='us'` is passed.
+
+```tool_code
+<replace_in_file>
+<path>backend/modules/city_manager.py</path>
+<diff>
+<<<<<<< SEARCH
+        """
+        filename_map = {
+            'small': 'cities_small.json',
+            'medium': 'cities_medium.json',
+            'large': 'cities_large.json'
+        }
+        # Default to small if invalid size is given
+        filename = filename_map.get(list_size, 'cities_small.json')
+=======
+        """
+        filename_map = {
+            'small': 'cities_small.json',
+            'medium': 'cities_medium.json',
+            'large': 'cities_large.json',
+            'us': 'cities_us.json' # Added 'us' list size
+        }
+        # Default to 'us' if invalid size is given, or maybe small? Let's default to 'us' for comprehensive scan goal.
+        filename = filename_map.get(list_size, 'cities_us.json')
+>>>>>>> REPLACE
+</diff>
+</replace_in_file>
+```
+
+---
+
+**User:**
+
+[replace_in_file for 'backend/modules/city_manager.py'] Result:
+The content was successfully saved to backend/modules/city_manager.py.
+
+Here is the full, updated content of the file that was saved:
+
+<final_file_content path="backend/modules/city_manager.py">
+# modules/city_manager.py (Recreated)
+import json
+import logging
+import os
+
+class CityManager:
+    def __init__(self, config, state_manager):
+        self.config = config
+        self.state_manager = state_manager
+        self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        self.data_dir = os.path.join(self.backend_dir, 'data')
+        logging.info("CityManager initialized (Recreated Version).")
+
+    def get_cities_by_population(self, list_size='small'):
+        """
+        Reads city data from the specified JSON file (small, medium, large) and returns it.
+        Defaults to 'small'.
+        Placeholder: Currently does not actually sort by population.
+        """
+        filename_map = {
+            'small': 'cities_small.json',
+            'medium': 'cities_medium.json',
+            'large': 'cities_large.json',
+            'us': 'cities_us.json' # Added 'us' list size
+        }
+        # Default to 'us' if invalid size is given, or maybe small? Let's default to 'us' for comprehensive scan goal.
+        filename = filename_map.get(list_size, 'cities_us.json')
+        cities_file_path = os.path.join(self.data_dir, filename)
+
+        logging.info(f"Loading city list: {filename}")
+
+        cities = []
+        try:
+            if not os.path.exists(cities_file_path):
+                 logging.error(f"Cities file not found at {cities_file_path}")
+                 return []
+
+            with open(cities_file_path, 'r', encoding='utf-8') as f:
+                cities = json.load(f)
+
+            # Basic validation
+            if not isinstance(cities, list):
+                logging.error(f"{self.cities_file_path} does not contain a valid JSON list.")
+                return []
+
+            valid_cities = []
+            for city in cities:
+                if isinstance(city, dict) and 'code' in city and 'name' in city:
+                    valid_cities.append(city)
+                else:
+                    logging.warning(f"Skipping invalid city entry in {self.cities_file_path}: {city}")
+
+            # Placeholder for sorting logic if population data exists in the file
+            # e.g., valid_cities.sort(key=lambda x: x.get('population', 0), reverse=True)
+            logging.info(f"Loaded {len(valid_cities)} valid cities from {cities_file_path}.")
+            return valid_cities
+
+        except json.JSONDecodeError as e:
+            logging.error(f"Error decoding JSON from {cities_file_path}: {e}", exc_info=True)
+            return []
+        except Exception as e:
+            logging.error(f"Error reading or processing cities file {cities_file_path}: {e}", exc_info=True)
+            return []
+
+</final_file_content>
+
+IMPORTANT: For any future changes to this file, use the final_file_content shown above as your reference. This content reflects the current state of the file, including any auto-formatting (e.g., if you used single quotes but the formatter converted them to double quotes). Always base your SEARCH/REPLACE operations on this final version to ensure accuracy.
+
+
+<environment_details>
+# VSCode Visible Files
+backend/modules/city_manager.py
+
+# VSCode Open Tabs
+frontend/index.html
+backend/modules/request_handler.py
+backend/modules/content_analyzer.py
+../../Documents/Cline/MCP/perplexity-mcp/test_mcp.js
+.roo/mcp.json
+../../.config/Code/User/globalStorage/saoudrizwan.claude-dev/settings/cline_mcp_settings.json
+backend/modules/ai_handler.py
+frontend/script.js
+backend/config/settings.py
+backend/modules/output_generator.py
+analyze_ab_test.py
+backend/modules/state_manager.py
+backend/main.py
+backend/data/cities_us.json
+backend/modules/city_manager.py
+
+# Current Time
+4/9/2025, 8:10:35 AM (UTC, UTC+0:00)
+
+# Current Mode
+ACT MODE
+</environment_details>
+
+---
+
+**Assistant:**
+
+Okay, `CityManager` is updated to recognize `us` as a `list_size` and load `cities_us.json`.
+
+**4b. Modify `main.py` to add 'us' as a choice for `--list-size`.**
+
+```tool_code
+<replace_in_file>
+<path>backend/main.py</path>
+<diff>
+<<<<<<< SEARCH
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Craigslist Lead Generation Agent")
+    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large'], default='small', help="Size of the city list to use (ignored if --target-cities is set). Default: small")
+    # parser.add_argument('--limit-cities', type=int, default=None, metavar='N', help="Limit run to first N cities.") # Replaced by --target-cities
+    parser.add_argument('--target-cities', type=str, default=None, metavar='city1,city2,...', help="Specify exact city codes to process (comma-separated). Overrides --list-size.")
+    parser.add_argument('--limit-pages', type=int, default=None, metavar='P', help="Limit scraping to first P pages per category. Default: 3")
+=======
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Craigslist Lead Generation Agent")
+    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large', 'us'], default='us', help="Size of the city list to use (ignored if --target-cities is set). Default: us") # Added 'us', changed default
+    # parser.add_argument('--limit-cities', type=int, default=None, metavar='N', help="Limit run to first N cities.") # Replaced by --target-cities
+    parser.add_argument('--target-cities', type=str, default=None, metavar='city1,city2,...', help="Specify exact city codes to process (comma-separated). Overrides --list-size.")
+    parser.add_argument('--limit-pages', type=int, default=None, metavar='P', help="Limit scraping to first P pages per category. Default: 3")
+>>>>>>> REPLACE
+</diff>
+</replace_in_file>
+```
+
+---
+
+**User:**
+
+[replace_in_file for 'backend/main.py'] Result:
+The content was successfully saved to backend/main.py.
+
+Here is the full, updated content of the file that was saved:
+
+<final_file_content path="backend/main.py">
+# main.py (in backend/)
+import time
+import sys
+import os
+import random
+import logging
+import multiprocessing
+import shutil
+import subprocess
+import argparse
+import concurrent.futures # Added for ThreadPoolExecutor
+from datetime import datetime
+from urllib.parse import urljoin
+
+# --- Project Root Definition ---
+project_root = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.dirname(project_root)
+
+# --- Configure Logging ---
+log_file = os.path.join(project_root, 'run.log')
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(processName)s - %(levelname)s - %(module)s - %(message)s',
+    handlers=[
+        logging.FileHandler(log_file, mode='w', encoding='utf-8'),
+        logging.StreamHandler()
+    ]
+)
+logging.info("Logging configured.")
+
+logging.info("Attempting module imports...")
+try:
+    # Import PRE_FILTER_CONFIG as well
+    from config.settings import OXYLABS_CONFIG, SEARCH_CONFIG, STATE_CONFIG, AI_CONFIG, PRE_FILTER_CONFIG
+    from modules.city_manager import CityManager
+    from modules.request_handler import RequestHandler
+    from modules.content_analyzer import ContentAnalyzer
+    from modules.state_manager import StateManager
+    from modules.output_generator import OutputGenerator
+    from modules.ai_handler import AIHandler
+    logging.info("Module imports successful.")
+except ImportError as e:
+    logging.critical(f"Error importing modules: {e}", exc_info=True)
+    logging.critical("Ensure you are running this script from the 'Gemini-Scraper/backend' directory")
+    logging.critical("or that the necessary modules/config are in the correct subdirectories.")
+    sys.exit(1)
+
+# --- Lead Processing Helper Function (for ThreadPoolExecutor) ---
+def process_single_lead(basic_lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name):
+    """Fetches details grades and prepares a single lead dictionary."""
+    lead_url = basic_lead_info.get('url')
+    if not lead_url:
+        logging.warning(f"[{worker_name}] Skipping potential lead: Missing URL.")
+        return None, None # Indicate failure/skip
+
+    # Use different log prefix for threaded operations
+    log_prefix = f"[{worker_name}-Thread]"
+
+    # --- Add City Domain Check ---
+    # Extract city code from the worker_args passed to scrape_city_worker
+    # This requires modifying scrape_city_worker to pass city_code down or accessing it differently.
+    # Let's modify process_single_lead signature for simplicity here.
+    # We need city_code in this function scope. Let's pass it in worker_args and extract it.
+    # RETHINK: Modifying scrape_city_worker args is better. Let's assume city_code is passed down.
+    # We'll modify the call signature later. For now, assume city_code is available.
+    # --- This approach is complex. Let's check the URL domain directly ---
+    from urllib.parse import urlparse
+    parsed_url = urlparse(lead_url)
+    expected_domain = f"{basic_lead_info.get('city_code', 'unknown')}.craigslist.org" # Assume city_code is added to basic_lead_info
+    if parsed_url.netloc != expected_domain:
+        logging.warning(f"{log_prefix} Skipping lead from different city: {lead_url} (Expected domain: {expected_domain})")
+        return None, None # Indicate skip
+
+    logging.info(f"{log_prefix} Fetching lead details: {basic_lead_info.get('title', 'Untitled')} ({lead_url})")
+    lead_page_html = worker_request_handler.get_page(lead_url)
+
+    if not lead_page_html:
+        logging.warning(f"{log_prefix} Failed to fetch lead detail page: {lead_url}. Skipping lead.")
+        return None, None # Indicate failure/skip
+
+    full_lead_details = worker_content_analyzer.analyze_lead_details(lead_page_html, basic_lead_info)
+
+    # AI Grading Step
+    ai_grade_result = None
+    if worker_ai_handler and worker_ai_handler.client:
+        logging.debug(f"{log_prefix} Sending lead to AI for grading: {lead_url}")
+        ai_grade_result = worker_ai_handler.grade_lead(
+            full_lead_details.get('title', ''),
+            full_lead_details.get('description', '')
+        )
+        full_lead_details['ai_grade'] = ai_grade_result
+    else:
+        full_lead_details['ai_grade'] = {"is_junk": False, "profitability_score": None, "reasoning": "AI disabled"}
+
+    # Return processed details (including grade) and the grade result separately for filtering logic
+    return full_lead_details, ai_grade_result
+
+# --- Worker Function for Parallel Processing (Refactored for Threading) ---
+def scrape_city_worker(worker_args):
+    """
+    Worker function to scrape categories (with pagination) for a single city.
+    Uses ThreadPoolExecutor to process leads found on each page in parallel.
+    """
+    # Unpack args (added limit_leads_per_page and search_scope)
+    city_info, config, limit_pages, limit_categories, limit_leads_per_page, num_threads, search_scope = worker_args
+    city_code = city_info.get('code')
+    city_name = city_info.get('name', city_code)
+    worker_name = multiprocessing.current_process().name
+    logging.info(f"[{worker_name}] Starting worker for city: {city_name} ({city_code})")
+
+    worker_state_manager = None
+    worker_ai_handler = None
+    city_leads_found_total = 0
+    try:
+        worker_state_manager = StateManager(config)
+        worker_request_handler = RequestHandler(config['OXYLABS_CONFIG'])
+        worker_content_analyzer = ContentAnalyzer(config)
+        worker_ai_handler = AIHandler(config)
+
+        if not city_code:
+            logging.warning(f"[{worker_name}] Skipping city: Missing 'code' in city_info {city_info}")
+            return (city_code, 0)
+
+        # Determine categories to process
+        all_categories = config['SEARCH_CONFIG'].get('CATEGORIES', [])
+        categories_to_process = all_categories[:limit_categories] if limit_categories is not None else all_categories
+        if limit_categories is not None:
+             logging.warning(f"[{worker_name}] Limiting to first {len(categories_to_process)} categories based on --limit-categories argument.")
+
+        for category_code in categories_to_process:
+            current_page = 1
+            next_page_url = f"https://{city_code}.craigslist.org/search/{category_code}"
+            processed_category_leads = 0
+            max_pages_to_scrape = limit_pages # Use the passed limit
+
+            while next_page_url and current_page <= max_pages_to_scrape:
+                logging.info(f"[{worker_name}] Fetching category: {category_code} (Page {current_page}/{max_pages_to_scrape}) -> {next_page_url}")
+                search_page_html = worker_request_handler.get_page(next_page_url)
+                if not search_page_html:
+                    logging.warning(f"[{worker_name}] Failed to fetch search page {current_page} for {city_code}/{category_code}. Skipping rest of category.")
+                    break
+
+                logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
+                potential_leads_count_page = 0
+                processed_leads_count_page = 0
+                # Pass limit_leads_per_page to the parser
+                leads_on_page_basic = worker_content_analyzer.parse_search_page(search_page_html, city_code, limit_leads_per_page)
+
+                # Add city_code to each basic lead info dict for domain checking later
+                leads_on_page = []
+                for lead in leads_on_page_basic:
+                    lead['city_code'] = city_code
+                    leads_on_page.append(lead)
+
+
+                # --- Pre-filter leads based on title/blacklist before AI pre-filter ---
+                pre_filtered_leads_basic = []
+                blacklist = config.get('PRE_FILTER_CONFIG', {}).get('BLACKLIST_TERMS', [])
+                if leads_on_page:
+                    potential_leads_count_page = len(leads_on_page)
+                    logging.info(f"[{worker_name}] Basic Pre-filtering {potential_leads_count_page} leads from page...")
+                    for lead_info in leads_on_page:
+                        title = lead_info.get('title', '').lower()
+                        # Basic blacklist check
+                        if any(term in title for term in blacklist):
+                            logging.info(f"[{worker_name}] Basic pre-filtered out (blacklist term): {lead_info.get('url')}")
+                            continue # Skip this lead entirely
+                        pre_filtered_leads_basic.append(lead_info)
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_basic)} leads passed basic pre-filtering.")
+                else:
+                    pre_filtered_leads_basic = []
+
+                # --- AI Pre-filter remaining leads ---
+                pre_filtered_leads_ai = []
+                if pre_filtered_leads_basic:
+                    logging.info(f"[{worker_name}] AI Pre-filtering {len(pre_filtered_leads_basic)} leads...")
+                    for lead_info in pre_filtered_leads_basic:
+                        title = lead_info.get('title', '')
+                        # Using None for snippet as parse_search_page doesn't extract it yet
+                        is_potentially_relevant = worker_ai_handler.pre_filter_lead(title, None)
+                        if is_potentially_relevant:
+                            pre_filtered_leads_ai.append(lead_info)
+                        else:
+                            logging.info(f"[{worker_name}] AI pre-filtered out (junk/unrelated): {lead_info.get('url')}")
+                    logging.info(f"[{worker_name}] {len(pre_filtered_leads_ai)} leads passed AI pre-filtering.")
+                else:
+                     pre_filtered_leads_ai = []
+
+
+                # --- Process AI-pre-filtered leads on this page in parallel using threads ---
+                if pre_filtered_leads_ai:
+                    logging.info(f"[{worker_name}] Processing {len(pre_filtered_leads_ai)} AI pre-filtered leads using {num_threads} threads...")
+                    with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+                        future_to_lead = {
+                            executor.submit(process_single_lead, lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name): lead_info
+                            for lead_info in pre_filtered_leads_ai # Use pre_filtered_leads_ai here
+                        }
+                        for future in concurrent.futures.as_completed(future_to_lead):
+                            original_lead_info = future_to_lead[future]
+                            try:
+                                full_lead_details, ai_grade_result = future.result()
+                                if full_lead_details is None: continue # Skip if processing failed
+
+                                # Add the category code to the details before saving
+                                full_lead_details['category'] = category_code
+
+                                # Add lead to DB (still done sequentially by main worker thread after thread finishes)
+                                # Pass search_scope to add_lead
+                                if ai_grade_result is not None and not ai_grade_result.get('is_junk', True):
+                                    if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
+                                        city_leads_found_total += 1
+                                        processed_leads_count_page += 1
+                                        score = ai_grade_result.get('profitability_score', 'N/A')
+                                        logging.info(f"[{worker_name}] Added graded lead (Score: {score}): {full_lead_details.get('url')}")
+                                elif ai_grade_result and ai_grade_result.get('is_junk'):
+                                    score = ai_grade_result.get('profitability_score', 'N/A')
+                                    reason = ai_grade_result.get('reasoning', 'No reason provided')
+                                    logging.info(f"[{worker_name}] Skipping junk lead (AI Filter Score: {score}, Reason: {reason}): {full_lead_details.get('url')}")
+                                elif ai_grade_result is None and worker_ai_handler and worker_ai_handler.client:
+                                     logging.error(f"[{worker_name}] Skipping lead due to AI grading failure: {full_lead_details.get('url')}")
+                                elif not worker_ai_handler or not worker_ai_handler.client:
+                                     # Ensure category is added even if AI is disabled
+                                     full_lead_details['category'] = category_code
+                                     # Pass search_scope to add_lead
+                                     if worker_state_manager.add_lead(full_lead_details, search_scope=search_scope):
+                                        city_leads_found_total += 1
+                                        processed_leads_count_page += 1
+                                        logging.info(f"[{worker_name}] Added lead (AI Disabled): {full_lead_details.get('url')}")
+                            except Exception as exc:
+                                lead_url = original_lead_info.get('url', 'unknown URL')
+                                logging.error(f'[{worker_name}] Lead {lead_url} generated an exception during threaded processing: {exc}', exc_info=True)
+                # --- End of parallel processing block ---
+
+                logging.info(f"[{worker_name}] Page {current_page}: Parsed {potential_leads_count_page} potential leads, added {processed_leads_count_page} new graded leads for {city_code}/{category_code}.")
+                processed_category_leads += processed_leads_count_page
+
+                # Find next page link (Placeholder)
+                next_page_relative = None
+                if current_page < max_pages_to_scrape: pass # Keep next_page_relative as None
+
+                if next_page_relative and current_page < max_pages_to_scrape:
+                    next_page_url = urljoin(next_page_url, next_page_relative)
+                    current_page += 1
+                    time.sleep(random.uniform(1.0, 2.5))
+                else:
+                    if current_page >= max_pages_to_scrape: logging.info(f"[{worker_name}] Reached page limit ({max_pages_to_scrape}) for {city_code}/{category_code}.")
+                    elif not next_page_relative and current_page < max_pages_to_scrape: logging.info(f"[{worker_name}] No next page link found for {city_code}/{category_code}.")
+                    next_page_url = None # Stop pagination
+
+            logging.info(f"[{worker_name}] Finished category {category_code} for {city_code}. Added {processed_category_leads} leads.")
+            time.sleep(random.uniform(0.5, 1.5))
+
+        logging.info(f"[{worker_name}] Finished processing {city_name}. Found {city_leads_found_total} new relevant leads in total.")
+        return (city_code, city_leads_found_total)
+
+    except Exception as e:
+        logging.error(f"[{worker_name}] Error processing city {city_code}: {e}", exc_info=True)
+        return (city_code, 0)
+    finally:
+        if worker_state_manager and worker_state_manager.conn:
+            worker_state_manager.close_db()
+            logging.info(f"[{worker_name}] Closed DB connection for city {city_code}.")
+
+# --- GitHub Deployment Function ---
+def deploy_to_github():
+    """Adds all changes, commits, and pushes to the GitHub remote."""
+    # (Deployment logic remains the same - uses environment variable)
+    github_pat = os.environ.get('GITHUB_PAT')
+    if not github_pat:
+        logging.error("GITHUB_PAT environment variable not set. Skipping deployment.")
+        return
+    github_username = "Brandonrz369"
+    repo_name = "Gemini-Scraper"
+    logging.info(f"Attempting to commit and push changes to GitHub repo: {github_username}/{repo_name}")
+    try:
+        logging.info(f"Running Git commands in: {repo_root}")
+        status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
+        if not status_result.stdout and "graded_leads.json" not in status_result.stdout: # Check if only JSON changed potentially
+             # Double check if graded_leads.json exists and was modified recently
+             json_path = os.path.join(repo_root, 'frontend', 'public', 'graded_leads.json')
+             if not os.path.exists(json_path):
+                 logging.info("No changes detected and no JSON file found to commit.")
+                 return
+             # If only JSON changed git status might be empty if .gitignore ignores it, force add
+             logging.info("Staging potential JSON update...")
+             subprocess.run(['git', 'add', os.path.join('frontend', 'public', 'graded_leads.json')], check=True, cwd=repo_root, capture_output=True, text=True)
+             # Check status again
+             status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
+             if not status_result.stdout:
+                 logging.info("No changes detected to commit after attempting to stage JSON.")
+                 return

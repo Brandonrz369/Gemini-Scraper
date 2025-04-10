@@ -19,7 +19,8 @@ class OutputGenerator:
 
         self.csv_output_path_template = os.path.join(self.data_dir, 'daily_leads_{date}.csv')
         self.html_output_path = os.path.join(self.data_dir, 'leads_dashboard.html') # Keep internal dashboard in data/
-        self.json_output_path = os.path.join(self.frontend_public_dir, 'graded_leads.json') # Save JSON to frontend/public
+        self.json_output_path = os.path.join(self.frontend_public_dir, 'graded_leads.json') # Uncommented for frontend use
+        self.frontend_html_path = os.path.join(self.backend_dir, '..', 'frontend', 'index.html') # Path to frontend index.html
 
     def generate_csv(self, leads_data):
         """Generates a CSV report from the leads data."""
@@ -35,6 +36,7 @@ class OutputGenerator:
              logging.warning("Cannot generate CSV header: No leads found.")
              return
 
+        # Define the header for the CSV file
         header = [
             'id', 'city', 'title', 'url', 'date_posted_iso', 'category',
             'description', 'estimated_value', 'contact_method',

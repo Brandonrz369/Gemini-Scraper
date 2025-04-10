@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "perplexity-server": {
+      "command": "npx",
+      "args": ["mcp-perplexity-search"],
+      "env": {
+        "PERPLEXITY_API_KEY": "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",
+        "PERPLEXITY_MODEL": "sonar-pro",
+        "PERPLEXITY_MODEL_CHAT": "sonar-pro",
+        "PERPLEXITY_MODEL_ASK": "sonar-reasoning-pro",
+        "PERPLEXITY_MODEL_CODE": "sonar-reasoning-pro"
+      }
+    }
+  }
+}
