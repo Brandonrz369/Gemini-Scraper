@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Craigslist Leads Dashboard</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --green: #22c55e;
+            --green-light: #dcfce7;
+            --yellow: #eab308;
+            --yellow-light: #fef9c3;
+            --purple: #a855f7;
+            --purple-light: #f3e8ff;
+            --blue: #3b82f6;
+            --blue-light: #dbeafe;
+            --red: #ef4444;
+            --red-light: #fee2e2;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-50);
+            color: var(--gray-900);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        header {
+            background-color: white;
+            border-bottom: 1px solid var(--gray-200);
+            padding: 1rem 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .date-display {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .refresh-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .refresh-button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .refresh-icon {
+            margin-right: 0.25rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .stat-content {
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 0.5rem;
+            margin-right: 1rem;
+        }
+
+        .icon-total {
+            background-color: var(--blue);
+            color: white;
+        }
+
+        .icon-contacted {
+            background-color: var(--green);
+            color: white;
+        }
+
+        .icon-not-contacted {
+            background-color: var(--yellow);
+            color: white;
+        }
+
+        .icon-filtered {
+            background-color: var(--purple);
+            color: white;
+        }
+
+        .stat-details {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-500);
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--gray-900);
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.625rem 0.75rem 0.625rem 2.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .view-controls {
+            display: flex;
+            margin-bottom: 1rem;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .tab-buttons {
+            display: inline-flex;
+            border-radius: 0.375rem;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .tab-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background-color: white;
+            border: 1px solid var(--gray-300);
+            cursor: pointer;
+        }
+
+        .tab-button:first-child {
+            border-top-left-radius: 0.375rem;
+            border-bottom-left-radius: 0.375rem;
+        }
+
+        .tab-button:last-child {
+            border-top-right-radius: 0.375rem;
+            border-bottom-right-radius: 0.375rem;
+        }
+
+        .tab-button.active {
+            background-color: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-button:not(:last-child) {
+            border-right: none;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background-color: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .action-button:hover {
+            background-color: var(--gray-100);
+        }
+
+        .action-button-icon {
+            margin-right: 0.5rem;
+            color: var(--gray-400);
+        }
+
+        .sort-info {
+            display: flex;
+            align-items: center;
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            overflow-x: auto;
+        }
+
+        .leads-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .leads-table th {
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background-color: var(--gray-50);
+            color: var(--gray-500);
+            border-bottom: 1px solid var(--gray-200);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .leads-table th:hover {
+            background-color: var(--gray-100);
+        }
+
+        .leads-table th .sort-indicator {
+            margin-left: 0.25rem;
+        }
+
+        .leads-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .leads-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .leads-table tr:hover {
+            background-color: var(--gray-50);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px;
+        }
+
+        .status-contacted {
+            background-color: var(--green-light);
+            color: var(--green);
+        }
+
+        .status-not-contacted {
+            background-color: var(--yellow-light);
+            color: var(--yellow);
+        }
+
+        .lead-title {
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+
+        .lead-description {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            max-width: 24rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .lead-city {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-top: 0.25rem;
+        }
+
+        .category-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.625rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px;
+        }
+
+        .category-web {
+            background-color: var(--blue-light);
+            color: var(--blue);
+        }
+
+        .category-cpg {
+            background-color: var(--purple-light);
+            color: var(--purple);
+        }
+
+        .category-wri {
+            background-color: var(--green-light);
+            color: var(--green);
+        }
+
+        .category-crg {
+            background-color: var(--yellow-light);
+            color: var(--yellow);
+        }
+
+        .category-mar {
+            background-color: var(--red-light);
+            color: var(--red);
+        }
+
+        .action-link {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--primary);
+            text-decoration: none;
+            margin-right: 0.75rem;
+        }
+
+        .action-link:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            padding: 3rem 1rem;
+            text-align: center;
+            color: var(--gray-500);
+        }
+
+        /* Kanban View */
+        .kanban-container {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .kanban-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .kanban-column {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .kanban-header {
+            padding: 1rem;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+        }
+
+        .kanban-title {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .kanban-count {
+            margin-left: 0.5rem;
+            padding: 0.125rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 9999px;
+        }
+
+        .not-contacted-count {
+            background-color: var(--yellow-light);
+            color: var(--yellow);
+        }
+
+        .contacted-count {
+            background-color: var(--green-light);
+            color: var(--green);
+        }
+
+        .kanban-body {
+            padding: 1rem;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .kanban-card {
+            padding: 1rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: box-shadow 0.2s;
+        }
+
+        .kanban-card:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .kanban-card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .kanban-card-title {
+            font-weight: 500;
+            margin-top: 0.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .kanban-card-description {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin-bottom: 1rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        .kanban-card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .kanban-action-button {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .mark-contacted-button {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .mark-uncontacted-button {
+            background-color: var(--yellow-light);
+            color: var(--yellow);
+        }
+
+        /* Stats View */
+        .stats-container {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 1.5rem;
+        }
+
+        .stats-section {
+            margin-bottom: 2rem;
+        }
+
+        .stats-section-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .stats-bar {
+            margin-bottom: 1rem;
+        }
+
+        .stats-bar-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .stats-bar-label {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .stats-bar-value {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .stats-bar-container {
+            height: 0.625rem;
+            background-color: var(--gray-200);
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .stats-bar-fill {
+            height: 100%;
+            border-radius: 9999px;
+            background-color: var(--primary);
+        }
+
+        .stats-contact-bar {
+            height: 1rem;
+            background-color: var(--gray-200);
+            border-radius: 9999px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+
+        .stats-contact-fill-contacted {
+            height: 100%;
+            background-color: var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            border-top-left-radius: 9999px;
+            border-bottom-left-radius: 9999px;
+        }
+
+        .stats-contact-fill-not-contacted {
+            height: 100%;
+            background-color: var(--yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.75rem;
+            border-top-right-radius: 9999px;
+            border-bottom-right-radius: 9999px;
+        }
+
+        .stats-legend {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stats-legend-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .stats-legend-color {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 9999px;
+            margin-right: 0.5rem;
+        }
+
+        .stats-legend-label {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s, visibility 0.2s;
+        }
+
+        .modal-backdrop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 32rem;
+            overflow: hidden;
+            transform: translateY(10px);
+            transition: transform 0.2s;
+        }
+
+        .modal-backdrop.show .modal {
+            transform: translateY(0);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .modal-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-detail-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-detail-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-900);
+        }
+
+        .modal-detail-value {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .modal-description {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .modal-actions {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .modal-action-heading {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .modal-contact-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            border: none;
+        }
+
+        .modal-contact-yes {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .modal-contact-no {
+            background-color: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .modal-followup {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .modal-followup-input {
+            flex: 1;
+        }
+
+        .modal-followup-label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--gray-700);
+            margin-bottom: 0.25rem;
+        }
+
+        .modal-date-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+        }
+
+        .modal-followup-actions {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .modal-view-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            background-color: white;
+            color: var(--gray-700);
+            border: 1px solid var(--gray-300);
+        }
+
+        .modal-footer {
+            background-color: var(--gray-50);
+            padding: 1rem 1.5rem;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .modal-close-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        /* Icons */
+        .icons-hidden {
+            display: none;
+        }
+
+        .icon {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            stroke-width: 0;
+            stroke: currentColor;
+            fill: currentColor;
+        }
+
+        .icon-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #filters-panel {
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .filters-title {
+            font-size: 1.125rem;
+            font-weight: 500;
+        }
+
+        .filters-close {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--gray-400);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .filters-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .filter-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 10rem;
+            overflow-y: auto;
+        }
+
+        .filter-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-checkbox {
+            margin-right: 0.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .date-filter {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .date-filter-label {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+            margin-bottom: 0.25rem;
+        }
+
+        .filter-select {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background-color: white;
+        }
+
+        .filters-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .reset-filters {
+            background-color: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .filters-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .save-filters {
+            background-color: white;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+        }
+
+        .apply-saved-filter {
+            min-width: 12rem;
+            padding: 0.5rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>Craigslist Leads Dashboard</h1>
+                <div class="date-display">
+                    <span id="current-date">Generated: </span>
+                    <button class="refresh-button" id="refresh-button">
+                        <svg class="icon icon-sm refresh-icon" viewBox="0 0 24 24">
+                            <path d="M23 4v6h-6"></path>
+                            <path d="M1 20v-6h6"></path>
+                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                        </svg>
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Stats Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-icon icon-total">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
+                            <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Total Leads</div>
+                        <div class="stat-value" id="total-leads">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-icon icon-contacted">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Contacted</div>
+                        <div class="stat-value" id="contacted-leads">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-icon icon-not-contacted">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Not Contacted</div>
+                        <div class="stat-value" id="not-contacted-leads">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-content">
+                    <div class="stat-icon icon-filtered">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                        </svg>
+                    </div>
+                    <div class="stat-details">
+                        <div class="stat-label">Filtered Results</div>
+                        <div class="stat-value" id="filtered-leads">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search and Controls -->
+        <div class="search-bar">
+            <svg class="icon icon-sm search-icon" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="text" id="search-input" class="search-input" placeholder="Search by title or description...">
+        </div>
+
+        <div class="view-controls">
+            <div class="tab-buttons">
+                <button class="tab-button active" data-view="table">Table</button>
+                <button class="tab-button" data-view="kanban">Kanban</button>
+                <button class="tab-button" data-view="statistics">Statistics</button>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-button" id="filters-button">
+                    <svg class="icon icon-sm action-button-icon" viewBox="0 0 24 24">
+                        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                    Filters
+                </button>
+                <button class="action-button" id="export-button">
+                    <svg class="icon icon-sm action-button-icon" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Export
+                </button>
+            </div>
+        </div>
+
+        <!-- Sort Info -->
+        <div class="sort-info" id="sort-info">
+            Sorted by: datePosted (Newest first)
+        </div>
+
+        <!-- Filters Panel -->
+        <div id="filters-panel" class="hidden">
+            <div class="filters-header">
+                <h3 class="filters-title">Filters</h3>
+                <button class="filters-close" id="filters-close">
+                    <svg class="icon icon-sm" viewBox="0 0 24 24">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="filters-grid">
+                <!-- Category Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Category</h4>
+                    <div class="filter-options" id="category-filters">
+                        <!-- Category options will be populated here -->
+                    </div>
+                </div>
+
+                <!-- City Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">City</h4>
+                    <div class="filter-options" id="city-filters">
+                        <!-- City options will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Date and Contacted Filter -->
+                <div class="filter-section">
+                    <h4 class="filter-title">Date Posted</h4>
+                    <div class="date-filter">
+                        <div>
+                            <label class="date-filter-label">From</label>
+                            <input type="date" id="date-from" class="filter-select">
+                        </div>
+                        <div>
+                            <label class="date-filter-label">To</label>
+                            <input type="date" id="date-to" class="filter-select">
+                        </div>
+                    </div>
+
+                    <h4 class="filter-title">Contact Status</h4>
+                    <select id="contacted-filter" class="filter-select">
+                        <option value="">All</option>
+                        <option value="Yes">Contacted</option>
+                        <option value="No">Not Contacted</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="filters-footer">
+                <button class="reset-filters" id="reset-filters">Reset Filters</button>
+                <div class="filters-actions">
+                    <button class="save-filters" id="save-filters">Save Current Filters</button>
+                    <select class="apply-saved-filter" id="saved-filters">
+                        <option value="">Apply Saved Filter</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table View -->
+        <div id="table-view" class="table-container">
+            <table class="leads-table">
+                <thead>
+                    <tr>
+                        <th data-sort="contacted">Status</th>
+                        <th data-sort="title">Lead Details</th>
+                        <th data-sort="category">Category</th>
+                        <th data-sort="datePosted">Date Posted</th>
+                        <th data-sort="followUp">Follow Up</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="leads-table-body">
+                    <!-- Table rows will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Kanban View -->
+        <div id="kanban-view" class="kanban-container hidden">
+            <div class="kanban-column">
+                <div class="kanban-header">
+                    <h3 class="kanban-title">Not Contacted</h3>
+                    <span class="kanban-count not-contacted-count" id="kanban-not-contacted-count">0</span>
+                </div>
+                <div class="kanban-body" id="not-contacted-column">
+                    <!-- Not contacted cards will be populated here -->
+                </div>
+            </div>
+
+            <div class="kanban-column">
+                <div class="kanban-header">
+                    <h3 class="kanban-title">Contacted</h3>
+                    <span class="kanban-count contacted-count" id="kanban-contacted-count">0</span>
+                </div>
+                <div class="kanban-body" id="contacted-column">
+                    <!-- Contacted cards will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics View -->
+        <div id="statistics-view" class="stats-container hidden">
+            <div class="stats-section">
+                <h3 class="stats-section-title">By Category</h3>
+                <div id="category-stats">
+                    <!-- Category stats will be populated here -->
+                </div>
+            </div>
+
+            <div class="stats-section">
+                <h3 class="stats-section-title">Contact Status</h3>
+                <div class="stats-contact-bar">
+                    <div class="stats-contact-fill-contacted" id="stats-contacted-bar"></div>
+                    <div class="stats-contact-fill-not-contacted" id="stats-not-contacted-bar"></div>
+                </div>
+                <div class="stats-legend">
+                    <div class="stats-legend-item">
+                        <div class="stats-legend-color" style="background-color: var(--green);"></div>
+                        <span class="stats-legend-label" id="stats-contacted-label">Contacted (0)</span>
+                    </div>
+                    <div class="stats-legend-item">
+                        <div class="stats-legend-color" style="background-color: var(--yellow);"></div>
+                        <span class="stats-legend-label" id="stats-not-contacted-label">Not Contacted (0)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Lead Detail Modal -->
+    <div class="modal-backdrop" id="lead-modal">
+        <div class="modal">
+            <div class="modal-body">
+                <h3 class="modal-title" id="modal-title"></h3>
+                
+                <div class="modal-content">
+                    <div class="modal-detail-group">
+                        <span class="category-badge" id="modal-category"></span>
+                        <span class="modal-detail-value" id="modal-date"></span>
+                    </div>
+                    
+                    <div class="modal-description" id="modal-description"></div>
+                    
+                    <div class="modal-detail-group">
+                        <div>
+                            <span class="modal-detail-label">City:</span>
+                            <span class="modal-detail-value" id="modal-city"></span>
+                        </div>
+                        <div>
+                            <span class="modal-detail-label">Contact Method:</span>
+                            <span class="modal-detail-value" id="modal-contact-method"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-detail-group">
+                        <div>
+                            <span class="modal-detail-label">Contacted:</span>
+                            <span class="modal-detail-value" id="modal-contacted"></span>
+                        </div>
+                        <div>
+                            <span class="modal-detail-label">Follow Up:</span>
+                            <span class="modal-detail-value" id="modal-followup"></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-actions">
+                    <h4 class="modal-action-heading">Actions</h4>
+                    
+                    <div class="modal-buttons">
+                        <button class="modal-contact-button modal-contact-yes" id="modal-mark-contacted">
+                            <svg class="icon icon-sm refresh-icon" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Mark as Contacted
+                        </button>
+                        
+                        <button class="modal-contact-button modal-contact-no hidden" id="modal-mark-uncontacted">
+                            <svg class="icon icon-sm refresh-icon" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            Mark as Not Contacted
+                        </button>
+                        
+                        <div class="modal-followup">
+                            <div class="modal-followup-input">
+                                <label class="modal-followup-label">Set Follow Up Date</label>
+                                <input type="date" class="modal-date-input" id="modal-followup-date">
+                            </div>
+                            
+                            <div class="modal-followup-actions">
+                                <a href="#" class="modal-view-button" id="modal-view-original" target="_blank">
+                                    View Original
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-close-button" id="modal-close">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG Icons (hidden) -->
+    <div class="icons-hidden">
+        <svg>
+            <defs>
+                <symbol id="icon-inbox" viewBox="0 0 24 24">
+                    <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
+                    <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+                </symbol>
+                <symbol id="icon-check-circle" viewBox="0 0 24 24">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </symbol>
+                <symbol id="icon-alert-circle" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </symbol>
+                <symbol id="icon-filter" viewBox="0 0 24 24">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                </symbol>
+                <symbol id="icon-refresh" viewBox="0 0 24 24">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </symbol>
+                <symbol id="icon-download" viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </symbol>
+                <symbol id="icon-search" viewBox="0 0 24 24">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </symbol>
+                <symbol id="icon-x" viewBox="0 0 24 24">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </symbol>
+            </defs>
+        </svg>
+    </div>
+
+    <script>
+        // Category mapping
+        const categoryMap = {
+            "web": { label: "Web Development", color: "category-web" },
+            "cpg": { label: "Computer Gigs", color: "category-cpg" },
+            "wri": { label: "Writing", color: "category-wri" },
+            "crg": { label: "Creative Gigs", color: "category-crg" },
+            "mar": { label: "Marketing", color: "category-mar" }
+        };
+
+        // State
+        let leads = [];
+        let filteredLeads = [];
+        let selectedLead = null;
+        let currentView = 'table';
+        let sortField = 'datePosted';
+        let sortDirection = 'desc';
+        let searchTerm = '';
+        let categoryFilter = [];
+        let cityFilter = [];
+        let dateFilter = { start: null, end: null };
+        let contactedFilter = null;
+        let savedFilters = [];
+
+        // DOM Elements
+        const currentDateEl = document.getElementById('current-date');
+        const totalLeadsEl = document.getElementById('total-leads');
+        const contactedLeadsEl = document.getElementById('contacted-leads');
+        const notContactedLeadsEl = document.getElementById('not-contacted-leads');
+        const filteredLeadsEl = document.getElementById('filtered-leads');
+        const searchInputEl = document.getElementById('search-input');
+        const tableViewEl = document.getElementById('table-view');
+        const kanbanViewEl = document.getElementById('kanban-view');
+        const statisticsViewEl = document.getElementById('statistics-view');
+        const leadsTableBodyEl = document.getElementById('leads-table-body');
+        const notContactedColumnEl = document.getElementById('not-contacted-column');
+        const contactedColumnEl = document.getElementById('contacted-column');
+        const kanbanNotContactedCountEl = document.getElementById('kanban-not-contacted-count');
+        const kanbanContactedCountEl = document.getElementById('kanban-contacted-count');
+        const categoryStatsEl = document.getElementById('category-stats');
+        const statsContactedBarEl = document.getElementById('stats-contacted-bar');
+        const statsNotContactedBarEl = document.getElementById('stats-not-contacted-bar');
+        const statsContactedLabelEl = document.getElementById('stats-contacted-label');
+        const statsNotContactedLabelEl = document.getElementById('stats-not-contacted-label');
+        const sortInfoEl = document.getElementById('sort-info');
+        const refreshButtonEl = document.getElementById('refresh-button');
+        const exportButtonEl = document.getElementById('export-button');
+        const filtersButtonEl = document.getElementById('filters-button');
+        const filtersPanelEl = document.getElementById('filters-panel');
+        const filtersCloseEl = document.getElementById('filters-close');
+        const categoryFiltersEl = document.getElementById('category-filters');
+        const cityFiltersEl = document.getElementById('city-filters');
+        const dateFromEl = document.getElementById('date-from');
+        const dateToEl = document.getElementById('date-to');
+        const contactedFilterEl = document.getElementById('contacted-filter');
+        const resetFiltersEl = document.getElementById('reset-filters');
+        const saveFiltersEl = document.getElementById('save-filters');
+        const savedFiltersEl = document.getElementById('saved-filters');
+        const leadModalEl = document.getElementById('lead-modal');
+        const modalTitleEl = document.getElementById('modal-title');
+        const modalCategoryEl = document.getElementById('modal-category');
+        const modalDateEl = document.getElementById('modal-date');
+        const modalDescriptionEl = document.getElementById('modal-description');
+        const modalCityEl = document.getElementById('modal-city');
+        const modalContactMethodEl = document.getElementById('modal-contact-method');
+        const modalContactedEl = document.getElementById('modal-contacted');
+        const modalFollowupEl = document.getElementById('modal-followup');
+        const modalMarkContactedEl = document.getElementById('modal-mark-contacted');
+        const modalMarkUncontactedEl = document.getElementById('modal-mark-uncontacted');
+        const modalFollowupDateEl = document.getElementById('modal-followup-date');
+        const modalViewOriginalEl = document.getElementById('modal-view-original');
+        const modalCloseEl = document.getElementById('modal-close');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+
+        function init() {
+            // Set current date
+            currentDateEl.textContent = `Generated: ${formatDateTime(new Date())}`;
+
+            // Load data
+            fetchLeads();
+
+            // Add event listeners
+            searchInputEl.addEventListener('input', handleSearch);
+            refreshButtonEl.addEventListener('click', fetchLeads);
+            exportButtonEl.addEventListener('click', exportData);
+            filtersButtonEl.addEventListener('click', toggleFiltersPanel);
+            filtersCloseEl.addEventListener('click', toggleFiltersPanel);
+            resetFiltersEl.addEventListener('click', resetFilters);
+            saveFiltersEl.addEventListener('click', promptSaveFilter);
+            savedFiltersEl.addEventListener('change', applySavedFilter);
+            dateFromEl.addEventListener('change', handleDateFilterChange);
+            dateToEl.addEventListener('change', handleDateFilterChange);
+            contactedFilterEl.addEventListener('change', handleContactedFilterChange);
+            modalMarkContactedEl.addEventListener('click', handleModalMarkContacted);
+            modalMarkUncontactedEl.addEventListener('click', handleModalMarkUncontacted);
+            modalFollowupDateEl.addEventListener('change', handleModalFollowupChange);
+            modalCloseEl.addEventListener('click', closeModal);
+            leadModalEl.addEventListener('click', (e) => {
+                if (e.target === leadModalEl) closeModal();
+            });
+
+            // Add event listeners for view tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', () => {
+                    setView(button.dataset.view);
+                });
+            });
+
+            // Add event listeners for table sorting
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', () => {
+                    handleSort(th.dataset.sort);
+                });
+            });
+
+            // Check for saved filters in localStorage
+            loadSavedFilters();
+        }
+
+        async function fetchLeads() {
+            try {
+                // Show loading state
+                updateLoadingState(true);
+
+                // Try different paths for the JSON file
+                let response;
+                try {
+                    response = await fetch('/graded_leads.json');
+                    if (!response.ok) throw new Error('Path not found');
+                } catch (e) {
+                    try {
+                        response = await fetch('./graded_leads.json');
+                        if (!response.ok) throw new Error('Alternate path not found');
+                    } catch (e2) {
+                        response = await fetch('../frontend_old/public/graded_leads.json');
+                    }
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch leads: ${response.status}`);
+                }
+
+                const data = await response.json();
+                
+                // Process data
+                leads = data.map((lead, index) => ({
+                    ...lead,
+                    id: lead.id || index + 1,
+                    contacted: lead.contacted || 'No'
+                }));
+
+                // Apply filters and sorting
+                applyFiltersAndSort();
+                
+                // Initialize filter options
+                initializeFilterOptions();
+                
+                // Update UI
+                updateStats();
+                renderCurrentView();
+                
+                console.log('Leads loaded:', leads.length);
+            } catch (error) {
+                console.error('Error fetching leads:', error);
+                alert(`Error loading leads data: ${error.message}`);
+            } finally {
+                updateLoadingState(false);
+            }
+        }
+
+        function updateLoadingState(isLoading) {
+            document.body.style.cursor = isLoading ? 'wait' : 'default';
+            refreshButtonEl.disabled = isLoading;
+        }
+
+        function applyFiltersAndSort() {
+            // Apply filters
+            filteredLeads = leads.filter(lead => {
+                // Search filter
+                const searchMatch = 
+                    searchTerm === '' || 
+                    (lead.title && lead.title.toLowerCase().includes(searchTerm.toLowerCase())) || 
+                    (lead.description && lead.description.toLowerCase().includes(searchTerm.toLowerCase()));
+                
+                // Category filter
+                const categoryMatch = 
+                    categoryFilter.length === 0 || 
+                    categoryFilter.includes(lead.category);
+                
+                // City filter
+                const cityMatch = 
+                    cityFilter.length === 0 || 
+                    (lead.city && cityFilter.includes(lead.city));
+                
+                // Date filter
+                const dateMatch = 
+                    (!dateFilter.start || new Date(lead.datePosted) >= new Date(dateFilter.start)) && 
+                    (!dateFilter.end || new Date(lead.datePosted) <= new Date(dateFilter.end));
+                
+                // Contacted filter
+                const contactedMatch = 
+                    contactedFilter === null || 
+                    lead.contacted === contactedFilter;
+                
+                return searchMatch && categoryMatch && cityMatch && dateMatch && contactedMatch;
+            });
+
+            // Apply sorting
+            sortLeads();
+        }
+
+        function sortLeads() {
+            filteredLeads.sort((a, b) => {
+                // Handle date fields
+                if (['datePosted', 'scraped', 'followUp'].includes(sortField)) {
+                    const dateA = a[sortField] ? new Date(a[sortField]) : new Date(0);
+                    const dateB = b[sortField] ? new Date(b[sortField]) : new Date(0);
+                    
+                    return sortDirection === 'asc' 
+                        ? dateA - dateB 
+                        : dateB - dateA;
+                }
+                
+                // Handle other fields
+                const valueA = (a[sortField] || '').toString();
+                const valueB = (b[sortField] || '').toString();
+                
+                return sortDirection === 'asc'
+                    ? valueA.localeCompare(valueB)
+                    : valueB.localeCompare(valueA);
+            });
+        }
+
+        function updateStats() {
+            // Update stats
+            totalLeadsEl.textContent = leads.length;
+            
+            const contactedCount = leads.filter(lead => lead.contacted === 'Yes').length;
+            const notContactedCount = leads.filter(lead => lead.contacted === 'No').length;
+            
+            contactedLeadsEl.textContent = contactedCount;
+            notContactedLeadsEl.textContent = notContactedCount;
+            filteredLeadsEl.textContent = filteredLeads.length;
+            
+            // Update kanban counts
+            kanbanContactedCountEl.textContent = filteredLeads.filter(lead => lead.contacted === 'Yes').length;
+            kanbanNotContactedCountEl.textContent = filteredLeads.filter(lead => lead.contacted === 'No').length;
+            
+            // Update sort info
+            let fieldName = sortField;
+            if (sortField === 'datePosted') fieldName = 'Date Posted';
+            else if (sortField === 'followUp') fieldName = 'Follow Up';
+            else fieldName = sortField.charAt(0).toUpperCase() + sortField.slice(1);
+            
+            sortInfoEl.textContent = `Sorted by: ${fieldName} (${sortDirection === 'asc' ? 'Oldest first' : 'Newest first'})`;
+
+            // Update statistics view
+            updateStatisticsView();
+        }
+
+        function updateStatisticsView() {
+            // Category stats
+            const categories = Object.keys(categoryMap);
+            let categoryStatsHTML = '';
+            
+            categories.forEach(category => {
+                const count = leads.filter(lead => lead.category === category).length;
+                const percentage = Math.round((count / leads.length) * 100) || 0;
+                
+                categoryStatsHTML += `
+                    <div class="stats-bar">
+                        <div class="stats-bar-header">
+                            <span class="stats-bar-label">${categoryMap[category].label}</span>
+                            <span class="stats-bar-value">${count} leads (${percentage}%)</span>
+                        </div>
+                        <div class="stats-bar-container">
+                            <div class="stats-bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            categoryStatsEl.innerHTML = categoryStatsHTML;
+            
+            // Contact status stats
+            const contactedCount = leads.filter(lead => lead.contacted === 'Yes').length;
+            const notContactedCount = leads.filter(lead => lead.contacted === 'No').length;
+            const totalCount = leads.length;
+            
+            const contactedPercentage = Math.round((contactedCount / totalCount) * 100) || 0;
+            const notContactedPercentage = Math.round((notContactedCount / totalCount) * 100) || 0;
+            
+            statsContactedBarEl.style.width = `${contactedPercentage}%`;
+            statsNotContactedBarEl.style.width = `${notContactedPercentage}%`;
+            
+            if (contactedPercentage > 15) {
+                statsContactedBarEl.textContent = `${contactedPercentage}%`;
+            } else {
+                statsContactedBarEl.textContent = '';
+            }
+            
+            if (notContactedPercentage > 15) {
+                statsNotContactedBarEl.textContent = `${notContactedPercentage}%`;
+            } else {
+                statsNotContactedBarEl.textContent = '';
+            }
+            
+            statsContactedLabelEl.textContent = `Contacted (${contactedCount})`;
+            statsNotContactedLabelEl.textContent = `Not Contacted (${notContactedCount})`;
+        }
+
+        function renderCurrentView() {
+            switch (currentView) {
+                case 'table':
+                    renderTableView();
+                    break;
+                case 'kanban':
+                    renderKanbanView();
+                    break;
+                case 'statistics':
+                    // Stats are updated in updateStats()
+                    break;
+            }
+        }
+
+        function renderTableView() {
+            let tableHTML = '';
+            
+            if (filteredLeads.length === 0) {
+                tableHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            No leads found matching the current filters.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                filteredLeads.forEach(lead => {
+                    const categoryClass = categoryMap[lead.category]?.color || '';
+                    const categoryLabel = categoryMap[lead.category]?.label || lead.category;
+                    
+                    tableHTML += `
+                        <tr>
+                            <td>
+                                <span class="status-badge ${lead.contacted === 'Yes' ? 'status-contacted' : 'status-not-contacted'}">
+                                    ${lead.contacted === 'Yes' ? 'Contacted' : 'Not Contacted'}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="${lead.url}" target="_blank" class="lead-title">${lead.title || 'Untitled'}</a>
+                                <div class="lead-description">${lead.description || 'No description'}</div>
+                                <div class="lead-city">${lead.city || 'Unknown City'}</div>
+                            </td>
+                            <td>
+                                <span class="category-badge ${categoryClass}">${categoryLabel}</span>
+                            </td>
+                            <td>${formatDate(lead.datePosted)}</td>
+                            <td>${lead.followUp ? formatDate(lead.followUp) : '-'}</td>
+                            <td>
+                                <a href="#" class="action-link view-lead" data-id="${lead.id}">View</a>
+                                ${lead.contacted === 'No' 
+                                    ? `<a href="#" class="action-link mark-contacted" data-id="${lead.id}">Mark Contacted</a>` 
+                                    : `<a href="#" class="action-link mark-uncontacted" data-id="${lead.id}">Mark Uncontacted</a>`
+                                }
+                            </td>
+                        </tr>
+                    `;
+                });
+            }
+            
+            leadsTableBodyEl.innerHTML = tableHTML;
+            
+            // Add event listeners
+            document.querySelectorAll('.view-lead').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const leadId = parseInt(link.dataset.id);
+                    openLeadModal(leadId);
+                });
+            });
+            
+            document.querySelectorAll('.mark-contacted').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const leadId = parseInt(link.dataset.id);
+                    markAsContacted(leadId, 'Yes');
+                });
+            });
+            
+            document.querySelectorAll('.mark-uncontacted').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const leadId = parseInt(link.dataset.id);
+                    markAsContacted(leadId, 'No');
+                });
+            });
+        }
+
+        function renderKanbanView() {
+            // Not Contacted Column
+            const notContactedLeads = filteredLeads.filter(lead => lead.contacted === 'No');
+            let notContactedHTML = '';
+            
+            if (notContactedLeads.length === 0) {
+                notContactedHTML = '<div class="empty-state">No leads to display</div>';
+            } else {
+                notContactedLeads.forEach(lead => {
+                    const categoryClass = categoryMap[lead.category]?.color || '';
+                    const categoryLabel = categoryMap[lead.category]?.label || lead.category;
+                    
+                    notContactedHTML += `
+                        <div class="kanban-card" data-id="${lead.id}">
+                            <div class="kanban-card-header">
+                                <span class="category-badge ${categoryClass}">${categoryLabel}</span>
+                                <span class="lead-city">${formatDate(lead.datePosted)}</span>
+                            </div>
+                            <h4 class="kanban-card-title">${lead.title || 'Untitled'}</h4>
+                            <p class="kanban-card-description">${lead.description || 'No description'}</p>
+                            <div class="kanban-card-footer">
+                                <span class="lead-city">${lead.city || 'Unknown City'}</span>
+                                <button class="kanban-action-button mark-contacted-button" data-id="${lead.id}">
+                                    Mark Contacted
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            notContactedColumnEl.innerHTML = notContactedHTML;
+            
+            // Contacted Column
+            const contactedLeads = filteredLeads.filter(lead => lead.contacted === 'Yes');
+            let contactedHTML = '';
+            
+            if (contactedLeads.length === 0) {
+                contactedHTML = '<div class="empty-state">No leads to display</div>';
+            } else {
+                contactedLeads.forEach(lead => {
+                    const categoryClass = categoryMap[lead.category]?.color || '';
+                    const categoryLabel = categoryMap[lead.category]?.label || lead.category;
+                    
+                    contactedHTML += `
+                        <div class="kanban-card" data-id="${lead.id}">
+                            <div class="kanban-card-header">
+                                <span class="category-badge ${categoryClass}">${categoryLabel}</span>
+                                <span class="lead-city">${formatDate(lead.datePosted)}</span>
+                            </div>
+                            <h4 class="kanban-card-title">${lead.title || 'Untitled'}</h4>
+                            <p class="kanban-card-description">${lead.description || 'No description'}</p>
+                            ${lead.followUp ? `
+                                <div class="modal-detail-group">
+                                    <span class="modal-detail-label">Follow up:</span> ${formatDate(lead.followUp)}
+                                </div>
+                            ` : ''}
+                            <div class="kanban-card-footer">
+                                <span class="lead-city">${lead.city || 'Unknown City'}</span>
+                                <button class="kanban-action-button mark-uncontacted-button" data-id="${lead.id}">
+                                    Mark Uncontacted
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            
+            contactedColumnEl.innerHTML = contactedHTML;
+            
+            // Add event listeners
+            document.querySelectorAll('.kanban-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    if (!e.target.classList.contains('kanban-action-button')) {
+                        const leadId = parseInt(card.dataset.id);
+                        openLeadModal(leadId);
+                    }
+                });
+            });
+            
+            document.querySelectorAll('.mark-contacted-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const leadId = parseInt(button.dataset.id);
+                    markAsContacted(leadId, 'Yes');
+                });
+            });
+            
+            document.querySelectorAll('.mark-uncontacted-button').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const leadId = parseInt(button.dataset.id);
+                    markAsContacted(leadId, 'No');
+                });
+            });
+        }
+
+        function initializeFilterOptions() {
+            // Category filters
+            const categories = Object.keys(categoryMap);
+            let categoryOptionsHTML = '';
+            
+            categories.forEach(category => {
+                const isChecked = categoryFilter.includes(category);
+                
+                categoryOptionsHTML += `
+                    <div class="filter-option">
+                        <input type="checkbox" id="category-${category}" class="filter-checkbox category-checkbox" 
+                            value="${category}" ${isChecked ? 'checked' : ''}>
+                        <label for="category-${category}" class="filter-label">${categoryMap[category].label}</label>
+                    </div>
+                `;
+            });
+            
+            categoryFiltersEl.innerHTML = categoryOptionsHTML;
+            
+            // City filters
+            const cities = [...new Set(leads.map(lead => lead.city).filter(city => city))];
+            let cityOptionsHTML = '';
+            
+            cities.forEach(city => {
+                const isChecked = cityFilter.includes(city);
+                
+                cityOptionsHTML += `
+                    <div class="filter-option">
+                        <input type="checkbox" id="city-${city}" class="filter-checkbox city-checkbox" 
+                            value="${city}" ${isChecked ? 'checked' : ''}>
+                        <label for="city-${city}" class="filter-label">${city}</label>
+                    </div>
+                `;
+            });
+            
+            cityFiltersEl.innerHTML = cityOptionsHTML;
+            
+            // Date filter
+            dateFromEl.value = dateFilter.start || '';
+            dateToEl.value = dateFilter.end || '';
+            
+            // Contacted filter
+            contactedFilterEl.value = contactedFilter || '';
+            
+            // Add event listeners
+            document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', handleCategoryFilterChange);
+            });
+            
+            document.querySelectorAll('.city-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', handleCityFilterChange);
+            });
+        }
+
+        function handleSort(field) {
+            if (sortField === field) {
+                // Toggle direction
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                // New field
+                sortField = field;
+                sortDirection = 'desc';
+            }
+            
+            // Update sort indicators in table headers
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                const sortIndicator = th.querySelector('.sort-indicator') || document.createElement('span');
+                sortIndicator.className = 'sort-indicator';
+                
+                if (th.dataset.sort === sortField) {
+                    sortIndicator.textContent = sortDirection === 'asc' ? ' ↑' : ' ↓';
+                    if (!th.querySelector('.sort-indicator')) {
+                        th.appendChild(sortIndicator);
+                    }
+                } else {
+                    sortIndicator.textContent = '';
+                }
+            });
+            
+            // Apply new sorting
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function handleSearch(e) {
+            searchTerm = e.target.value;
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function handleCategoryFilterChange(e) {
+            const category = e.target.value;
+            
+            if (e.target.checked) {
+                if (!categoryFilter.includes(category)) {
+                    categoryFilter.push(category);
+                }
+            } else {
+                categoryFilter = categoryFilter.filter(c => c !== category);
+            }
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function handleCityFilterChange(e) {
+            const city = e.target.value;
+            
+            if (e.target.checked) {
+                if (!cityFilter.includes(city)) {
+                    cityFilter.push(city);
+                }
+            } else {
+                cityFilter = cityFilter.filter(c => c !== city);
+            }
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function handleDateFilterChange() {
+            dateFilter.start = dateFromEl.value || null;
+            dateFilter.end = dateToEl.value || null;
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function handleContactedFilterChange() {
+            contactedFilter = contactedFilterEl.value || null;
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function resetFilters() {
+            searchTerm = '';
+            categoryFilter = [];
+            cityFilter = [];
+            dateFilter = { start: null, end: null };
+            contactedFilter = null;
+            
+            // Reset UI
+            searchInputEl.value = '';
+            
+            document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            document.querySelectorAll('.city-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            
+            dateFromEl.value = '';
+            dateToEl.value = '';
+            contactedFilterEl.value = '';
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function toggleFiltersPanel() {
+            filtersPanelEl.classList.toggle('hidden');
+        }
+
+        function promptSaveFilter() {
+            const name = prompt('Enter a name for this filter set:');
+            if (name) {
+                saveFilter(name);
+            }
+        }
+
+        function saveFilter(name) {
+            const filter = {
+                id: Date.now(),
+                name,
+                config: {
+                    searchTerm,
+                    categoryFilter,
+                    cityFilter,
+                    dateFilter,
+                    contactedFilter
+                }
+            };
+            
+            savedFilters.push(filter);
+            
+            // Update saved filters dropdown
+            updateSavedFiltersDropdown();
+            
+            // Save to localStorage
+            localStorage.setItem('craigslistLeadsSavedFilters', JSON.stringify(savedFilters));
+        }
+
+        function updateSavedFiltersDropdown() {
+            let optionsHTML = '<option value="">Apply Saved Filter</option>';
+            
+            savedFilters.forEach(filter => {
+                optionsHTML += `<option value="${filter.id}">${filter.name}</option>`;
+            });
+            
+            savedFiltersEl.innerHTML = optionsHTML;
+        }
+
+        function applySavedFilter() {
+            const filterId = parseInt(savedFiltersEl.value);
+            if (!filterId) return;
+            
+            const filter = savedFilters.find(f => f.id === filterId);
+            if (!filter) return;
+            
+            // Apply filter config
+            searchTerm = filter.config.searchTerm;
+            categoryFilter = filter.config.categoryFilter;
+            cityFilter = filter.config.cityFilter;
+            dateFilter = filter.config.dateFilter;
+            contactedFilter = filter.config.contactedFilter;
+            
+            // Update UI
+            searchInputEl.value = searchTerm;
+            
+            document.querySelectorAll('.category-checkbox').forEach(checkbox => {
+                checkbox.checked = categoryFilter.includes(checkbox.value);
+            });
+            
+            document.querySelectorAll('.city-checkbox').forEach(checkbox => {
+                checkbox.checked = cityFilter.includes(checkbox.value);
+            });
+            
+            dateFromEl.value = dateFilter.start || '';
+            dateToEl.value = dateFilter.end || '';
+            contactedFilterEl.value = contactedFilter || '';
+            
+            // Reset dropdown
+            savedFiltersEl.value = '';
+            
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function loadSavedFilters() {
+            const savedFiltersJson = localStorage.getItem('craigslistLeadsSavedFilters');
+            if (savedFiltersJson) {
+                try {
+                    savedFilters = JSON.parse(savedFiltersJson);
+                    updateSavedFiltersDropdown();
+                } catch (error) {
+                    console.error('Error loading saved filters:', error);
+                    localStorage.removeItem('craigslistLeadsSavedFilters');
+                }
+            }
+        }
+
+        function setView(view) {
+            // Update active tab
+            document.querySelectorAll('.tab-button').forEach(button => {
+                if (button.dataset.view === view) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+            
+            // Hide all views
+            tableViewEl.classList.add('hidden');
+            kanbanViewEl.classList.add('hidden');
+            statisticsViewEl.classList.add('hidden');
+            
+            // Show selected view
+            if (view === 'table') {
+                tableViewEl.classList.remove('hidden');
+            } else if (view === 'kanban') {
+                kanbanViewEl.classList.remove('hidden');
+            } else if (view === 'statistics') {
+                statisticsViewEl.classList.remove('hidden');
+            }
+            
+            currentView = view;
+            renderCurrentView();
+        }
+
+        function markAsContacted(leadId, status) {
+            // Find lead
+            const leadIndex = leads.findIndex(lead => lead.id === leadId);
+            if (leadIndex === -1) return;
+            
+            // Update lead
+            leads[leadIndex].contacted = status;
+            
+            // If lead is selected in modal, update modal
+            if (selectedLead && selectedLead.id === leadId) {
+                selectedLead.contacted = status;
+                updateLeadModal();
+            }
+            
+            // Re-apply filters and sort
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function setFollowUpDate(leadId, date) {
+            // Find lead
+            const leadIndex = leads.findIndex(lead => lead.id === leadId);
+            if (leadIndex === -1) return;
+            
+            // Update lead
+            leads[leadIndex].followUp = date;
+            
+            // If lead is selected in modal, update modal
+            if (selectedLead && selectedLead.id === leadId) {
+                selectedLead.followUp = date;
+                updateLeadModal();
+            }
+            
+            // Re-apply filters and sort
+            applyFiltersAndSort();
+            updateStats();
+            renderCurrentView();
+        }
+
+        function openLeadModal(leadId) {
+            // Find lead
+            const lead = leads.find(lead => lead.id === leadId);
+            if (!lead) return;
+            
+            // Set as selected lead
+            selectedLead = lead;
+            
+            // Update modal content
+            updateLeadModal();
+            
+            // Show modal
+            leadModalEl.classList.add('show');
+        }
+
+        function updateLeadModal() {
+            if (!selectedLead) return;
+            
+            const categoryClass = categoryMap[selectedLead.category]?.color || '';
+            const categoryLabel = categoryMap[selectedLead.category]?.label || selectedLead.category;
+            
+            // Update content
+            modalTitleEl.textContent = selectedLead.title || 'Untitled';
+            modalCategoryEl.className = `category-badge ${categoryClass}`;
+            modalCategoryEl.textContent = categoryLabel;
+            modalDateEl.textContent = `Posted: ${formatDate(selectedLead.datePosted)}`;
+            modalDescriptionEl.textContent = selectedLead.description || 'No description';
+            modalCityEl.textContent = selectedLead.city || 'Unknown';
+            modalContactMethodEl.textContent = selectedLead.contactMethod || 'Unknown';
+            modalContactedEl.textContent = selectedLead.contacted;
+            modalFollowupEl.textContent = selectedLead.followUp ? formatDate(selectedLead.followUp) : 'None';
+            modalFollowupDateEl.value = selectedLead.followUp || '';
+            modalViewOriginalEl.href = selectedLead.url || '#';
+            
+            // Update buttons
+            if (selectedLead.contacted === 'Yes') {
+                modalMarkContactedEl.classList.add('hidden');
+                modalMarkUncontactedEl.classList.remove('hidden');
+            } else {
+                modalMarkContactedEl.classList.remove('hidden');
+                modalMarkUncontactedEl.classList.add('hidden');
+            }
+        }
+
+        function closeModal() {
+            leadModalEl.classList.remove('show');
+            selectedLead = null;
+        }
+
+        function handleModalMarkContacted() {
+            if (!selectedLead) return;
+            markAsContacted(selectedLead.id, 'Yes');
+        }
+
+        function handleModalMarkUncontacted() {
+            if (!selectedLead) return;
+            markAsContacted(selectedLead.id, 'No');
+        }
+
+        function handleModalFollowupChange() {
+            if (!selectedLead) return;
+            setFollowUpDate(selectedLead.id, modalFollowupDateEl.value);
+        }
+
+        function exportData() {
+            const exportData = filteredLeads.map(lead => {
+                return {
+                    Title: lead.title,
+                    Description: lead.description,
+                    Category: categoryMap[lead.category]?.label || lead.category,
+                    City: lead.city,
+                    DatePosted: formatDate(lead.datePosted),
+                    URL: lead.url,
+                    Contacted: lead.contacted,
+                    FollowUp: lead.followUp ? formatDate(lead.followUp) : '',
+                    ContactMethod: lead.contactMethod
+                };
+            });
+            
+            const csv = convertToCSV(exportData);
+            downloadCSV(csv, 'craigslist_leads_export.csv');
+        }
+
+        function convertToCSV(objArray) {
+            const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
+            let csv = '';
+            
+            // Add headers
+            const headers = Object.keys(array[0]);
+            csv += headers.join(',') + '\r\n';
+            
+            // Add rows
+            for (let i = 0; i < array.length; i++) {
+                let line = '';
+                for (let index in headers) {
+                    if (line !== '') line += ',';
+                    
+                    // Escape commas and quotes
+                    let value = array[i][headers[index]];
+                    if (value === null || value === undefined) {
+                        value = '';
+                    } else if (typeof value === 'string') {
+                        value = value.replace(/"/g, '""');
+                        if (value.includes(',') || value.includes('"') || value.includes('\n')) {
+                            value = `"${value}"`;
+                        }
+                    }
+                    
+                    line += value;
+                }
+                
+                csv += line + '\r\n';
+            }
+            
+            return csv;
+        }
+
+        function downloadCSV(csv, filename) {
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            
+            if (navigator.msSaveBlob) { // IE 10+
+                navigator.msSaveBlob(blob, filename);
+            } else {
+                const url = URL.createObjectURL(blob);
+                link.href = url;
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            
+            try {
+                const date = new Date(dateStr);
+                if (isNaN(date.getTime())) return dateStr;
+                
+                return date.toLocaleDateString();
+            } catch (error) {
+                return dateStr;
+            }
+        }
+
+        function formatDateTime(date) {
+            if (!date) return '';
+            
+            try {
+                if (isNaN(date.getTime())) return '';
+                
+                return `${date.toLocaleDateString()}, ${date.toLocaleTimeString()}`;
+            } catch (error) {
+                return '';
+            }
+        }
+    </script>
+</body>
+</html>

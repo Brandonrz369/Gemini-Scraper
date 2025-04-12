@@ -10,17 +10,18 @@ class OutputGenerator:
         self.config = config
         # Define output paths relative to the backend script location
         self.backend_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) # Assumes this file is in modules/
+        self.repo_root_dir = os.path.dirname(self.backend_dir) # Main gemini-scraper directory
         self.data_dir = os.path.join(self.backend_dir, 'data')
-        self.frontend_public_dir = os.path.join(self.backend_dir, '..', 'frontend', 'public') # Path to frontend/public
+        # self.frontend_public_dir = os.path.join(self.backend_dir, '..', 'frontend', 'public') # No longer needed
 
         # Ensure directories exist
         os.makedirs(self.data_dir, exist_ok=True)
-        os.makedirs(self.frontend_public_dir, exist_ok=True)
+        # os.makedirs(self.frontend_public_dir, exist_ok=True) # No longer needed
 
         self.csv_output_path_template = os.path.join(self.data_dir, 'daily_leads_{date}.csv')
-        self.html_output_path = os.path.join(self.data_dir, 'leads_dashboard.html') # Keep internal dashboard in data/
-        self.json_output_path = os.path.join(self.frontend_public_dir, 'graded_leads.json') # Uncommented for frontend use
-        self.frontend_html_path = os.path.join(self.backend_dir, '..', 'frontend', 'index.html') # Path to frontend index.html
+        # self.html_output_path = os.path.join(self.data_dir, 'leads_dashboard.html') # Old internal dashboard path
+        self.json_output_path = os.path.join(self.repo_root_dir, 'graded_leads.json') # Save JSON in root gemini-scraper dir
+        # self.frontend_html_path = os.path.join(self.backend_dir, '..', 'frontend', 'index.html') # No longer needed
 
     def generate_csv(self, leads_data):
         """Generates a CSV report from the leads data."""
