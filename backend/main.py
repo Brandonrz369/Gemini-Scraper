@@ -10,7 +10,7 @@ import subprocess
 import argparse
 import concurrent.futures # Added for ThreadPoolExecutor
 from datetime import datetime
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse # Added urlparse
 
 # --- Project Root Definition ---
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -18,11 +18,13 @@ repo_root = os.path.dirname(project_root)
 
 # --- Configure Logging ---
 log_file = os.path.join(project_root, 'run.log')
+# Ensure the log directory exists if it's different from project_root
+os.makedirs(os.path.dirname(log_file), exist_ok=True)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(processName)s - %(levelname)s - %(module)s - %(message)s',
     handlers=[
-        logging.FileHandler(log_file, mode='w', encoding='utf-8'),
+        logging.FileHandler(log_file, mode='a', encoding='utf-8'), # Append mode
         logging.StreamHandler()
     ]
 )
@@ -57,14 +59,6 @@ def process_single_lead(basic_lead_info, worker_request_handler, worker_content_
     log_prefix = f"[{worker_name}-Thread]"
 
     # --- Add City Domain Check ---
-    # Extract city code from the worker_args passed to scrape_city_worker
-    # This requires modifying scrape_city_worker to pass city_code down or accessing it differently.
-    # Let's modify process_single_lead signature for simplicity here.
-    # We need city_code in this function scope. Let's pass it in worker_args and extract it.
-    # RETHINK: Modifying scrape_city_worker args is better. Let's assume city_code is passed down.
-    # We'll modify the call signature later. For now, assume city_code is available.
-    # --- This approach is complex. Let's check the URL domain directly ---
-    from urllib.parse import urlparse
     parsed_url = urlparse(lead_url)
     expected_domain = f"{basic_lead_info.get('city_code', 'unknown')}.craigslist.org" # Assume city_code is added to basic_lead_info
     if parsed_url.netloc != expected_domain:
@@ -82,7 +76,8 @@ def process_single_lead(basic_lead_info, worker_request_handler, worker_content_
 
     # AI Grading Step
     ai_grade_result = None
-    if worker_ai_handler and worker_ai_handler.client:
+    # Check if AI service is active (not disabled)
+    if worker_ai_handler and worker_ai_handler.active_service != 'disabled':
         logging.debug(f"{log_prefix} Sending lead to AI for grading: {lead_url}")
         ai_grade_result = worker_ai_handler.grade_lead(
             full_lead_details.get('title', ''),
@@ -115,7 +110,7 @@ def scrape_city_worker(worker_args):
         worker_state_manager = StateManager(config)
         worker_request_handler = RequestHandler(config['OXYLABS_CONFIG'])
         worker_content_analyzer = ContentAnalyzer(config)
-        worker_ai_handler = AIHandler(config)
+        worker_ai_handler = AIHandler(config) # AI Handler initialized per worker
 
         if not city_code:
             logging.warning(f"[{worker_name}] Skipping city: Missing 'code' in city_info {city_info}")
@@ -123,13 +118,42 @@ def scrape_city_worker(worker_args):
 
         # Determine categories to process
         all_categories = config['SEARCH_CONFIG'].get('CATEGORIES', [])
-        categories_to_process = all_categories[:limit_categories] if limit_categories is not None else all_categories
+        categories_to_process_full = all_categories[:limit_categories] if limit_categories is not None else all_categories
         if limit_categories is not None:
-             logging.warning(f"[{worker_name}] Limiting to first {len(categories_to_process)} categories based on --limit-categories argument.")
+             logging.warning(f"[{worker_name}] Limiting to first {len(categories_to_process_full)} categories based on --limit-categories argument.")
+
+        # --- Category Checkpoint/Resumption Logic ---
+        last_completed_category = worker_state_manager.get_last_completed_category_for_city(city_code)
+        categories_to_process = categories_to_process_full
+        if last_completed_category:
+            logging.warning(f"[{worker_name}] Resuming city {city_code}. Last completed category: {last_completed_category}")
+            try:
+                resume_category_index = categories_to_process_full.index(last_completed_category) + 1
+                if resume_category_index < len(categories_to_process_full):
+                    logging.info(f"[{worker_name}] Skipping {resume_category_index} already processed categories for {city_code}.")
+                    categories_to_process = categories_to_process_full[resume_category_index:]
+                else:
+                    logging.info(f"[{worker_name}] All categories for {city_code} were already processed according to category checkpoint.")
+                    categories_to_process = [] # No categories left for this city
+            except ValueError:
+                logging.warning(f"[{worker_name}] Last completed category '{last_completed_category}' for city {city_code} not found in the current category list. Processing all categories for this city.")
+                # Clear the invalid category checkpoint for this city
+                worker_state_manager.clear_last_completed_category_for_city(city_code)
+        else:
+            logging.info(f"[{worker_name}] Starting fresh category processing for city {city_code}.")
+        # --- End Category Checkpoint Logic ---
+
+        if not categories_to_process:
+             logging.info(f"[{worker_name}] No categories left to process for city {city_code} in this run.")
+             # If no categories left, clear any potential stale category checkpoint and return success
+             worker_state_manager.clear_last_completed_category_for_city(city_code)
+             return (city_code, 0) # Return 0 leads found as the city is effectively complete
 
         for category_code in categories_to_process:
             current_page = 1
-            next_page_url = f"https://{city_code}.craigslist.org/search/{category_code}"
+            # Construct the initial search URL correctly
+            base_url = f"https://{city_code}.craigslist.org/"
+            next_page_url = urljoin(base_url, f"search/{category_code}") # Use urljoin for safety
             processed_category_leads = 0
             max_pages_to_scrape = limit_pages # Use the passed limit
 
@@ -137,20 +161,27 @@ def scrape_city_worker(worker_args):
                 logging.info(f"[{worker_name}] Fetching category: {category_code} (Page {current_page}/{max_pages_to_scrape}) -> {next_page_url}")
                 search_page_html = worker_request_handler.get_page(next_page_url)
                 if not search_page_html:
-                    logging.warning(f"[{worker_name}] Failed to fetch search page {current_page} for {city_code}/{category_code}. Skipping rest of category.")
-                    break
+                    # If fetching the search page fails after retries, stop processing this city
+                    logging.error(f"[{worker_name}] Failed to fetch search page {current_page} for {city_code}/{category_code} after retries. Aborting city.")
+                    # Raise an exception or return a specific error status to signal failure
+                    raise ConnectionError(f"Failed to fetch {next_page_url} after retries.")
+                    # break # Removed break, raising exception instead
 
                 logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
                 potential_leads_count_page = 0
                 processed_leads_count_page = 0
                 # Pass limit_leads_per_page to the parser
-                leads_on_page_basic = worker_content_analyzer.parse_search_page(search_page_html, city_code, limit_leads_per_page)
+                # Correctly unpack the two return values from parse_search_page
+                leads_on_page_basic, next_page_relative = worker_content_analyzer.parse_search_page(search_page_html, city_code, limit_leads_per_page)
 
                 # Add city_code to each basic lead info dict for domain checking later
                 leads_on_page = []
-                for lead in leads_on_page_basic:
-                    lead['city_code'] = city_code
-                    leads_on_page.append(lead)
+                for lead in leads_on_page_basic: # Ensure leads_on_page_basic is iterable
+                    if isinstance(lead, dict): # Check if item is a dictionary
+                        lead['city_code'] = city_code
+                        leads_on_page.append(lead)
+                    else:
+                        logging.warning(f"[{worker_name}] Encountered non-dict item in leads_on_page_basic: {lead}. Skipping.")
 
 
                 # --- Pre-filter leads based on title/blacklist before AI pre-filter ---
@@ -168,7 +199,7 @@ def scrape_city_worker(worker_args):
                         pre_filtered_leads_basic.append(lead_info)
                     logging.info(f"[{worker_name}] {len(pre_filtered_leads_basic)} leads passed basic pre-filtering.")
                 else:
-                    pre_filtered_leads_basic = []
+                     pre_filtered_leads_basic = []
 
                 # --- AI Pre-filter remaining leads ---
                 pre_filtered_leads_ai = []
@@ -191,9 +222,10 @@ def scrape_city_worker(worker_args):
                 if pre_filtered_leads_ai:
                     logging.info(f"[{worker_name}] Processing {len(pre_filtered_leads_ai)} AI pre-filtered leads using {num_threads} threads...")
                     with concurrent.futures.ThreadPoolExecutor(max_workers=num_threads) as executor:
+                        # Pass necessary objects to process_single_lead
                         future_to_lead = {
                             executor.submit(process_single_lead, lead_info, worker_request_handler, worker_content_analyzer, worker_ai_handler, worker_name): lead_info
-                            for lead_info in pre_filtered_leads_ai # Use pre_filtered_leads_ai here
+                            for lead_info in pre_filtered_leads_ai
                         }
                         for future in concurrent.futures.as_completed(future_to_lead):
                             original_lead_info = future_to_lead[future]
@@ -216,9 +248,9 @@ def scrape_city_worker(worker_args):
                                     score = ai_grade_result.get('profitability_score', 'N/A')
                                     reason = ai_grade_result.get('reasoning', 'No reason provided')
                                     logging.info(f"[{worker_name}] Skipping junk lead (AI Filter Score: {score}, Reason: {reason}): {full_lead_details.get('url')}")
-                                elif ai_grade_result is None and worker_ai_handler and worker_ai_handler.client:
+                                elif ai_grade_result is None and worker_ai_handler and worker_ai_handler.active_service != 'disabled': # Corrected check
                                      logging.error(f"[{worker_name}] Skipping lead due to AI grading failure: {full_lead_details.get('url')}")
-                                elif not worker_ai_handler or not worker_ai_handler.client:
+                                elif not worker_ai_handler or worker_ai_handler.active_service == 'disabled': # Corrected check
                                      # Ensure category is added even if AI is disabled
                                      full_lead_details['category'] = category_code
                                      # Pass search_scope to add_lead
@@ -234,32 +266,50 @@ def scrape_city_worker(worker_args):
                 logging.info(f"[{worker_name}] Page {current_page}: Parsed {potential_leads_count_page} potential leads, added {processed_leads_count_page} new graded leads for {city_code}/{category_code}.")
                 processed_category_leads += processed_leads_count_page
 
-                # Find next page link (Placeholder)
-                next_page_relative = None
-                if current_page < max_pages_to_scrape: pass # Keep next_page_relative as None
-
+                # Pagination logic using the link found by parse_search_page
                 if next_page_relative and current_page < max_pages_to_scrape:
-                    next_page_url = urljoin(next_page_url, next_page_relative)
+                    # Construct the full URL for the next page
+                    next_page_url = urljoin(base_url, next_page_relative) # Use base_url for joining
                     current_page += 1
-                    time.sleep(random.uniform(1.0, 2.5))
+                    time.sleep(random.uniform(1.0, 2.5)) # Keep delay between page fetches
                 else:
                     if current_page >= max_pages_to_scrape: logging.info(f"[{worker_name}] Reached page limit ({max_pages_to_scrape}) for {city_code}/{category_code}.")
-                    elif not next_page_relative and current_page < max_pages_to_scrape: logging.info(f"[{worker_name}] No next page link found for {city_code}/{category_code}.")
-                    next_page_url = None # Stop pagination
+                    elif not next_page_relative: logging.info(f"[{worker_name}] No next page link found for {city_code}/{category_code}.")
+                    next_page_url = None # Stop pagination for this category
 
             logging.info(f"[{worker_name}] Finished category {category_code} for {city_code}. Added {processed_category_leads} leads.")
-            time.sleep(random.uniform(0.5, 1.5))
+            # --- Save category progress ---
+            worker_state_manager.set_last_completed_category_for_city(city_code, category_code)
+            logging.debug(f"[{worker_name}] Category checkpoint saved: {city_code} -> {category_code}")
+            # --- End save category progress ---
+            time.sleep(random.uniform(0.5, 1.5)) # Keep delay between categories
 
-        logging.info(f"[{worker_name}] Finished processing {city_name}. Found {city_leads_found_total} new relevant leads in total.")
+        logging.info(f"[{worker_name}] Finished processing all categories for {city_name}. Found {city_leads_found_total} new relevant leads in total.")
+        # --- Clear category checkpoint upon successful completion of the city ---
+        worker_state_manager.clear_last_completed_category_for_city(city_code)
+        logging.debug(f"[{worker_name}] Cleared category checkpoint for successfully completed city: {city_code}")
+        # --- End clear category checkpoint ---
         return (city_code, city_leads_found_total)
 
+    except ConnectionError as e: # Catch the specific error raised on persistent fetch failure
+        logging.error(f"[{worker_name}] Worker for city {city_code} aborted due to connection error: {e}")
+        return (city_code, -1) # Return -1 or another indicator of failure
     except Exception as e:
-        logging.error(f"[{worker_name}] Error processing city {city_code}: {e}", exc_info=True)
-        return (city_code, 0)
+        logging.error(f"[{worker_name}] Unhandled error processing city {city_code}: {e}", exc_info=True)
+        return (city_code, -1) # Return -1 or another indicator of failure
     finally:
-        if worker_state_manager and worker_state_manager.conn:
-            worker_state_manager.close_db()
-            logging.info(f"[{worker_name}] Closed DB connection for city {city_code}.")
+        # Ensure DB connection is closed in the worker process
+        if worker_state_manager and hasattr(worker_state_manager, 'conn') and worker_state_manager.conn:
+            try:
+                # Use the internal _close_db method if it exists, otherwise just let it close on exit
+                if hasattr(worker_state_manager, '_close_db'):
+                     worker_state_manager._close_db() # Call internal method if needed
+                else:
+                     worker_state_manager.conn.close() # Directly close connection
+                logging.info(f"[{worker_name}] Closed DB connection for city {city_code}.")
+            except Exception as db_close_e:
+                 logging.error(f"[{worker_name}] Error closing DB connection for {city_code}: {db_close_e}")
+
 
 # --- GitHub Deployment Function ---
 def deploy_to_github():
@@ -275,23 +325,28 @@ def deploy_to_github():
     try:
         logging.info(f"Running Git commands in: {repo_root}")
         status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
-        if not status_result.stdout and "graded_leads.json" not in status_result.stdout: # Check if only JSON changed potentially
-             # Double check if graded_leads.json exists and was modified recently
-             json_path = os.path.join(repo_root, 'frontend', 'public', 'graded_leads.json')
-             if not os.path.exists(json_path):
-                 logging.info("No changes detected and no JSON file found to commit.")
-                 return
-             # If only JSON changed git status might be empty if .gitignore ignores it, force add
-             logging.info("Staging potential JSON update...")
-             subprocess.run(['git', 'add', os.path.join('frontend', 'public', 'graded_leads.json')], check=True, cwd=repo_root, capture_output=True, text=True)
-             # Check status again
-             status_result = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
-             if not status_result.stdout:
-                 logging.info("No changes detected to commit after attempting to stage JSON.")
-                 return
+        json_path = os.path.join(repo_root, 'frontend', 'public', 'graded_leads.json')
+        json_exists = os.path.exists(json_path)
 
+        # Check if there are changes OR if the JSON file exists (even if ignored, we might want to commit it)
+        if not status_result.stdout and not json_exists:
+             logging.info("No changes detected and no JSON file found to commit.")
+             return
+
+        # Stage changes
         logging.info("Staging all changes...")
         subprocess.run(['git', 'add', '.'], check=True, cwd=repo_root, capture_output=True, text=True)
+        # If JSON exists, explicitly add it in case it's ignored but we want this version
+        if json_exists:
+             logging.info("Explicitly staging graded_leads.json...")
+             subprocess.run(['git', 'add', '-f', os.path.join('frontend', 'public', 'graded_leads.json')], check=True, cwd=repo_root, capture_output=True, text=True)
+
+        # Check status again after staging to see if anything is actually staged
+        status_after_add = subprocess.run(['git', 'status', '--porcelain'], check=True, cwd=repo_root, capture_output=True, text=True)
+        if not status_after_add.stdout:
+             logging.info("No changes staged for commit.")
+             return
+
         commit_message = f"Update leads dashboard - {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
         logging.info(f"Committing changes with message: '{commit_message}'")
         subprocess.run(['git', 'commit', '-m', commit_message], check=True, cwd=repo_root, capture_output=True, text=True)
@@ -319,6 +374,7 @@ def deploy_to_github():
 
 # --- Main Execution ---
 def main(args):
+    logging.info("Entered main(args) function.") # Added log
     logging.info(f"--- Craigslist Lead Generation Agent Started (List Size: {args.list_size}) ---")
     os.chdir(project_root)
     logging.info(f"Working directory set to: {os.getcwd()}")
@@ -407,9 +463,9 @@ def main(args):
         logging.info(f"Scraping up to {max_pages} pages per category.")
 
         logging.info("--- Starting Parallel Scrape ---")
-        # Pool size still based on number of cities to process
-        pool_size = min((os.cpu_count() or 4) * 2, total_cities_to_process) if total_cities_to_process > 0 else 1
-        logging.info(f"Initializing multiprocessing pool with {pool_size} workers.")
+        # Set pool size explicitly to 8
+        pool_size = 8
+        logging.info(f"Initializing multiprocessing pool with {pool_size} workers (Explicitly set).")
 
         # Determine search scope for tagging
         if args.target_cities:
@@ -422,9 +478,13 @@ def main(args):
         logging.info(f"Setting search_scope tag for this run: '{search_scope}'")
 
         # Pass limits, leads_per_page limit, thread count, and search_scope to each worker
-        worker_args_list = [(city_info, config, max_pages, args.limit_categories, args.limit_leads_per_page, args.num_threads, search_scope) for city_info in cities_to_process]
+        # Use the args.num_threads value passed in, defaulting to 16 if not specified
+        num_threads_for_workers = args.num_threads if args.num_threads else 16
+        logging.info(f"Using {num_threads_for_workers} threads per worker process.")
+        worker_args_list = [(city_info, config, max_pages, args.limit_categories, args.limit_leads_per_page, num_threads_for_workers, search_scope) for city_info in cities_to_process]
         total_leads_found_this_session = 0
         processed_cities_count = 0
+        failed_cities = [] # Keep track of cities that failed
 
         with multiprocessing.Pool(processes=pool_size) as pool:
             logging.info(f"Distributing {len(worker_args_list)} cities/tasks to workers...")
@@ -432,18 +492,37 @@ def main(args):
                 for result in pool.imap_unordered(scrape_city_worker, worker_args_list):
                     processed_cities_count += 1
                     city_code, leads_found = result
-                    if leads_found > 0: total_leads_found_this_session += leads_found
-                    logging.info(f"Worker finished for {city_code}. Found {leads_found} leads. ({processed_cities_count}/{total_cities_to_process} cities complete)")
-                    # --- Save progress after successful city completion ---
-                    if city_code: # Ensure city_code is valid before saving progress
-                         state_manager.set_last_completed_city(city_code)
-                         logging.debug(f"Checkpoint saved: Last completed city set to {city_code}")
-                    # --- End save progress ---
-                logging.info("All workers finished.")
-            except KeyboardInterrupt: logging.warning("KeyboardInterrupt received. Terminating pool..."); pool.terminate(); pool.join(); logging.warning("Pool terminated."); sys.exit(1)
+                    if leads_found == -1: # Check for failure indicator from worker
+                        logging.error(f"Worker for city {city_code} reported failure.")
+                        failed_cities.append(city_code)
+                        # Do NOT save 'last_completed_city' checkpoint if worker failed
+                    else: # Worker completed successfully (leads_found >= 0)
+                        if leads_found > 0:
+                            total_leads_found_this_session += leads_found
+                        logging.info(f"Worker finished successfully for {city_code}. Found {leads_found} leads. ({processed_cities_count}/{total_cities_to_process} cities complete)")
+                        # --- Save overall city progress ONLY after successful worker completion ---
+                        # The worker itself clears the category checkpoint before returning success.
+                        if city_code: # Ensure city_code is valid before saving progress
+                             state_manager.set_last_completed_city(city_code)
+                             logging.info(f"Overall checkpoint saved: Last completed city set to {city_code}")
+                        else:
+                             logging.warning("Worker returned success but city_code was missing in result.")
+
+                logging.info("All workers finished or reported failure.")
+            except KeyboardInterrupt:
+                logging.warning("KeyboardInterrupt received. Terminating pool...");
+                pool.terminate()
+                pool.join()
+                logging.warning("Pool terminated due to KeyboardInterrupt.")
+                # Attempt to close DB connection gracefully before exiting
+                if state_manager and hasattr(state_manager, '_close_db'):
+                    state_manager._close_db()
+                sys.exit(1) # Exit after cleanup attempt
             except Exception as e: logging.error(f"Error during pool execution: {e}", exc_info=True); pool.terminate(); pool.join(); sys.exit(1)
 
         logging.info("--- Scrape Finished ---")
+        if failed_cities:
+            logging.warning(f"The following cities failed processing due to errors: {', '.join(failed_cities)}")
         state_manager._set_progress_value("last_full_run_completed", datetime.now().isoformat())
         logging.info(f"Processed {processed_cities_count} cities.")
         logging.info(f"Found approx {total_leads_found_this_session} new leads this session.")
@@ -464,22 +543,32 @@ def main(args):
     except Exception as e:
         logging.critical(f"An unexpected error occurred in main execution: {e}", exc_info=True)
     finally:
+        # Ensure main state manager connection is closed if it was opened
         if state_manager and hasattr(state_manager, 'conn') and state_manager.conn:
-            logging.info("Closing main database connection...")
-            state_manager.close_db()
+            try:
+                # Use the internal _close_db method if it exists, otherwise just let it close on exit
+                if hasattr(state_manager, '_close_db'): # Check if internal method exists
+                    state_manager._close_db()
+                else:
+                    state_manager.conn.close() # Directly close connection
+                logging.info("Closed main database connection.")
+            except Exception as db_close_e:
+                logging.error(f"Error closing main database connection: {db_close_e}")
         else:
             logging.info("Main StateManager not initialized or connection already closed.")
+        logging.info("Main execution block finished or encountered critical error.")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Craigslist Lead Generation Agent")
-    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large', 'us'], default='us', help="Size of the city list to use (ignored if --target-cities is set). Default: us") # Added 'us', changed default
-    # parser.add_argument('--limit-cities', type=int, default=None, metavar='N', help="Limit run to first N cities.") # Replaced by --target-cities
+    parser.add_argument('--list-size', type=str, choices=['small', 'medium', 'large', 'us'], default='us', help="Size of the city list to use (ignored if --target-cities is set). Default: us")
     parser.add_argument('--target-cities', type=str, default=None, metavar='city1,city2,...', help="Specify exact city codes to process (comma-separated). Overrides --list-size.")
     parser.add_argument('--limit-pages', type=int, default=None, metavar='P', help="Limit scraping to first P pages per category. Default: 3")
     parser.add_argument('--limit-categories', type=int, default=None, metavar='C', help="Limit run to first C categories per city.")
-    parser.add_argument('--limit-leads-per-page', type=int, default=None, metavar='L', help="Limit processing to first L leads per search page (for testing).") # Added limit-leads-per-page
-    parser.add_argument('--num-threads', type=int, default=8, metavar='T', help="Number of threads for internal lead processing. Default: 8") # Added num-threads
+    parser.add_argument('--limit-leads-per-page', type=int, default=None, metavar='L', help="Limit processing to first L leads per search page (for testing).")
+    # Changed default num_threads to 16
+    parser.add_argument('--num-threads', type=int, default=16, metavar='T', help="Number of threads for internal lead processing. Default: 16")
     args = parser.parse_args()
 
-    logging.info("Executing main block...")
+    logging.info("About to call main(args)...") # Added log
     main(args)

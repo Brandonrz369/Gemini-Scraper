@@ -1,146 +1,227 @@
 # modules/ai_handler.py
+# modules/ai_handler.py
 import logging
 import time
-import json # Added for parsing AI response
-from openai import OpenAI, RateLimitError, APIError, APITimeoutError
+import json
+from collections import deque
+from datetime import datetime, timedelta
+
+# Langchain imports
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
+from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.exceptions import OutputParserException
+
+# Exception handling imports
+from openai import RateLimitError as OpenAIRateLimitError, APIError as OpenAIAPIError, APITimeoutError as OpenAPITimeoutError
+from google.api_core.exceptions import ResourceExhausted as GoogleRateLimitError, GoogleAPIError, DeadlineExceeded as GoogleAPITimeoutError
+
+# Import keys directly from config (which loads from .env)
+from config.settings import OPENROUTER_API_KEY, AI_CONFIG # Removed GEMINI_API_KEYS
 
 class AIHandler:
-    def __init__(self, config):
-        ai_config = config.get('AI_CONFIG', {})
-        self.api_key = ai_config.get('API_KEY')
-        self.base_url = ai_config.get('BASE_URL')
-        self.model_name = ai_config.get('MODEL_NAME')
+    def __init__(self, config): # config is passed but we use imported constants now
+        # Removed Gemini specific attributes
+        self.openrouter_model_name = AI_CONFIG.get('OPENROUTER_MODEL', "anthropic/claude-3-haiku") # Ensure default
+        self.openrouter_base_url = AI_CONFIG.get('OPENROUTER_BASE_URL', "https://openrouter.ai/api/v1")
+        # self.key_cooldown = timedelta(minutes=AI_CONFIG.get('KEY_CYCLE_COOLDOWN_MINUTES', 20)) # No longer needed
 
-        if not all([self.api_key, self.base_url, self.model_name]):
-            logging.error("AI configuration (API_KEY, BASE_URL, MODEL_NAME) is incomplete. AI filtering disabled.")
-            self.client = None
-        else:
+        # self.gemini_keys = deque(GEMINI_API_KEYS) # Removed Gemini keys
+        self.openrouter_key = OPENROUTER_API_KEY
+
+        # self.gemini_unavailable_until = None # Removed Gemini state
+        self.active_service = 'openrouter' if self.openrouter_key else 'disabled' # Default to OpenRouter if key exists
+
+        if not self.openrouter_key:
+            logging.error("No OpenRouter API key found in config/env. AI filtering disabled.")
+            self.active_service = 'disabled'
+
+        logging.info(f"AI Handler initialized. Primary Service: {self.active_service.upper()}. OpenRouter Key: {'Yes' if self.openrouter_key else 'No'}")
+
+    def _get_llm_client(self, temperature=None): # Keep temperature parameter for potential use with OpenRouter models
+        """Gets the appropriate Langchain LLM client based on current state."""
+        now = datetime.now()
+
+        # Simplified logic: only use OpenRouter if available
+        if self.active_service == 'openrouter' and self.openrouter_key:
             try:
-                # Initialize OpenAI client configured for OpenRouter
-                self.client = OpenAI(
-                    base_url=self.base_url,
-                    api_key=self.api_key,
-                )
-                logging.info(f"AI Handler initialized for model: {self.model_name}")
+                logging.debug("Initializing OpenRouter client.")
+                # Pass temperature if provided
+                client_kwargs = {
+                    "model": self.openrouter_model_name,
+                    "openai_api_key": self.openrouter_key,
+                    "base_url": self.openrouter_base_url,
+                }
+                if temperature is not None:
+                    client_kwargs["temperature"] = temperature
+
+                return ChatOpenAI(**client_kwargs)
             except Exception as e:
-                logging.error(f"Failed to initialize OpenAI client for OpenRouter: {e}", exc_info=True)
-                self.client = None
+                logging.error(f"Failed to initialize OpenRouter client: {e}", exc_info=True)
+                return None
+        else:
+            logging.error("No active AI service or keys available.")
+            return None
 
-    def grade_lead(self, title, description, max_retries=2, initial_delay=5):
+    def _call_llm_with_cycling(self, system_prompt, user_prompt, max_tokens, temperature, json_mode=True, max_retries=2, initial_delay=5):
         """
-        Uses the configured AI model via OpenRouter to grade a lead's potential profitability
-        and identify junk.
-        Returns a dictionary: {'is_junk': bool, 'profitability_score': int|None, 'reasoning': str}
-        Returns None if the AI call fails definitively after retries.
+        Handles the LLM call, retries. Now primarily uses OpenRouter.
+        Returns the raw response content string or None if all attempts fail.
         """
-        if not self.client:
-            logging.warning("AI client not initialized. Skipping lead grading.")
-            # Default to not junk, no score if AI is disabled
-            return {"is_junk": False, "profitability_score": None, "reasoning": "AI client not initialized"}
-
-        # Limit description length to avoid excessive token usage
-        description_snippet = description[:2000]
-
-        system_prompt = """You are an expert lead evaluator for a web/graphic design agency specializing in website development, graphic design, branding, and Photoshop services. Your task is to analyze Craigslist posts to identify potential clients *seeking these specific services*.
-
-Respond ONLY with a valid JSON object containing the following keys:
-- "is_junk": boolean. Set to `true` if the post is spam, selling unrelated items/services (like art pieces, supplies, classes), offering jobs *at* other companies, or is *not* clearly a request *for* web design, graphic design, or Photoshop services. Set to `false` ONLY if the post appears to be a genuine request *seeking* the agency's services.
-- "profitability_score": integer (1-10, higher means more profitable potential) or null (if is_junk is true). Base the score on factors like: clarity of the service request, mention of budget, direct relevance to the agency's core services (web design, graphic design, Photoshop), specificity of needs, and perceived professionalism of the poster. Posts just selling items, even related ones, should generally be junk or have a very low score.
-- "reasoning": string (a brief explanation for the score and junk status, specifically mentioning *why* it is or isn't a relevant service request for the agency)."""
-
-        user_prompt = f"""Please evaluate the following Craigslist post based *strictly* on whether it represents a potential client seeking web design, graphic design, or Photoshop services:
-
-Title: {title}
-Description: {description_snippet}
-
-Provide your evaluation in the specified JSON format."""
+        if self.active_service == 'disabled':
+            logging.warning("AI service is disabled. Skipping LLM call.")
+            return None
 
         retries = 0
         delay = initial_delay
-        last_error = "Unknown error" # Initialize last_error
+        last_error = None
+
         while retries <= max_retries:
+            # Pass temperature to _get_llm_client
+            llm_client = self._get_llm_client(temperature=temperature)
+            if not llm_client:
+                logging.error("Failed to get LLM client. Cannot make API call.")
+                return None # Cannot proceed without a client
+
+            current_service = self.active_service # Should always be 'openrouter' if active
+            model_name = self.openrouter_model_name
+            logging.debug(f"Attempt {retries + 1}/{max_retries + 1} using {current_service.upper()} model: {model_name}")
+
+            messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
+            invoke_kwargs = {}
+
+            # Set parameters for OpenRouter (using ChatOpenAI structure)
+            if isinstance(llm_client, ChatOpenAI):
+                # Temperature handled at init
+                invoke_kwargs["max_tokens"] = max_tokens
+                if json_mode:
+                    invoke_kwargs["response_format"] = {"type": "json_object"}
+            else:
+                 # This case should ideally not happen if only OpenRouter is configured
+                 logging.warning("LLM client is not ChatOpenAI, cannot set specific parameters like response_format.")
+                 invoke_kwargs["temperature"] = temperature # Pass temp directly if not ChatOpenAI
+                 invoke_kwargs["max_tokens"] = max_tokens
+
+
             try:
-                completion = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt},
-                    ],
-                    temperature=0.3, # Slightly higher temp for more nuanced reasoning
-                    max_tokens=150, # Increased tokens for JSON output + reasoning
-                    response_format={"type": "json_object"}, # Request JSON output if model supports it
-                )
+                # Use **invoke_kwargs
+                response = llm_client.invoke(messages, **invoke_kwargs)
+                response_content = response.content.strip()
+                logging.debug(f"Raw response from {current_service.upper()}: {response_content}")
+                return response_content # Success
 
-                response_content = completion.choices[0].message.content.strip()
-                logging.debug(f"AI grading raw response for '{title}': {response_content}")
+            # Removed specific Gemini error handling
+            except (OpenAIRateLimitError, OpenAIAPIError, OpenAPITimeoutError) as e:
+                 # Handle OpenRouter specific errors
+                 logging.warning(f"OpenRouter API Error (Attempt {retries + 1}): {e}")
+                 last_error = e
+                 # No fallback, just proceed to retry logic
 
-                try:
-                    # Parse the JSON response
-                    grade_data = json.loads(response_content)
+            except OutputParserException as e:
+                 logging.warning(f"Langchain Output Parser Error (Attempt {retries + 1}): {e}. Likely malformed response from LLM.")
+                 last_error = e
 
-                    # Validate required keys
-                    if not all(k in grade_data for k in ["is_junk", "profitability_score", "reasoning"]):
-                        logging.warning(f"AI grading response missing required keys for '{title}'. Response: {response_content}")
-                        # Attempt to salvage if possible, otherwise treat as failure for this attempt
-                        grade_data = {"is_junk": True, "profitability_score": None, "reasoning": "AI response format error (missing keys)"} # Default to junk on format error
-
-                    # Validate types and score range
-                    if not isinstance(grade_data.get("is_junk"), bool):
-                         grade_data["is_junk"] = True # Default to junk if type is wrong
-                         grade_data["reasoning"] += " | Invalid type for is_junk."
-                    if grade_data["is_junk"]:
-                        grade_data["profitability_score"] = None # Ensure score is null if junk
-                    elif not (isinstance(grade_data.get("profitability_score"), int) and 1 <= grade_data["profitability_score"] <= 10):
-                         logging.warning(f"AI grading returned invalid score for '{title}'. Score: {grade_data.get('profitability_score')}")
-                         # Allow null score if AI returns it, even if not junk
-                         if grade_data.get("profitability_score") is not None:
-                             grade_data["profitability_score"] = None # Nullify invalid scores
-                             grade_data["reasoning"] += " | Invalid profitability score (must be 1-10 or null)."
-                    if not isinstance(grade_data.get("reasoning"), str):
-                         grade_data["reasoning"] = str(grade_data.get("reasoning", "")) + " | Invalid type for reasoning."
-
-
-                    logging.info(f"AI grading successful for '{title}'. Score: {grade_data.get('profitability_score')}, Junk: {grade_data.get('is_junk')}")
-                    return grade_data
-
-                except json.JSONDecodeError:
-                    logging.warning(f"AI grading response was not valid JSON for '{title}'. Response: {response_content}")
-                    # Treat as failure for this attempt, retry
-                    last_error = f"Invalid JSON response from AI: {response_content}"
-                    # Fall through to retry logic below
-
-            except RateLimitError as e:
-                last_error = f"AI API rate limit hit (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
-                logging.warning(last_error)
-            except APITimeoutError as e:
-                 last_error = f"AI API timeout (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
-                 logging.warning(last_error)
-            except APIError as e:
-                # Includes errors like invalid request, model errors etc.
-                last_error = f"AI API error during grading for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
-                logging.error(last_error, exc_info=False) # Log API errors as ERROR
-                # Check if it's a potentially recoverable error before retrying
-                if "invalid_request_error" in str(e).lower(): # e.g., prompt issues
-                     logging.error("Potential prompt issue detected. Aborting retries for this lead.")
-                     return None # Abort retries for likely unrecoverable API errors like bad prompts
             except Exception as e:
-                last_error = f"Unexpected error during AI grading for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
-                logging.error(last_error, exc_info=True)
+                logging.error(f"Unexpected error during LLM call (Attempt {retries + 1}): {e}", exc_info=True)
+                last_error = e
 
-            # If we are here, an error occurred or JSON parsing failed. Retry.
+            # --- Retry Logic ---
             retries += 1
             if retries <= max_retries:
                 logging.info(f"Waiting {delay:.1f} seconds before retry {retries}/{max_retries}...")
                 time.sleep(delay)
-                delay *= 2 # Exponential backoff
+                delay *= 1.5 # Exponential backoff
             else:
-                # If loop finishes, all retries failed
-                logging.error(f"AI grading failed after {max_retries + 1} attempts for '{title}'. Last error: {last_error}")
-                return None # Indicate failure after retries
+                logging.error(f"LLM call failed after {max_retries + 1} attempts. Last error: {last_error}")
+                return None # Indicate failure after all retries
 
-        # This part should ideally not be reached if the loop logic is correct
-        logging.error(f"AI grading loop finished unexpectedly for '{title}'.")
+        logging.error(f"LLM call loop finished unsuccessfully.")
         return None
+
+
+    def grade_lead(self, title, description, max_retries=2, initial_delay=5):
+        """
+        Uses the configured AI model (now primarily OpenRouter/Haiku) to grade a lead.
+        Returns a dictionary: {'is_junk': bool, 'profitability_score': int|None, 'reasoning': str}
+        Returns None if the AI call fails definitively after retries.
+        """
+        if self.active_service == 'disabled':
+             return {"is_junk": False, "profitability_score": None, "reasoning": "AI service disabled"}
+
+        description_snippet = description[:2000] # Limit description length
+
+        # Updated prompt to explicitly ask for JSON and include Google Ads terms
+        system_prompt = """You are an expert lead evaluator for a web/graphic design agency specializing in website development, graphic design, branding, Photoshop services, and Google Ads (AdWords/PPC) management. Your task is to analyze Craigslist posts to identify potential clients *seeking these specific services*.
+
+Respond ONLY with a valid JSON object containing the following keys:
+- "is_junk": boolean. Set to `true` if the post is spam, selling unrelated items/services (like art pieces, supplies, classes), offering jobs *at* other companies, or is *not* clearly a request *for* web design, graphic design, Photoshop, or Google Ads/AdWords/PPC services. Set to `false` ONLY if the post appears to be a genuine request *seeking* the agency's services.
+- "profitability_score": integer (1-10, higher means more profitable potential) or null (if is_junk is true). Base the score on factors like: clarity of the service request, mention of budget, direct relevance to the agency's core services (web design, graphic design, Photoshop, Google Ads/AdWords/PPC), specificity of needs, and perceived professionalism of the poster. Posts just selling items, even related ones, should generally be junk or have a very low score.
+- "reasoning": string (a brief explanation for the score and junk status, specifically mentioning *why* it is or isn't a relevant service request for the agency).
+
+Example valid JSON output:
+{"is_junk": false, "profitability_score": 7, "reasoning": "Clear request for a new business website, mentions specific features needed."}
+{"is_junk": true, "profitability_score": null, "reasoning": "Post is selling used graphic design software, not seeking services."}"""
+
+        user_prompt = f"""Please evaluate the following Craigslist post based *strictly* on whether it represents a potential client seeking web design, graphic design, Photoshop, or Google Ads/AdWords/PPC services:
+
+Title: {title}
+Description: {description_snippet}
+
+Provide your evaluation ONLY in the specified JSON format."""
+
+        response_content = self._call_llm_with_cycling(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            max_tokens=200, # Increased slightly for robust JSON
+            temperature=0.3, # Keep temperature setting
+            json_mode=True, # Attempt to use native JSON mode if available
+            max_retries=max_retries,
+            initial_delay=initial_delay
+        )
+
+        if response_content is None:
+            logging.error(f"AI grading failed for '{title}' after all retries/fallbacks.")
+            return None # Indicate definitive failure
+
+        try:
+            # Attempt to parse the JSON response
+            # Sometimes models wrap JSON in ```json ... ```, try to strip that
+            if response_content.startswith("```json"):
+                response_content = response_content[7:]
+                if response_content.endswith("```"):
+                    response_content = response_content[:-3]
+            response_content = response_content.strip()
+
+            grade_data = json.loads(response_content)
+
+            # --- Validation (same as before) ---
+            if not all(k in grade_data for k in ["is_junk", "profitability_score", "reasoning"]):
+                logging.warning(f"AI grading response missing required keys for '{title}'. Response: {response_content}")
+                grade_data = {"is_junk": True, "profitability_score": None, "reasoning": "AI response format error (missing keys)"}
+            if not isinstance(grade_data.get("is_junk"), bool):
+                 grade_data["is_junk"] = True
+                 grade_data["reasoning"] = str(grade_data.get("reasoning", "")) + " | Invalid type for is_junk."
+            if grade_data["is_junk"]:
+                grade_data["profitability_score"] = None
+            elif not (grade_data.get("profitability_score") is None or (isinstance(grade_data.get("profitability_score"), int) and 1 <= grade_data["profitability_score"] <= 10)):
+                 logging.warning(f"AI grading returned invalid score for '{title}'. Score: {grade_data.get('profitability_score')}")
+                 grade_data["profitability_score"] = None
+                 grade_data["reasoning"] = str(grade_data.get("reasoning", "")) + " | Invalid profitability score (must be 1-10 or null)."
+            if not isinstance(grade_data.get("reasoning"), str):
+                 grade_data["reasoning"] = str(grade_data.get("reasoning", "")) + " | Invalid type for reasoning."
+            # --- End Validation ---
+
+            logging.info(f"AI grading successful for '{title}'. Score: {grade_data.get('profitability_score')}, Junk: {grade_data.get('is_junk')}")
+            return grade_data
+
+        except json.JSONDecodeError:
+            logging.error(f"AI grading response was not valid JSON for '{title}' after stripping ```. Response: {response_content}")
+            # Return a failure indicator, as the LLM failed to follow instructions even after retries
+            return {"is_junk": True, "profitability_score": None, "reasoning": "AI failed to return valid JSON"}
+        except Exception as e:
+             logging.error(f"Unexpected error parsing AI grade for '{title}': {e}", exc_info=True)
+             return None
+
 
     def pre_filter_lead(self, title, snippet, max_retries=1, initial_delay=2):
         """
@@ -148,90 +229,65 @@ Provide your evaluation in the specified JSON format."""
         Returns True if potentially relevant, False if definitely junk/unrelated.
         Defaults to True if the AI call fails, to avoid discarding good leads.
         """
-        if not self.client:
-            logging.warning("AI client not initialized. Skipping pre-filtering, assuming relevant.")
-            return True # Default to potentially relevant if AI is disabled
+        if self.active_service == 'disabled':
+            logging.warning("AI service is disabled. Skipping pre-filtering, assuming relevant.")
+            return True
 
-        # Use snippet if available, otherwise just title
         content_to_analyze = f"Title: {title}"
-        if snippet:
-            # Limit snippet length for pre-filter efficiency
-            content_to_analyze += f"\nSnippet: {snippet[:300]}"
+        if snippet: content_to_analyze += f"\nSnippet: {snippet[:300]}"
 
+        # Updated prompt for Gemini/JSON
         system_prompt = """You are a rapid lead pre-filter for a web/graphic design agency. Your task is to quickly determine if a Craigslist post *might* be relevant based ONLY on its title and snippet.
 
-Focus: Identify if the post is *definitely* junk (spam, selling unrelated items like art/furniture/supplies, offering jobs at other companies, user research studies, seeking dating advice, etc.) or if it *could possibly* be someone seeking web design, graphic design, or Photoshop services. Err on the side of caution; if unsure, mark as potentially relevant.
+Focus: Identify if the post is *definitely* junk (spam, selling unrelated items like art/furniture/supplies, offering jobs at other companies, user research studies, seeking dating advice, etc.) or if it *could possibly* be someone seeking web design, graphic design, Photoshop, or Google Ads/AdWords/PPC services. Err on the side of caution; if unsure, mark as potentially relevant.
 
 Respond ONLY with a valid JSON object containing a single key:
-- "is_potentially_relevant": boolean (true if it *might* be relevant, false if it's *definitely* junk/unrelated)"""
+- "is_potentially_relevant": boolean (true if it *might* be relevant, false if it's *definitely* junk/unrelated)
+
+Example valid JSON output:
+{"is_potentially_relevant": true}
+{"is_potentially_relevant": false}"""
 
         user_prompt = f"""Quickly evaluate if the following post title/snippet could possibly be relevant to a web/graphic design agency seeking clients. Is it definitely junk/unrelated?
 
 {content_to_analyze}
 
-Provide your evaluation in the specified JSON format."""
+Provide your evaluation ONLY in the specified JSON format."""
 
-        retries = 0
-        delay = initial_delay
-        last_error = "Unknown error"
-        while retries <= max_retries:
-            try:
-                completion = self.client.chat.completions.create(
-                    model=self.model_name, # Consider using a faster/cheaper model if available for pre-filtering
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt},
-                    ],
-                    temperature=0.1, # Low temperature for more deterministic filtering
-                    max_tokens=50, # Smaller max tokens for faster response
-                    response_format={"type": "json_object"},
-                )
+        response_content = self._call_llm_with_cycling(
+            system_prompt=system_prompt,
+            user_prompt=user_prompt,
+            max_tokens=60, # Small max tokens for faster response
+            temperature=0.1, # Low temp for pre-filter
+            json_mode=True,
+            max_retries=max_retries,
+            initial_delay=initial_delay
+        )
 
-                response_content = completion.choices[0].message.content.strip()
-                logging.debug(f"AI pre-filter raw response for '{title}': {response_content}")
+        if response_content is None:
+            logging.error(f"AI pre-filter failed for '{title}' after all retries/fallbacks. Assuming relevant.")
+            return True # Default to relevant on failure
 
-                try:
-                    # Parse the JSON response
-                    filter_data = json.loads(response_content)
+        try:
+            # Strip potential markdown
+            if response_content.startswith("```json"):
+                response_content = response_content[7:]
+                if response_content.endswith("```"):
+                    response_content = response_content[:-3]
+            response_content = response_content.strip()
 
-                    if "is_potentially_relevant" in filter_data and isinstance(filter_data["is_potentially_relevant"], bool):
-                        logging.debug(f"AI pre-filter successful for '{title}'. Potentially Relevant: {filter_data['is_potentially_relevant']}")
-                        return filter_data["is_potentially_relevant"]
-                    else:
-                        logging.warning(f"AI pre-filter response missing/invalid key for '{title}'. Response: {response_content}")
-                        last_error = "Invalid JSON response format from pre-filter AI"
-                        # Fall through to retry logic
+            filter_data = json.loads(response_content)
 
-                except json.JSONDecodeError:
-                    logging.warning(f"AI pre-filter response was not valid JSON for '{title}'. Response: {response_content}")
-                    last_error = f"Invalid JSON response from pre-filter AI: {response_content}"
-                    # Fall through to retry logic
-
-            except RateLimitError as e:
-                last_error = f"AI API rate limit hit during pre-filter (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
-                logging.warning(last_error)
-            except APITimeoutError as e:
-                 last_error = f"AI API timeout during pre-filter (attempt {retries + 1}/{max_retries + 1}). Retrying in {delay}s. Error: {e}"
-                 logging.warning(last_error)
-            except APIError as e:
-                last_error = f"AI API error during pre-filter for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
-                logging.error(last_error, exc_info=False)
-                if "invalid_request_error" in str(e).lower():
-                     logging.error("Potential pre-filter prompt issue detected. Aborting retries.")
-                     return True # Default to relevant on unrecoverable error
-            except Exception as e:
-                last_error = f"Unexpected error during AI pre-filter for '{title}' (attempt {retries + 1}/{max_retries + 1}): {e}"
-                logging.error(last_error, exc_info=True)
-
-            # Retry logic
-            retries += 1
-            if retries <= max_retries:
-                logging.info(f"Waiting {delay:.1f} seconds before pre-filter retry {retries}/{max_retries}...")
-                time.sleep(delay)
-                delay *= 2
+            if "is_potentially_relevant" in filter_data and isinstance(filter_data["is_potentially_relevant"], bool):
+                logging.debug(f"AI pre-filter successful for '{title}'. Potentially Relevant: {filter_data['is_potentially_relevant']}")
+                return filter_data["is_potentially_relevant"]
             else:
-                logging.error(f"AI pre-filter failed after {max_retries + 1} attempts for '{title}'. Last error: {last_error}")
-                return True # Default to potentially relevant if pre-filter fails
+                logging.warning(f"AI pre-filter response missing/invalid key for '{title}'. Response: {response_content}. Assuming relevant.")
+                return True # Default to relevant on format error
 
-        logging.error(f"AI pre-filter loop finished unexpectedly for '{title}'.")
-        return True # Default to potentially relevant
+        except json.JSONDecodeError:
+            logging.warning(f"AI pre-filter response was not valid JSON for '{title}'. Response: {response_content}. Assuming relevant.")
+            return True # Default to relevant on JSON error
+        except Exception as e:
+             logging.error(f"Unexpected error parsing AI pre-filter for '{title}': {e}", exc_info=True)
+             return True # Default to relevant on unexpected error

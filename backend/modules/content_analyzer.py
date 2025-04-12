@@ -18,8 +18,10 @@ class ContentAnalyzer:
         NOTE: Selectors used here are common guesses and might need adjustment.
         """
         leads = []
+        next_page_link = None # Initialize next_page_link
         if not html_content:
-            return leads
+            logging.warning("parse_search_page received empty html_content.")
+            return leads, next_page_link # Return two values (empty list, None)
 
         try:
             soup = BeautifulSoup(html_content, 'lxml') # Use lxml parser
@@ -60,9 +62,14 @@ class ContentAnalyzer:
 
         except Exception as e:
             logging.error(f"Error parsing search page HTML: {e}", exc_info=True)
+            # Return empty list and None in case of error during parsing
+            return [], None # Return two values
 
-        logging.info(f"Extracted {len(leads)} basic leads from search page.")
-        return leads
+        # Find the next page link after processing leads
+        next_page_link = self.find_next_page_link(html_content)
+
+        logging.info(f"Extracted {len(leads)} basic leads from search page. Next page link: {next_page_link}")
+        return leads, next_page_link # Return both leads and the link (already correct here)
 
     def analyze_lead_details(self, html_content, basic_lead_info):
         """

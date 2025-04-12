@@ -97,6 +97,25 @@ class StateManager:
         """Sets the code of the last successfully completed city."""
         self._set_progress_value('last_completed_city', city_code)
 
+    # --- City-Specific Category Checkpointing ---
+
+    def get_last_completed_category_for_city(self, city_code):
+        """Retrieves the last completed category code for a specific city."""
+        if not city_code: return None
+        return self._get_progress_value(f'last_completed_category_for_city_{city_code}')
+
+    def set_last_completed_category_for_city(self, city_code, category_code):
+        """Sets the last completed category code for a specific city."""
+        if not city_code or not category_code: return
+        self._set_progress_value(f'last_completed_category_for_city_{city_code}', category_code)
+
+    def clear_last_completed_category_for_city(self, city_code):
+        """Removes the category checkpoint for a specific city."""
+        if not city_code: return
+        self._delete_progress_key(f'last_completed_category_for_city_{city_code}')
+
+    # --- End City-Specific Category Checkpointing ---
+
     def add_lead(self, lead_details, search_scope="unknown"): # Added search_scope parameter
         """Adds a lead to the database if the URL is unique."""
         if not self.conn:
@@ -178,12 +197,46 @@ class StateManager:
             logging.error(f"Error getting lead count: {e}", exc_info=True)
             return 0
 
-    def _set_progress_value(self, key, value):
-        """Sets a progress key-value pair."""
-        if not self.conn: return
+    # --- Internal Progress Helpers ---
+
+    def _get_progress_value(self, key):
+        """Retrieves a progress value by key."""
+        if not self.conn or not key: return None
         try:
+            self.cursor.execute("SELECT value FROM progress WHERE key = ?", (key,))
+            result = self.cursor.fetchone()
+            return result[0] if result else None
+        except sqlite3.Error as e:
+            logging.error(f"Error getting progress value for key '{key}': {e}", exc_info=True)
+            return None
+
+    def _set_progress_value(self, key, value):
+        """Sets or replaces a progress key-value pair."""
+        if not self.conn or not key: return
+        try:
+            # Ensure value is stored as string, handle None explicitly if needed
+            value_str = str(value) if value is not None else None
+            if value_str is None:
+                 logging.warning(f"Attempted to set None value for progress key '{key}'. Deleting instead.")
+                 self._delete_progress_key(key)
+                 return
+
             sql = "INSERT OR REPLACE INTO progress (key, value) VALUES (?, ?)"
-            self.cursor.execute(sql, (key, str(value))) # Ensure value is string
+            self.cursor.execute(sql, (key, value_str))
             self.conn.commit()
+            logging.debug(f"Progress value set: {key} = {value_str}")
         except sqlite3.Error as e:
             logging.error(f"Error setting progress value for key '{key}': {e}", exc_info=True)
+
+    def _delete_progress_key(self, key):
+        """Deletes a progress key."""
+        if not self.conn or not key: return
+        try:
+            sql = "DELETE FROM progress WHERE key = ?"
+            self.cursor.execute(sql, (key,))
+            self.conn.commit()
+            logging.debug(f"Progress key deleted: {key}")
+        except sqlite3.Error as e:
+            logging.error(f"Error deleting progress key '{key}': {e}", exc_info=True)
+
+    # --- End Internal Progress Helpers ---

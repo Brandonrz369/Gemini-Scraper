@@ -1,4 +1,4 @@
-#!/home/brandonruizmarketing/Desktop/Gemini-Scraper/.venv/bin/python
+#!/home/brandon/Desktop/VMpull-gemini-scraper/gemini-scraper/.venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

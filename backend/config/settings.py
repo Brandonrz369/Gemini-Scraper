@@ -15,13 +15,29 @@ OXYLABS_CONFIG = {
     # Do not commit this file to version control!
 }
 
-# AI Filtering Configuration (Using OpenRouter)
+# --- AI Filtering Configuration ---
+# Ensure API keys are loaded from environment variables for security
+# Add these to your backend/.env file
+GEMINI_API_KEYS = [
+    os.getenv('GEMINI_API_KEY_MARKETING'),
+    os.getenv('GEMINI_API_KEY_SUPPORT'),
+    os.getenv('GEMINI_API_KEY_BRANDONL'),
+    os.getenv('GEMINI_API_KEY_BRANDONLB'),
+]
+# Filter out None values in case some keys are not set
+GEMINI_API_KEYS = [key for key in GEMINI_API_KEYS if key]
+
+OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
+
 AI_CONFIG = {
-    'API_KEY': os.getenv('OPENROUTER_API_KEY'), # Load from environment variable
-    'BASE_URL': "https://openrouter.ai/api/v1",
-    'MODEL_NAME': "anthropic/claude-3-haiku" # Try simpler model ID for OpenRouter
-    # Do not commit API keys to version control! Ensure .env is in .gitignore
+    'GEMINI_MODEL': "gemini-2.5-pro-exp-03-25", # User specified Gemini model
+    'OPENROUTER_BASE_URL': "https://openrouter.ai/api/v1",
+    'OPENROUTER_MODEL': "anthropic/claude-3-haiku", # Default OpenRouter fallback model
+    'KEY_CYCLE_COOLDOWN_MINUTES': 20, # Cooldown before retrying Gemini keys
+    # API Keys are now loaded directly above and passed to the handler
 }
+# --- End AI Filtering Configuration ---
+
 
 # Pre-filtering settings
 PRE_FILTER_CONFIG = {

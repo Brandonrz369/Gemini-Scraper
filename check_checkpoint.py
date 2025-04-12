@@ -1,47 +1,41 @@
-import sqlite3
 import os
+import sys
 import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+# Add backend directory to sys.path to allow imports
+backend_dir = os.path.join(os.path.dirname(__file__), 'backend')
+sys.path.insert(0, backend_dir)
 
-# Define database path relative to the script location
-script_dir = os.path.dirname(os.path.abspath(__file__))
-db_path = os.path.join(script_dir, 'backend', 'data', 'leads.db')
+# Configure logging minimally to avoid errors if StateManager logs something
+logging.basicConfig(level=logging.INFO)
 
-logging.info(f"Attempting to connect to database: {db_path}")
-
-if not os.path.exists(db_path):
-    logging.error(f"Database file not found at {db_path}")
-    exit()
-
-conn = None
 try:
-    conn = sqlite3.connect(db_path)
-    cursor = conn.cursor()
-    logging.info("Connected to database.")
+    from modules.state_manager import StateManager
+    from config.settings import STATE_CONFIG, AI_CONFIG, SEARCH_CONFIG, OXYLABS_CONFIG, PRE_FILTER_CONFIG # Import all configs StateManager might need directly or indirectly
 
-    # Query to check the last completed city checkpoint
-    checkpoint_query = "SELECT value FROM progress WHERE key = 'last_completed_city';"
-    logging.info(f"Executing checkpoint query: {checkpoint_query}")
-    cursor.execute(checkpoint_query)
-    checkpoint_result = cursor.fetchone()
+    # Combine configs as StateManager might expect a single dict
+    config = {
+        'STATE_CONFIG': STATE_CONFIG,
+        'AI_CONFIG': AI_CONFIG,
+        'SEARCH_CONFIG': SEARCH_CONFIG,
+        'OXYLABS_CONFIG': OXYLABS_CONFIG,
+        'PRE_FILTER_CONFIG': PRE_FILTER_CONFIG
+    }
 
-    if checkpoint_result:
-        last_city = checkpoint_result[0]
-        print(f"\n--- Checkpoint Status ---")
-        print(f"Last successfully completed city: {last_city}")
-        print(f"-------------------------\n")
+    # Ensure the data directory exists
+    data_dir = os.path.join(backend_dir, 'data')
+    os.makedirs(data_dir, exist_ok=True)
+
+    state_manager = StateManager(config)
+    last_city = state_manager.get_last_completed_city()
+    if last_city:
+        print(f"LAST_COMPLETED_CITY:{last_city}")
     else:
-        print("\n--- Checkpoint Status ---")
-        print("No checkpoint found (last_completed_city key not set in progress table).")
-        print("-------------------------\n")
-
-except sqlite3.Error as e:
-    logging.error(f"Database error during checkpoint check: {e}", exc_info=True)
+        print("LAST_COMPLETED_CITY:None")
+    # Removed state_manager.close_db() call as the method doesn't exist
+except ImportError as e:
+    print(f"ImportError: {e}. Make sure modules are accessible and requirements are installed.")
+    sys.exit(1)
 except Exception as e:
-    logging.error(f"An unexpected error occurred: {e}", exc_info=True)
-finally:
-    if conn:
-        conn.close()
-        logging.info("Database connection closed.")
+    print(f"An error occurred: {e}")
+    sys.exit(1)
