@@ -64,130 +64,8 @@ class OutputGenerator:
         except Exception as e:
             logging.error(f"Error generating CSV report: {e}", exc_info=True)
 
-    def generate_html_dashboard(self, leads_data):
-        """Generates a simple HTML dashboard for viewing leads (saved in backend/data)."""
-        # This remains largely unchanged, still saves to backend/data
-        if not leads_data:
-            logging.warning("No leads data provided for HTML dashboard generation.")
-            return
-
-        logging.info(f"Generating internal HTML dashboard at: {self.html_output_path}")
-        # (HTML generation code remains the same as before, including AI fields)
-        # Basic HTML structure with a table
-        html_start = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Craigslist Leads Dashboard (Internal)</title>
-    <!-- DataTables CSS -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <!-- Custom Styles -->
-    <style>
-        body {{ font-family: sans-serif; margin: 20px; }}
-        table {{ border-collapse: collapse; width: 100%; margin-top: 20px; }}
-        th, td {{ border: 1px solid #ddd; padding: 8px; text-align: left; }} /* Escape braces */
-        th {{ background-color: #f2f2f2; }}
-        tr:nth-child(even) {{ background-color: #f9f9f9; }}
-        a {{ color: #007bff; text-decoration: none; }}
-        a:hover {{ text-decoration: underline; }}
-        .description {{ max-width: 350px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-        .reasoning {{ max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-    </style>
-</head>
-<body>
-    <h1>Craigslist Leads Dashboard (Internal)</h1>
-    <p>Generated on: {generation_time}</p>
-    <p>Total Leads in DB: {lead_count}</p>
-    <table id="leadsTable" class="display" style="width:100%">
-        <thead>
-            <tr>
-                <th>Scraped</th>
-                <th>Date Posted</th>
-                <th>City</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Value</th>
-                <th>Contact Method</th>
-                <th>Category</th>
-                <th>Contacted</th>
-                <th>Follow Up</th>
-                <th>AI Score</th>
-                <th>AI Junk?</th>
-                <th>AI Reason</th>
-            </tr>
-        </thead>
-        <tbody>
-"""
-        html_end = """
-        </tbody>
-    </table>
-    <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {{ // Escape braces
-            $('#leadsTable').DataTable({{ // Escape braces
-                "order": [[ 0, "desc" ]]
-            }});
-        }});
-    </script>
-</body>
-</html>
-"""
-        table_rows = []
-        for lead in leads_data:
-            scraped_dt_str = lead.get('scraped_timestamp', 'N/A')
-            posted_dt_str = lead.get('date_posted_iso', 'N/A')
-            try:
-                if scraped_dt_str and scraped_dt_str != 'N/A': scraped_dt_str = datetime.fromisoformat(scraped_dt_str).strftime('%Y-%m-%d %H:%M')
-            except ValueError: pass
-            try:
-                if posted_dt_str and posted_dt_str != 'N/A': posted_dt_str = datetime.fromisoformat(posted_dt_str).strftime('%Y-%m-%d %H:%M')
-            except ValueError: pass
-
-            desc_tooltip = lead.get('description', '').replace('"', '"')
-            ai_grade = lead.get('ai_grade')
-            ai_reasoning = ai_grade.get('reasoning', 'N/A') if isinstance(ai_grade, dict) else 'N/A'
-            ai_reasoning_tooltip = ai_reasoning.replace('"', '"')
-            ai_score = ai_grade.get('profitability_score', 'N/A') if isinstance(ai_grade, dict) else 'N/A'
-            ai_is_junk = ai_grade.get('is_junk', False) if isinstance(ai_grade, dict) else False
-
-            row = f"""
-            <tr>
-                <td>{scraped_dt_str}</td>
-                <td>{posted_dt_str}</td>
-                <td>{lead.get('city', 'N/A')}</td>
-                <td><a href="{lead.get('url', '#')}" target="_blank">{lead.get('title', 'N/A')}</a></td>
-                <td class="description" title="{desc_tooltip}">{lead.get('description', 'N/A')}</td>
-                <td>{lead.get('estimated_value', 'N/A')}</td>
-                <td>{lead.get('contact_method', 'N/A')}</td>
-                <td>{lead.get('category', 'N/A')}</td>
-                <td>{'Yes' if lead.get('has_been_contacted') else 'No'}</td>
-                <td>{lead.get('follow_up_date', 'N/A')}</td>
-                <td>{ai_score}</td>
-                <td>{'Yes' if ai_is_junk else 'No'}</td>
-                <td class="reasoning" title="{ai_reasoning_tooltip}">{ai_reasoning[:50]}{'...' if len(ai_reasoning) > 50 else ''}</td>
-            </tr>
-"""
-            table_rows.append(row)
-
-        full_html = html_start.format(
-            generation_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-            lead_count=len(leads_data)
-        ) + "".join(table_rows) + html_end
-
-        try:
-            with open(self.html_output_path, 'w', encoding='utf-8') as f:
-                f.write(full_html)
-            logging.info(f"Successfully generated internal HTML dashboard.")
-        except Exception as e:
-            logging.error(f"Error generating internal HTML dashboard: {e}", exc_info=True)
-
     def generate_graded_json(self, leads_data):
-        """Generates a JSON file containing leads with AI grading to the frontend public directory."""
+        """Generates a JSON file containing leads formatted for the React frontend."""
         if not leads_data:
             logging.warning("No leads data provided for JSON generation.")
             return
@@ -195,20 +73,64 @@ class OutputGenerator:
         filepath = self.json_output_path
         logging.info(f"Generating graded JSON output for frontend at: {filepath}")
 
-        try:
-            serializable_leads = []
-            for lead in leads_data:
-                serializable_lead = lead.copy()
-                for key, value in serializable_lead.items():
-                    if isinstance(value, datetime):
-                        serializable_lead[key] = value.isoformat()
-                serializable_leads.append(serializable_lead)
+        formatted_leads = []
+        for lead in leads_data:
+            ai_grade = lead.get('ai_grade', {})
+            if not isinstance(ai_grade, dict): # Handle cases where ai_grade might not be a dict
+                ai_grade = {}
 
+            # Format dates - handle potential None or invalid values gracefully
+            scraped_ts = lead.get('scraped_timestamp')
+            posted_ts = lead.get('date_posted_iso')
+            follow_up_dt = lead.get('follow_up_date')
+
+            scraped_formatted = "N/A"
+            if isinstance(scraped_ts, datetime):
+                scraped_formatted = scraped_ts.strftime('%Y-%m-%d %H:%M')
+            elif isinstance(scraped_ts, str): # Attempt to parse if it's already a string
+                 try: scraped_formatted = datetime.fromisoformat(scraped_ts).strftime('%Y-%m-%d %H:%M')
+                 except ValueError: pass # Keep "N/A" if parsing fails
+
+            posted_formatted = "N/A"
+            if isinstance(posted_ts, datetime):
+                posted_formatted = posted_ts.strftime('%Y-%m-%d %H:%M')
+            elif isinstance(posted_ts, str):
+                 try: posted_formatted = datetime.fromisoformat(posted_ts).strftime('%Y-%m-%d %H:%M')
+                 except ValueError: pass
+
+            follow_up_formatted = None # Keep as None if not set
+            if isinstance(follow_up_dt, datetime):
+                follow_up_formatted = follow_up_dt.strftime('%Y-%m-%d')
+            elif isinstance(follow_up_dt, str):
+                 try: follow_up_formatted = datetime.fromisoformat(follow_up_dt).strftime('%Y-%m-%d')
+                 except ValueError: pass # Keep None if parsing fails
+
+
+            formatted_lead = {
+                "id": lead.get('id'),
+                "scraped": scraped_formatted,
+                "datePosted": posted_formatted,
+                "city": lead.get('city'),
+                "title": lead.get('title'),
+                "url": lead.get('url'),
+                "description": lead.get('description'),
+                "value": lead.get('estimated_value'), # Assumes this maps to 'value'
+                "contactMethod": lead.get('contact_method'),
+                "category": lead.get('category'),
+                "contacted": "Yes" if lead.get('has_been_contacted') else "No", # Convert boolean to Yes/No
+                "followUp": follow_up_formatted, # Use formatted date or None
+                "aiScore": ai_grade.get('profitability_score', "N/A"), # Use "N/A" if missing
+                "isJunk": "Yes" if ai_grade.get('is_junk', False) else "No", # Convert boolean to Yes/No
+                "aiReason": ai_grade.get('reasoning', "N/A") # Use "N/A" if missing
+            }
+            formatted_leads.append(formatted_lead)
+
+        try:
             with open(filepath, 'w', encoding='utf-8') as f:
-                json.dump(serializable_leads, f, indent=4, ensure_ascii=False)
-            logging.info(f"Successfully generated graded JSON file with {len(serializable_leads)} leads.")
+                json.dump(formatted_leads, f, indent=2, ensure_ascii=False) # Use indent=2 for consistency with many JS formatters
+            logging.info(f"Successfully generated formatted JSON file for frontend with {len(formatted_leads)} leads.")
         except TypeError as e:
-             logging.error(f"TypeError generating JSON report: {e}. Check for non-serializable data types.", exc_info=True)
+             logging.error(f"TypeError generating formatted JSON report: {e}. Check for non-serializable data types.", exc_info=True)
         except Exception as e:
             logging.error(f"Error generating JSON report: {e}", exc_info=True)
 
