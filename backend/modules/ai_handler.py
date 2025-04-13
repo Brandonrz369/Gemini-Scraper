@@ -225,10 +225,31 @@ Provide your evaluation ONLY in the specified JSON format."""
 
     def pre_filter_lead(self, title, snippet, max_retries=1, initial_delay=2):
         """
-        Uses the configured AI model for a quick pre-filter based on title/snippet.
+        Uses a dynamic positive keyword check (with fuzzy matching) and the AI model for a quick pre-filter based on title/snippet.
         Returns True if potentially relevant, False if definitely junk/unrelated.
         Defaults to True if the AI call fails, to avoid discarding good leads.
         """
+        import re
+
+        # Focused positive keyword list (core web/design/marketing terms)
+        POSITIVE_TERMS = [
+            "website", "web site", "web dev", "web design", "web designer", "web build", "site build", "site dev",
+            "wordpress", "wp", "elementor", "shopify", "ecommerce", "landing page", "ux", "ui", "branding",
+            "graphic design", "graphic designer", "logo", "photoshop", "psd", "illustrator", "adobe", "seo",
+            "google ads", "adwords", "ppc", "marketing"
+        ]
+        title_lower = title.lower()
+        found_positive = False
+        for term in POSITIVE_TERMS:
+            pattern = re.compile(rf"\b{re.escape(term).replace(' ', r'[\s/-]?')}\b", re.IGNORECASE)
+            if pattern.search(title_lower):
+                found_positive = True
+                break
+
+        if found_positive:
+            logging.info(f"Pre-filter: Title '{title}' matched a positive keyword. Passing to AI grading.")
+            return True
+
         if self.active_service == 'disabled':
             logging.warning("AI service is disabled. Skipping pre-filtering, assuming relevant.")
             return True
@@ -236,7 +257,7 @@ Provide your evaluation ONLY in the specified JSON format."""
         content_to_analyze = f"Title: {title}"
         if snippet: content_to_analyze += f"\nSnippet: {snippet[:300]}"
 
-        # Updated prompt for Gemini/JSON
+        # AI prompt (unchanged)
         system_prompt = """You are a rapid lead pre-filter for a web/graphic design agency. Your task is to quickly determine if a Craigslist post *might* be relevant based ONLY on its title and snippet.
 
 Focus: Identify if the post is *definitely* junk (spam, selling unrelated items like art/furniture/supplies, offering jobs at other companies, user research studies, seeking dating advice, etc.) or if it *could possibly* be someone seeking web design, graphic design, Photoshop, or Google Ads/AdWords/PPC services. Err on the side of caution; if unsure, mark as potentially relevant.

@@ -21,13 +21,21 @@ log_file = os.path.join(project_root, 'run.log')
 # Ensure the log directory exists if it's different from project_root
 os.makedirs(os.path.dirname(log_file), exist_ok=True)
 logging.basicConfig(
-    level=logging.INFO,
+    level=logging.INFO, # Set overall level for root logger
     format='%(asctime)s - %(processName)s - %(levelname)s - %(module)s - %(message)s',
     handlers=[
-        logging.FileHandler(log_file, mode='a', encoding='utf-8'), # Append mode
-        logging.StreamHandler()
+        logging.FileHandler(log_file, mode='a', encoding='utf-8'), # Append mode, level set below
+        logging.StreamHandler() # Level set below
     ]
 )
+
+# Set levels for individual handlers after basicConfig
+for handler in logging.root.handlers:
+    if isinstance(handler, logging.FileHandler):
+        handler.setLevel(logging.WARNING) # Log only WARNING and above to file
+    elif isinstance(handler, logging.StreamHandler):
+        handler.setLevel(logging.INFO) # Keep INFO level for console
+
 logging.info("Logging configured.")
 
 logging.info("Attempting module imports...")
@@ -159,13 +167,56 @@ def scrape_city_worker(worker_args):
 
             while next_page_url and current_page <= max_pages_to_scrape:
                 logging.info(f"[{worker_name}] Fetching category: {category_code} (Page {current_page}/{max_pages_to_scrape}) -> {next_page_url}")
-                search_page_html = worker_request_handler.get_page(next_page_url)
+
+                # --- Added Retry Logic for Search Page Fetch ---
+                search_page_html = None
+                fetch_retries = 0
+                max_fetch_retries = 2 # Try up to 3 times total (0, 1, 2)
+                fetch_delay = 5 # Initial delay in seconds
+
+                # --- Fail log setup ---
+                fail_log_path = os.path.join(repo_root, "failed_scrapes.json")
+                if not os.path.exists(fail_log_path):
+                    with open(fail_log_path, "w", encoding="utf-8") as f:
+                        f.write("[]")  # Initialize as empty list
+
+                while fetch_retries <= max_fetch_retries:
+                    search_page_html = worker_request_handler.get_page(next_page_url)
+                    if search_page_html:
+                        break # Success
+                    else:
+                        fetch_retries += 1
+                        if fetch_retries <= max_fetch_retries:
+                            logging.warning(f"[{worker_name}] Failed to fetch search page {next_page_url} (Attempt {fetch_retries}/{max_fetch_retries + 1}). Retrying in {fetch_delay}s...")
+                            time.sleep(fetch_delay)
+                            fetch_delay *= 1.5 # Exponential backoff
+                        else:
+                            logging.error(f"[{worker_name}] Failed to fetch search page {next_page_url} after {max_fetch_retries + 1} attempts. Logging failure to failed_scrapes.json.")
+                            # Log the failure to a separate JSON file for later review
+                            import json
+                            try:
+                                with open(fail_log_path, "r+", encoding="utf-8") as f:
+                                    fail_log = json.load(f)
+                                    fail_log.append({
+                                        "city_code": city_code,
+                                        "category_code": category_code,
+                                        "url": next_page_url,
+                                        "timestamp": datetime.now().isoformat()
+                                    })
+                                    f.seek(0)
+                                    json.dump(fail_log, f, indent=2, ensure_ascii=False)
+                                    f.truncate()
+                            except Exception as e:
+                                logging.error(f"Failed to write to failed_scrapes.json: {e}")
+                            search_page_html = None # Ensure we don't proceed with parsing
+                            break # Break the retry loop, will then break the pagination loop below
+
                 if not search_page_html:
-                    # If fetching the search page fails after retries, stop processing this city
-                    logging.error(f"[{worker_name}] Failed to fetch search page {current_page} for {city_code}/{category_code} after retries. Aborting city.")
-                    # Raise an exception or return a specific error status to signal failure
-                    raise ConnectionError(f"Failed to fetch {next_page_url} after retries.")
-                    # break # Removed break, raising exception instead
+                    # If still no HTML after retries, skip to the next category
+                    logging.warning(f"[{worker_name}] Skipping category '{category_code}' due to persistent fetch failure. Logged to failed_scrapes.json.")
+                    continue # Continue to the next category in the outer loop
+                # --- End Retry Logic ---
+
 
                 logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
                 potential_leads_count_page = 0
@@ -393,6 +444,8 @@ def main(args):
         state_manager = StateManager(config)
         city_manager = CityManager(config, state_manager)
         output_generator = OutputGenerator(config)
+        city_manager = CityManager(config, state_manager) # Moved city_manager init up
+        output_generator = OutputGenerator(config)
         logging.info("Main manager instances initialized.")
 
         logging.info("Testing connection to Oxylabs...")
@@ -407,27 +460,53 @@ def main(args):
         del temp_request_handler
 
         logging.info("--- System Status & Setup ---")
-        # Determine which city list to load
-        list_to_load = 'large' if args.target_cities else args.list_size
-        logging.info(f"Loading city list: {list_to_load}.json")
-        cities_to_process_full = city_manager.get_cities_by_population(list_to_load)
-        total_cities_in_list = len(cities_to_process_full)
-        logging.info(f"Loaded {total_cities_in_list} cities from {list_to_load}.json.")
-
+        cities_to_process = []
         target_city_codes = None
-        if args.target_cities:
+        import json # Import json module
+
+        if args.city_list_file:
+            # Load cities from the specified JSON file
+            # Construct path relative to the script's execution directory (backend/)
+            # Assumes the file path provided is relative to the repo root
+            custom_list_path = os.path.join(repo_root, args.city_list_file) # Use repo_root
+            logging.info(f"Loading city list from custom file: {custom_list_path}")
+            try:
+                with open(custom_list_path, 'r', encoding='utf-8') as f:
+                    cities_to_process_full = json.load(f)
+                # Basic validation: check if it's a list and items have 'code'
+                if not isinstance(cities_to_process_full, list) or not all(isinstance(c, dict) and 'code' in c for c in cities_to_process_full):
+                    logging.critical(f"Invalid format in custom city list file: {custom_list_path}. Expected list of objects with 'code'.")
+                    sys.exit(1)
+                # Ensure 'name' exists, defaulting to 'code' if missing
+                for city in cities_to_process_full:
+                    if 'name' not in city:
+                        city['name'] = city['code']
+                cities_to_process = cities_to_process_full
+                logging.info(f"Loaded {len(cities_to_process)} cities from {args.city_list_file}.")
+            except FileNotFoundError:
+                logging.critical(f"Custom city list file not found: {custom_list_path}")
+                sys.exit(1)
+            except json.JSONDecodeError as e:
+                logging.critical(f"Error decoding JSON from custom city list file {custom_list_path}: {e}")
+                sys.exit(1)
+            except Exception as e:
+                 logging.critical(f"Error loading custom city list {custom_list_path}: {e}", exc_info=True)
+                 sys.exit(1)
+
+        elif args.target_cities:
+            # If target cities are provided, use them directly
             target_city_codes = [code.strip() for code in args.target_cities.split(',') if code.strip()]
-            logging.info(f"Processing specific target cities based on --target-cities: {target_city_codes}")
-            # Filter the full list based on the provided codes
-            cities_to_process = [city for city in cities_to_process_full if city.get('code') in target_city_codes]
-            # Verify all requested cities were found
-            found_codes = {city.get('code') for city in cities_to_process}
-            missing_codes = set(target_city_codes) - found_codes
-            if missing_codes:
-                logging.warning(f"Could not find the following target cities in the configured list: {missing_codes}")
+            logging.info(f"Processing specific target cities based on --target-cities: {len(target_city_codes)} cities provided.")
+            # Create the city_info structure needed by the worker
+            cities_to_process = [{"code": code, "name": code} for code in target_city_codes]
+            logging.info(f"Target cities sample: {target_city_codes[:5]}...")
         else:
-            # Fallback to using the list_size if no target cities specified
-            logging.info(f"No specific target cities provided. Using list size: '{args.list_size}'.")
+            # If no custom file or target cities, load based on list_size
+            list_to_load = args.list_size
+            logging.info(f"Loading city list specified by --list-size: {list_to_load}.json")
+            cities_to_process_full = city_manager.get_cities_by_population(list_to_load)
+            total_cities_in_list = len(cities_to_process_full)
+            logging.info(f"Loaded {total_cities_in_list} cities from {list_to_load}.json.")
             cities_to_process = cities_to_process_full
 
         total_cities_to_process = len(cities_to_process)
@@ -463,9 +542,9 @@ def main(args):
         logging.info(f"Scraping up to {max_pages} pages per category.")
 
         logging.info("--- Starting Parallel Scrape ---")
-        # Set pool size explicitly to 8
-        pool_size = 8
-        logging.info(f"Initializing multiprocessing pool with {pool_size} workers (Explicitly set).")
+        # Set pool size from argument or default to 8
+        pool_size = args.pool_size if hasattr(args, "pool_size") and args.pool_size else 8
+        logging.info(f"Initializing multiprocessing pool with {pool_size} workers (from --pool-size argument or default).")
 
         # Determine search scope for tagging
         if args.target_cities:
@@ -568,6 +647,8 @@ if __name__ == "__main__":
     parser.add_argument('--limit-leads-per-page', type=int, default=None, metavar='L', help="Limit processing to first L leads per search page (for testing).")
     # Changed default num_threads to 16
     parser.add_argument('--num-threads', type=int, default=16, metavar='T', help="Number of threads for internal lead processing. Default: 16")
+    parser.add_argument('--pool-size', type=int, default=8, metavar='P', help="Number of parallel city workers (processes). Default: 8")
+    parser.add_argument('--city-list-file', type=str, default=None, metavar='FILEPATH', help="Path to a custom JSON file containing the city list (relative to repo root). Overrides --list-size and --target-cities.")
     args = parser.parse_args()
 
     logging.info("About to call main(args)...") # Added log

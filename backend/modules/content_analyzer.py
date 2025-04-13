@@ -55,6 +55,10 @@ class ContentAnalyzer:
                         logging.warning(f"Found relative URL, skipping for now: {url}")
                         continue
 
+                    # --- ADDED LOGGING ---
+                    logging.debug(f"Parser found potential lead: Title='{title}', URL='{url}'")
+                    # --- END ADDED LOGGING ---
+
                     leads.append({'url': url, 'title': title})
                     count += 1 # Increment counter after successfully adding a lead
                 else:

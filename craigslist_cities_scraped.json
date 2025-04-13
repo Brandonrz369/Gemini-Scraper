@@ -1,0 +1,2858 @@
+[
+  {
+    "code": "auburn",
+    "name": "auburn"
+  },
+  {
+    "code": "bham",
+    "name": "birmingham"
+  },
+  {
+    "code": "dothan",
+    "name": "dothan"
+  },
+  {
+    "code": "shoals",
+    "name": "florence / muscle shoals"
+  },
+  {
+    "code": "gadsden",
+    "name": "gadsden-anniston"
+  },
+  {
+    "code": "huntsville",
+    "name": "huntsville / decatur"
+  },
+  {
+    "code": "mobile",
+    "name": "mobile"
+  },
+  {
+    "code": "montgomery",
+    "name": "montgomery"
+  },
+  {
+    "code": "tuscaloosa",
+    "name": "tuscaloosa"
+  },
+  {
+    "code": "anchorage",
+    "name": "anchorage / mat-su"
+  },
+  {
+    "code": "fairbanks",
+    "name": "fairbanks"
+  },
+  {
+    "code": "kenai",
+    "name": "kenai peninsula"
+  },
+  {
+    "code": "juneau",
+    "name": "southeast alaska"
+  },
+  {
+    "code": "flagstaff",
+    "name": "flagstaff / sedona"
+  },
+  {
+    "code": "mohave",
+    "name": "mohave county"
+  },
+  {
+    "code": "phoenix",
+    "name": "phoenix"
+  },
+  {
+    "code": "prescott",
+    "name": "prescott"
+  },
+  {
+    "code": "showlow",
+    "name": "show low"
+  },
+  {
+    "code": "sierravista",
+    "name": "sierra vista"
+  },
+  {
+    "code": "tucson",
+    "name": "tucson"
+  },
+  {
+    "code": "yuma",
+    "name": "yuma"
+  },
+  {
+    "code": "fayar",
+    "name": "fayetteville"
+  },
+  {
+    "code": "fortsmith",
+    "name": "fort smith"
+  },
+  {
+    "code": "jonesboro",
+    "name": "jonesboro"
+  },
+  {
+    "code": "littlerock",
+    "name": "little rock"
+  },
+  {
+    "code": "texarkana",
+    "name": "texarkana"
+  },
+  {
+    "code": "bakersfield",
+    "name": "bakersfield"
+  },
+  {
+    "code": "chico",
+    "name": "chico"
+  },
+  {
+    "code": "fresno",
+    "name": "fresno / madera"
+  },
+  {
+    "code": "goldcountry",
+    "name": "gold country"
+  },
+  {
+    "code": "hanford",
+    "name": "hanford-corcoran"
+  },
+  {
+    "code": "humboldt",
+    "name": "humboldt county"
+  },
+  {
+    "code": "imperial",
+    "name": "imperial county"
+  },
+  {
+    "code": "inlandempire",
+    "name": "inland empire"
+  },
+  {
+    "code": "losangeles",
+    "name": "los angeles"
+  },
+  {
+    "code": "mendocino",
+    "name": "mendocino county"
+  },
+  {
+    "code": "merced",
+    "name": "merced"
+  },
+  {
+    "code": "modesto",
+    "name": "modesto"
+  },
+  {
+    "code": "monterey",
+    "name": "monterey bay"
+  },
+  {
+    "code": "orangecounty",
+    "name": "orange county"
+  },
+  {
+    "code": "palmsprings",
+    "name": "palm springs"
+  },
+  {
+    "code": "redding",
+    "name": "redding"
+  },
+  {
+    "code": "sacramento",
+    "name": "sacramento"
+  },
+  {
+    "code": "sandiego",
+    "name": "san diego"
+  },
+  {
+    "code": "sfbay",
+    "name": "san francisco bay area"
+  },
+  {
+    "code": "slo",
+    "name": "san luis obispo"
+  },
+  {
+    "code": "santabarbara",
+    "name": "santa barbara"
+  },
+  {
+    "code": "santamaria",
+    "name": "santa maria"
+  },
+  {
+    "code": "siskiyou",
+    "name": "siskiyou county"
+  },
+  {
+    "code": "stockton",
+    "name": "stockton"
+  },
+  {
+    "code": "susanville",
+    "name": "susanville"
+  },
+  {
+    "code": "ventura",
+    "name": "ventura county"
+  },
+  {
+    "code": "visalia",
+    "name": "visalia-tulare"
+  },
+  {
+    "code": "yubasutter",
+    "name": "yuba-sutter"
+  },
+  {
+    "code": "boulder",
+    "name": "boulder"
+  },
+  {
+    "code": "cosprings",
+    "name": "colorado springs"
+  },
+  {
+    "code": "denver",
+    "name": "denver"
+  },
+  {
+    "code": "eastco",
+    "name": "eastern CO"
+  },
+  {
+    "code": "fortcollins",
+    "name": "fort collins / north CO"
+  },
+  {
+    "code": "rockies",
+    "name": "high rockies"
+  },
+  {
+    "code": "pueblo",
+    "name": "pueblo"
+  },
+  {
+    "code": "westslope",
+    "name": "western slope"
+  },
+  {
+    "code": "newlondon",
+    "name": "eastern CT"
+  },
+  {
+    "code": "hartford",
+    "name": "hartford"
+  },
+  {
+    "code": "newhaven",
+    "name": "new haven"
+  },
+  {
+    "code": "nwct",
+    "name": "northwest CT"
+  },
+  {
+    "code": "delaware",
+    "name": "delaware"
+  },
+  {
+    "code": "washingtondc",
+    "name": "washington"
+  },
+  {
+    "code": "miami",
+    "name": "broward county"
+  },
+  {
+    "code": "daytona",
+    "name": "daytona beach"
+  },
+  {
+    "code": "keys",
+    "name": "florida keys"
+  },
+  {
+    "code": "miami",
+    "name": "fort lauderdale"
+  },
+  {
+    "code": "fortmyers",
+    "name": "ft myers / SW florida"
+  },
+  {
+    "code": "gainesville",
+    "name": "gainesville"
+  },
+  {
+    "code": "cfl",
+    "name": "heartland florida"
+  },
+  {
+    "code": "jacksonville",
+    "name": "jacksonville"
+  },
+  {
+    "code": "lakeland",
+    "name": "lakeland"
+  },
+  {
+    "code": "miami",
+    "name": "miami / dade"
+  },
+  {
+    "code": "lakecity",
+    "name": "north central FL"
+  },
+  {
+    "code": "ocala",
+    "name": "ocala"
+  },
+  {
+    "code": "okaloosa",
+    "name": "okaloosa / walton"
+  },
+  {
+    "code": "orlando",
+    "name": "orlando"
+  },
+  {
+    "code": "panamacity",
+    "name": "panama city"
+  },
+  {
+    "code": "pensacola",
+    "name": "pensacola"
+  },
+  {
+    "code": "sarasota",
+    "name": "sarasota-bradenton"
+  },
+  {
+    "code": "miami",
+    "name": "south florida"
+  },
+  {
+    "code": "spacecoast",
+    "name": "space coast"
+  },
+  {
+    "code": "staugustine",
+    "name": "st augustine"
+  },
+  {
+    "code": "tallahassee",
+    "name": "tallahassee"
+  },
+  {
+    "code": "tampa",
+    "name": "tampa bay area"
+  },
+  {
+    "code": "treasure",
+    "name": "treasure coast"
+  },
+  {
+    "code": "miami",
+    "name": "palm beach county"
+  },
+  {
+    "code": "albanyga",
+    "name": "albany"
+  },
+  {
+    "code": "athensga",
+    "name": "athens"
+  },
+  {
+    "code": "atlanta",
+    "name": "atlanta"
+  },
+  {
+    "code": "augusta",
+    "name": "augusta"
+  },
+  {
+    "code": "brunswick",
+    "name": "brunswick"
+  },
+  {
+    "code": "columbusga",
+    "name": "columbus"
+  },
+  {
+    "code": "macon",
+    "name": "macon / warner robins"
+  },
+  {
+    "code": "nwga",
+    "name": "northwest GA"
+  },
+  {
+    "code": "savannah",
+    "name": "savannah / hinesville"
+  },
+  {
+    "code": "statesboro",
+    "name": "statesboro"
+  },
+  {
+    "code": "valdosta",
+    "name": "valdosta"
+  },
+  {
+    "code": "honolulu",
+    "name": "hawaii"
+  },
+  {
+    "code": "boise",
+    "name": "boise"
+  },
+  {
+    "code": "eastidaho",
+    "name": "east idaho"
+  },
+  {
+    "code": "lewiston",
+    "name": "lewiston / clarkston"
+  },
+  {
+    "code": "twinfalls",
+    "name": "twin falls"
+  },
+  {
+    "code": "bn",
+    "name": "bloomington-normal"
+  },
+  {
+    "code": "chambana",
+    "name": "champaign urbana"
+  },
+  {
+    "code": "chicago",
+    "name": "chicago"
+  },
+  {
+    "code": "decatur",
+    "name": "decatur"
+  },
+  {
+    "code": "lasalle",
+    "name": "la salle co"
+  },
+  {
+    "code": "mattoon",
+    "name": "mattoon-charleston"
+  },
+  {
+    "code": "peoria",
+    "name": "peoria"
+  },
+  {
+    "code": "rockford",
+    "name": "rockford"
+  },
+  {
+    "code": "carbondale",
+    "name": "southern illinois"
+  },
+  {
+    "code": "springfieldil",
+    "name": "springfield"
+  },
+  {
+    "code": "quincy",
+    "name": "western IL"
+  },
+  {
+    "code": "bloomington",
+    "name": "bloomington"
+  },
+  {
+    "code": "evansville",
+    "name": "evansville"
+  },
+  {
+    "code": "fortwayne",
+    "name": "fort wayne"
+  },
+  {
+    "code": "indianapolis",
+    "name": "indianapolis"
+  },
+  {
+    "code": "kokomo",
+    "name": "kokomo"
+  },
+  {
+    "code": "tippecanoe",
+    "name": "lafayette / west lafayette"
+  },
+  {
+    "code": "muncie",
+    "name": "muncie / anderson"
+  },
+  {
+    "code": "richmondin",
+    "name": "richmond"
+  },
+  {
+    "code": "southbend",
+    "name": "south bend / michiana"
+  },
+  {
+    "code": "terrehaute",
+    "name": "terre haute"
+  },
+  {
+    "code": "ames",
+    "name": "ames"
+  },
+  {
+    "code": "cedarrapids",
+    "name": "cedar rapids"
+  },
+  {
+    "code": "desmoines",
+    "name": "des moines"
+  },
+  {
+    "code": "dubuque",
+    "name": "dubuque"
+  },
+  {
+    "code": "fortdodge",
+    "name": "fort dodge"
+  },
+  {
+    "code": "iowacity",
+    "name": "iowa city"
+  },
+  {
+    "code": "masoncity",
+    "name": "mason city"
+  },
+  {
+    "code": "quadcities",
+    "name": "quad cities"
+  },
+  {
+    "code": "siouxcity",
+    "name": "sioux city"
+  },
+  {
+    "code": "ottumwa",
+    "name": "southeast IA"
+  },
+  {
+    "code": "waterloo",
+    "name": "waterloo / cedar falls"
+  },
+  {
+    "code": "lawrence",
+    "name": "lawrence"
+  },
+  {
+    "code": "ksu",
+    "name": "manhattan"
+  },
+  {
+    "code": "nwks",
+    "name": "northwest KS"
+  },
+  {
+    "code": "salina",
+    "name": "salina"
+  },
+  {
+    "code": "seks",
+    "name": "southeast KS"
+  },
+  {
+    "code": "swks",
+    "name": "southwest KS"
+  },
+  {
+    "code": "topeka",
+    "name": "topeka"
+  },
+  {
+    "code": "wichita",
+    "name": "wichita"
+  },
+  {
+    "code": "bgky",
+    "name": "bowling green"
+  },
+  {
+    "code": "eastky",
+    "name": "eastern kentucky"
+  },
+  {
+    "code": "lexington",
+    "name": "lexington"
+  },
+  {
+    "code": "louisville",
+    "name": "louisville"
+  },
+  {
+    "code": "owensboro",
+    "name": "owensboro"
+  },
+  {
+    "code": "westky",
+    "name": "western KY"
+  },
+  {
+    "code": "batonrouge",
+    "name": "baton rouge"
+  },
+  {
+    "code": "cenla",
+    "name": "central louisiana"
+  },
+  {
+    "code": "houma",
+    "name": "houma"
+  },
+  {
+    "code": "lafayette",
+    "name": "lafayette"
+  },
+  {
+    "code": "lakecharles",
+    "name": "lake charles"
+  },
+  {
+    "code": "monroe",
+    "name": "monroe"
+  },
+  {
+    "code": "neworleans",
+    "name": "new orleans"
+  },
+  {
+    "code": "shreveport",
+    "name": "shreveport"
+  },
+  {
+    "code": "maine",
+    "name": "maine"
+  },
+  {
+    "code": "annapolis",
+    "name": "annapolis"
+  },
+  {
+    "code": "baltimore",
+    "name": "baltimore"
+  },
+  {
+    "code": "easternshore",
+    "name": "eastern shore"
+  },
+  {
+    "code": "frederick",
+    "name": "frederick"
+  },
+  {
+    "code": "smd",
+    "name": "southern maryland"
+  },
+  {
+    "code": "westmd",
+    "name": "western maryland"
+  },
+  {
+    "code": "boston",
+    "name": "boston"
+  },
+  {
+    "code": "capecod",
+    "name": "cape cod / islands"
+  },
+  {
+    "code": "southcoast",
+    "name": "south coast"
+  },
+  {
+    "code": "westernmass",
+    "name": "western massachusetts"
+  },
+  {
+    "code": "worcester",
+    "name": "worcester / central MA"
+  },
+  {
+    "code": "annarbor",
+    "name": "ann arbor"
+  },
+  {
+    "code": "battlecreek",
+    "name": "battle creek"
+  },
+  {
+    "code": "centralmich",
+    "name": "central michigan"
+  },
+  {
+    "code": "detroit",
+    "name": "detroit metro"
+  },
+  {
+    "code": "flint",
+    "name": "flint"
+  },
+  {
+    "code": "grandrapids",
+    "name": "grand rapids"
+  },
+  {
+    "code": "holland",
+    "name": "holland"
+  },
+  {
+    "code": "jxn",
+    "name": "jackson"
+  },
+  {
+    "code": "kalamazoo",
+    "name": "kalamazoo"
+  },
+  {
+    "code": "lansing",
+    "name": "lansing"
+  },
+  {
+    "code": "monroemi",
+    "name": "monroe"
+  },
+  {
+    "code": "muskegon",
+    "name": "muskegon"
+  },
+  {
+    "code": "nmi",
+    "name": "northern michigan"
+  },
+  {
+    "code": "porthuron",
+    "name": "port huron"
+  },
+  {
+    "code": "saginaw",
+    "name": "saginaw-midland-baycity"
+  },
+  {
+    "code": "swmi",
+    "name": "southwest michigan"
+  },
+  {
+    "code": "thumb",
+    "name": "the thumb"
+  },
+  {
+    "code": "up",
+    "name": "upper peninsula"
+  },
+  {
+    "code": "bemidji",
+    "name": "bemidji"
+  },
+  {
+    "code": "brainerd",
+    "name": "brainerd"
+  },
+  {
+    "code": "duluth",
+    "name": "duluth / superior"
+  },
+  {
+    "code": "mankato",
+    "name": "mankato"
+  },
+  {
+    "code": "minneapolis",
+    "name": "minneapolis / st paul"
+  },
+  {
+    "code": "rmn",
+    "name": "rochester"
+  },
+  {
+    "code": "marshall",
+    "name": "southwest MN"
+  },
+  {
+    "code": "stcloud",
+    "name": "st cloud"
+  },
+  {
+    "code": "gulfport",
+    "name": "gulfport / biloxi"
+  },
+  {
+    "code": "hattiesburg",
+    "name": "hattiesburg"
+  },
+  {
+    "code": "jackson",
+    "name": "jackson"
+  },
+  {
+    "code": "meridian",
+    "name": "meridian"
+  },
+  {
+    "code": "northmiss",
+    "name": "north mississippi"
+  },
+  {
+    "code": "natchez",
+    "name": "southwest MS"
+  },
+  {
+    "code": "columbiamo",
+    "name": "columbia / jeff city"
+  },
+  {
+    "code": "joplin",
+    "name": "joplin"
+  },
+  {
+    "code": "kansascity",
+    "name": "kansas city"
+  },
+  {
+    "code": "kirksville",
+    "name": "kirksville"
+  },
+  {
+    "code": "loz",
+    "name": "lake of the ozarks"
+  },
+  {
+    "code": "semo",
+    "name": "southeast missouri"
+  },
+  {
+    "code": "springfield",
+    "name": "springfield"
+  },
+  {
+    "code": "stjoseph",
+    "name": "st joseph"
+  },
+  {
+    "code": "stlouis",
+    "name": "st louis"
+  },
+  {
+    "code": "billings",
+    "name": "billings"
+  },
+  {
+    "code": "bozeman",
+    "name": "bozeman"
+  },
+  {
+    "code": "butte",
+    "name": "butte"
+  },
+  {
+    "code": "greatfalls",
+    "name": "great falls"
+  },
+  {
+    "code": "helena",
+    "name": "helena"
+  },
+  {
+    "code": "kalispell",
+    "name": "kalispell"
+  },
+  {
+    "code": "missoula",
+    "name": "missoula"
+  },
+  {
+    "code": "montana",
+    "name": "eastern montana"
+  },
+  {
+    "code": "grandisland",
+    "name": "grand island"
+  },
+  {
+    "code": "lincoln",
+    "name": "lincoln"
+  },
+  {
+    "code": "northplatte",
+    "name": "north platte"
+  },
+  {
+    "code": "omaha",
+    "name": "omaha / council bluffs"
+  },
+  {
+    "code": "scottsbluff",
+    "name": "scottsbluff / panhandle"
+  },
+  {
+    "code": "elko",
+    "name": "elko"
+  },
+  {
+    "code": "lasvegas",
+    "name": "las vegas"
+  },
+  {
+    "code": "reno",
+    "name": "reno / tahoe"
+  },
+  {
+    "code": "nh",
+    "name": "new hampshire"
+  },
+  {
+    "code": "cnj",
+    "name": "central NJ"
+  },
+  {
+    "code": "jerseyshore",
+    "name": "jersey shore"
+  },
+  {
+    "code": "newjersey",
+    "name": "north jersey"
+  },
+  {
+    "code": "southjersey",
+    "name": "south jersey"
+  },
+  {
+    "code": "albuquerque",
+    "name": "albuquerque"
+  },
+  {
+    "code": "clovis",
+    "name": "clovis / portales"
+  },
+  {
+    "code": "farmington",
+    "name": "farmington"
+  },
+  {
+    "code": "lascruces",
+    "name": "las cruces"
+  },
+  {
+    "code": "roswell",
+    "name": "roswell / carlsbad"
+  },
+  {
+    "code": "santafe",
+    "name": "santa fe / taos"
+  },
+  {
+    "code": "albany",
+    "name": "albany"
+  },
+  {
+    "code": "binghamton",
+    "name": "binghamton"
+  },
+  {
+    "code": "buffalo",
+    "name": "buffalo"
+  },
+  {
+    "code": "catskills",
+    "name": "catskills"
+  },
+  {
+    "code": "chautauqua",
+    "name": "chautauqua"
+  },
+  {
+    "code": "elmira",
+    "name": "elmira-corning"
+  },
+  {
+    "code": "fingerlakes",
+    "name": "finger lakes"
+  },
+  {
+    "code": "glensfalls",
+    "name": "glens falls"
+  },
+  {
+    "code": "hudsonvalley",
+    "name": "hudson valley"
+  },
+  {
+    "code": "ithaca",
+    "name": "ithaca"
+  },
+  {
+    "code": "longisland",
+    "name": "long island"
+  },
+  {
+    "code": "newyork",
+    "name": "new york city"
+  },
+  {
+    "code": "oneonta",
+    "name": "oneonta"
+  },
+  {
+    "code": "plattsburgh",
+    "name": "plattsburgh-adirondacks"
+  },
+  {
+    "code": "potsdam",
+    "name": "potsdam-canton-massena"
+  },
+  {
+    "code": "rochester",
+    "name": "rochester"
+  },
+  {
+    "code": "syracuse",
+    "name": "syracuse"
+  },
+  {
+    "code": "twintiers",
+    "name": "twin tiers NY/PA"
+  },
+  {
+    "code": "utica",
+    "name": "utica-rome-oneida"
+  },
+  {
+    "code": "watertown",
+    "name": "watertown"
+  },
+  {
+    "code": "asheville",
+    "name": "asheville"
+  },
+  {
+    "code": "boone",
+    "name": "boone"
+  },
+  {
+    "code": "charlotte",
+    "name": "charlotte"
+  },
+  {
+    "code": "eastnc",
+    "name": "eastern NC"
+  },
+  {
+    "code": "fayetteville",
+    "name": "fayetteville"
+  },
+  {
+    "code": "greensboro",
+    "name": "greensboro"
+  },
+  {
+    "code": "hickory",
+    "name": "hickory / lenoir"
+  },
+  {
+    "code": "onslow",
+    "name": "jacksonville"
+  },
+  {
+    "code": "outerbanks",
+    "name": "outer banks"
+  },
+  {
+    "code": "raleigh",
+    "name": "raleigh / durham / CH"
+  },
+  {
+    "code": "wilmington",
+    "name": "wilmington"
+  },
+  {
+    "code": "winstonsalem",
+    "name": "winston-salem"
+  },
+  {
+    "code": "bismarck",
+    "name": "bismarck"
+  },
+  {
+    "code": "fargo",
+    "name": "fargo / moorhead"
+  },
+  {
+    "code": "grandforks",
+    "name": "grand forks"
+  },
+  {
+    "code": "nd",
+    "name": "north dakota"
+  },
+  {
+    "code": "akroncanton",
+    "name": "akron / canton"
+  },
+  {
+    "code": "ashtabula",
+    "name": "ashtabula"
+  },
+  {
+    "code": "athensohio",
+    "name": "athens"
+  },
+  {
+    "code": "chillicothe",
+    "name": "chillicothe"
+  },
+  {
+    "code": "cincinnati",
+    "name": "cincinnati"
+  },
+  {
+    "code": "cleveland",
+    "name": "cleveland"
+  },
+  {
+    "code": "columbus",
+    "name": "columbus"
+  },
+  {
+    "code": "dayton",
+    "name": "dayton / springfield"
+  },
+  {
+    "code": "limaohio",
+    "name": "lima / findlay"
+  },
+  {
+    "code": "mansfield",
+    "name": "mansfield"
+  },
+  {
+    "code": "sandusky",
+    "name": "sandusky"
+  },
+  {
+    "code": "toledo",
+    "name": "toledo"
+  },
+  {
+    "code": "tuscarawas",
+    "name": "tuscarawas co"
+  },
+  {
+    "code": "youngstown",
+    "name": "youngstown"
+  },
+  {
+    "code": "zanesville",
+    "name": "zanesville / cambridge"
+  },
+  {
+    "code": "lawton",
+    "name": "lawton"
+  },
+  {
+    "code": "enid",
+    "name": "northwest OK"
+  },
+  {
+    "code": "oklahomacity",
+    "name": "oklahoma city"
+  },
+  {
+    "code": "stillwater",
+    "name": "stillwater"
+  },
+  {
+    "code": "tulsa",
+    "name": "tulsa"
+  },
+  {
+    "code": "bend",
+    "name": "bend"
+  },
+  {
+    "code": "corvallis",
+    "name": "corvallis/albany"
+  },
+  {
+    "code": "eastoregon",
+    "name": "east oregon"
+  },
+  {
+    "code": "eugene",
+    "name": "eugene"
+  },
+  {
+    "code": "klamath",
+    "name": "klamath falls"
+  },
+  {
+    "code": "medford",
+    "name": "medford-ashland"
+  },
+  {
+    "code": "oregoncoast",
+    "name": "oregon coast"
+  },
+  {
+    "code": "portland",
+    "name": "portland"
+  },
+  {
+    "code": "roseburg",
+    "name": "roseburg"
+  },
+  {
+    "code": "salem",
+    "name": "salem"
+  },
+  {
+    "code": "altoona",
+    "name": "altoona-johnstown"
+  },
+  {
+    "code": "chambersburg",
+    "name": "cumberland valley"
+  },
+  {
+    "code": "erie",
+    "name": "erie"
+  },
+  {
+    "code": "harrisburg",
+    "name": "harrisburg"
+  },
+  {
+    "code": "lancaster",
+    "name": "lancaster"
+  },
+  {
+    "code": "allentown",
+    "name": "lehigh valley"
+  },
+  {
+    "code": "meadville",
+    "name": "meadville"
+  },
+  {
+    "code": "philadelphia",
+    "name": "philadelphia"
+  },
+  {
+    "code": "pittsburgh",
+    "name": "pittsburgh"
+  },
+  {
+    "code": "poconos",
+    "name": "poconos"
+  },
+  {
+    "code": "reading",
+    "name": "reading"
+  },
+  {
+    "code": "scranton",
+    "name": "scranton / wilkes-barre"
+  },
+  {
+    "code": "pennstate",
+    "name": "state college"
+  },
+  {
+    "code": "williamsport",
+    "name": "williamsport"
+  },
+  {
+    "code": "york",
+    "name": "york"
+  },
+  {
+    "code": "providence",
+    "name": "rhode island"
+  },
+  {
+    "code": "charleston",
+    "name": "charleston"
+  },
+  {
+    "code": "columbia",
+    "name": "columbia"
+  },
+  {
+    "code": "florencesc",
+    "name": "florence"
+  },
+  {
+    "code": "greenville",
+    "name": "greenville / upstate"
+  },
+  {
+    "code": "hiltonhead",
+    "name": "hilton head"
+  },
+  {
+    "code": "myrtlebeach",
+    "name": "myrtle beach"
+  },
+  {
+    "code": "nesd",
+    "name": "northeast SD"
+  },
+  {
+    "code": "csd",
+    "name": "pierre / central SD"
+  },
+  {
+    "code": "rapidcity",
+    "name": "rapid city / west SD"
+  },
+  {
+    "code": "siouxfalls",
+    "name": "sioux falls / SE SD"
+  },
+  {
+    "code": "sd",
+    "name": "south dakota"
+  },
+  {
+    "code": "chattanooga",
+    "name": "chattanooga"
+  },
+  {
+    "code": "clarksville",
+    "name": "clarksville"
+  },
+  {
+    "code": "cookeville",
+    "name": "cookeville"
+  },
+  {
+    "code": "jacksontn",
+    "name": "jackson"
+  },
+  {
+    "code": "knoxville",
+    "name": "knoxville"
+  },
+  {
+    "code": "memphis",
+    "name": "memphis"
+  },
+  {
+    "code": "nashville",
+    "name": "nashville"
+  },
+  {
+    "code": "tricities",
+    "name": "tri-cities"
+  },
+  {
+    "code": "abilene",
+    "name": "abilene"
+  },
+  {
+    "code": "amarillo",
+    "name": "amarillo"
+  },
+  {
+    "code": "austin",
+    "name": "austin"
+  },
+  {
+    "code": "beaumont",
+    "name": "beaumont / port arthur"
+  },
+  {
+    "code": "brownsville",
+    "name": "brownsville"
+  },
+  {
+    "code": "collegestation",
+    "name": "college station"
+  },
+  {
+    "code": "corpuschristi",
+    "name": "corpus christi"
+  },
+  {
+    "code": "dallas",
+    "name": "dallas / fort worth"
+  },
+  {
+    "code": "nacogdoches",
+    "name": "deep east texas"
+  },
+  {
+    "code": "delrio",
+    "name": "del rio / eagle pass"
+  },
+  {
+    "code": "elpaso",
+    "name": "el paso"
+  },
+  {
+    "code": "galveston",
+    "name": "galveston"
+  },
+  {
+    "code": "houston",
+    "name": "houston"
+  },
+  {
+    "code": "killeen",
+    "name": "killeen / temple / ft hood"
+  },
+  {
+    "code": "laredo",
+    "name": "laredo"
+  },
+  {
+    "code": "lubbock",
+    "name": "lubbock"
+  },
+  {
+    "code": "mcallen",
+    "name": "mcallen / edinburg"
+  },
+  {
+    "code": "odessa",
+    "name": "odessa / midland"
+  },
+  {
+    "code": "sanangelo",
+    "name": "san angelo"
+  },
+  {
+    "code": "sanantonio",
+    "name": "san antonio"
+  },
+  {
+    "code": "sanmarcos",
+    "name": "san marcos"
+  },
+  {
+    "code": "bigbend",
+    "name": "southwest TX"
+  },
+  {
+    "code": "texoma",
+    "name": "texoma"
+  },
+  {
+    "code": "easttexas",
+    "name": "tyler / east TX"
+  },
+  {
+    "code": "victoriatx",
+    "name": "victoria"
+  },
+  {
+    "code": "waco",
+    "name": "waco"
+  },
+  {
+    "code": "wichitafalls",
+    "name": "wichita falls"
+  },
+  {
+    "code": "logan",
+    "name": "logan"
+  },
+  {
+    "code": "ogden",
+    "name": "ogden-clearfield"
+  },
+  {
+    "code": "provo",
+    "name": "provo / orem"
+  },
+  {
+    "code": "saltlakecity",
+    "name": "salt lake city"
+  },
+  {
+    "code": "stgeorge",
+    "name": "st george"
+  },
+  {
+    "code": "vermont",
+    "name": "vermont"
+  },
+  {
+    "code": "charlottesville",
+    "name": "charlottesville"
+  },
+  {
+    "code": "danville",
+    "name": "danville"
+  },
+  {
+    "code": "fredericksburg",
+    "name": "fredericksburg"
+  },
+  {
+    "code": "norfolk",
+    "name": "hampton roads"
+  },
+  {
+    "code": "harrisonburg",
+    "name": "harrisonburg"
+  },
+  {
+    "code": "lynchburg",
+    "name": "lynchburg"
+  },
+  {
+    "code": "blacksburg",
+    "name": "new river valley"
+  },
+  {
+    "code": "richmond",
+    "name": "richmond"
+  },
+  {
+    "code": "roanoke",
+    "name": "roanoke"
+  },
+  {
+    "code": "swva",
+    "name": "southwest VA"
+  },
+  {
+    "code": "winchester",
+    "name": "winchester"
+  },
+  {
+    "code": "bellingham",
+    "name": "bellingham"
+  },
+  {
+    "code": "kpr",
+    "name": "kennewick-pasco-richland"
+  },
+  {
+    "code": "moseslake",
+    "name": "moses lake"
+  },
+  {
+    "code": "olympic",
+    "name": "olympic peninsula"
+  },
+  {
+    "code": "pullman",
+    "name": "pullman / moscow"
+  },
+  {
+    "code": "seattle",
+    "name": "seattle-tacoma"
+  },
+  {
+    "code": "skagit",
+    "name": "skagit / island / SJI"
+  },
+  {
+    "code": "spokane",
+    "name": "spokane / coeur d'alene"
+  },
+  {
+    "code": "wenatchee",
+    "name": "wenatchee"
+  },
+  {
+    "code": "yakima",
+    "name": "yakima"
+  },
+  {
+    "code": "charlestonwv",
+    "name": "charleston"
+  },
+  {
+    "code": "martinsburg",
+    "name": "eastern panhandle"
+  },
+  {
+    "code": "huntington",
+    "name": "huntington-ashland"
+  },
+  {
+    "code": "morgantown",
+    "name": "morgantown"
+  },
+  {
+    "code": "wheeling",
+    "name": "northern panhandle"
+  },
+  {
+    "code": "parkersburg",
+    "name": "parkersburg-marietta"
+  },
+  {
+    "code": "swv",
+    "name": "southern WV"
+  },
+  {
+    "code": "wv",
+    "name": "west virginia (old)"
+  },
+  {
+    "code": "appleton",
+    "name": "appleton-oshkosh-FDL"
+  },
+  {
+    "code": "eauclaire",
+    "name": "eau claire"
+  },
+  {
+    "code": "greenbay",
+    "name": "green bay"
+  },
+  {
+    "code": "janesville",
+    "name": "janesville"
+  },
+  {
+    "code": "racine",
+    "name": "kenosha-racine"
+  },
+  {
+    "code": "lacrosse",
+    "name": "la crosse"
+  },
+  {
+    "code": "madison",
+    "name": "madison"
+  },
+  {
+    "code": "milwaukee",
+    "name": "milwaukee"
+  },
+  {
+    "code": "northernwi",
+    "name": "northern WI"
+  },
+  {
+    "code": "sheboygan",
+    "name": "sheboygan"
+  },
+  {
+    "code": "wausau",
+    "name": "wausau"
+  },
+  {
+    "code": "wyoming",
+    "name": "wyoming"
+  },
+  {
+    "code": "micronesia",
+    "name": "guam-micronesia"
+  },
+  {
+    "code": "puertorico",
+    "name": "puerto rico"
+  },
+  {
+    "code": "virgin",
+    "name": "U.S. virgin islands"
+  },
+  {
+    "code": "calgary",
+    "name": "calgary"
+  },
+  {
+    "code": "edmonton",
+    "name": "edmonton"
+  },
+  {
+    "code": "ftmcmurray",
+    "name": "ft mcmurray"
+  },
+  {
+    "code": "lethbridge",
+    "name": "lethbridge"
+  },
+  {
+    "code": "hat",
+    "name": "medicine hat"
+  },
+  {
+    "code": "peace",
+    "name": "peace river country"
+  },
+  {
+    "code": "reddeer",
+    "name": "red deer"
+  },
+  {
+    "code": "cariboo",
+    "name": "cariboo"
+  },
+  {
+    "code": "comoxvalley",
+    "name": "comox valley"
+  },
+  {
+    "code": "abbotsford",
+    "name": "fraser valley"
+  },
+  {
+    "code": "kamloops",
+    "name": "kamloops"
+  },
+  {
+    "code": "kelowna",
+    "name": "kelowna / okanagan"
+  },
+  {
+    "code": "kootenays",
+    "name": "kootenays"
+  },
+  {
+    "code": "nanaimo",
+    "name": "nanaimo"
+  },
+  {
+    "code": "princegeorge",
+    "name": "prince george"
+  },
+  {
+    "code": "skeena",
+    "name": "skeena-bulkley"
+  },
+  {
+    "code": "sunshine",
+    "name": "sunshine coast"
+  },
+  {
+    "code": "vancouver",
+    "name": "vancouver"
+  },
+  {
+    "code": "victoria",
+    "name": "victoria"
+  },
+  {
+    "code": "whistler",
+    "name": "whistler"
+  },
+  {
+    "code": "winnipeg",
+    "name": "winnipeg"
+  },
+  {
+    "code": "newbrunswick",
+    "name": "new brunswick"
+  },
+  {
+    "code": "newfoundland",
+    "name": "st john's"
+  },
+  {
+    "code": "territories",
+    "name": "territories"
+  },
+  {
+    "code": "yellowknife",
+    "name": "yellowknife"
+  },
+  {
+    "code": "halifax",
+    "name": "halifax"
+  },
+  {
+    "code": "barrie",
+    "name": "barrie"
+  },
+  {
+    "code": "belleville",
+    "name": "belleville"
+  },
+  {
+    "code": "brantford",
+    "name": "brantford-woodstock"
+  },
+  {
+    "code": "chatham",
+    "name": "chatham-kent"
+  },
+  {
+    "code": "cornwall",
+    "name": "cornwall"
+  },
+  {
+    "code": "guelph",
+    "name": "guelph"
+  },
+  {
+    "code": "hamilton",
+    "name": "hamilton-burlington"
+  },
+  {
+    "code": "kingston",
+    "name": "kingston"
+  },
+  {
+    "code": "kitchener",
+    "name": "kitchener-waterloo-cambridge"
+  },
+  {
+    "code": "londonon",
+    "name": "london"
+  },
+  {
+    "code": "niagara",
+    "name": "niagara region"
+  },
+  {
+    "code": "ottawa",
+    "name": "ottawa-hull-gatineau"
+  },
+  {
+    "code": "owensound",
+    "name": "owen sound"
+  },
+  {
+    "code": "peterborough",
+    "name": "peterborough"
+  },
+  {
+    "code": "sarnia",
+    "name": "sarnia"
+  },
+  {
+    "code": "soo",
+    "name": "sault ste marie"
+  },
+  {
+    "code": "sudbury",
+    "name": "sudbury"
+  },
+  {
+    "code": "thunderbay",
+    "name": "thunder bay"
+  },
+  {
+    "code": "toronto",
+    "name": "toronto"
+  },
+  {
+    "code": "windsor",
+    "name": "windsor"
+  },
+  {
+    "code": "pei",
+    "name": "prince edward island"
+  },
+  {
+    "code": "montreal",
+    "name": "montreal"
+  },
+  {
+    "code": "quebec",
+    "name": "quebec city"
+  },
+  {
+    "code": "saguenay",
+    "name": "saguenay"
+  },
+  {
+    "code": "sherbrooke",
+    "name": "sherbrooke"
+  },
+  {
+    "code": "troisrivieres",
+    "name": "trois-rivieres"
+  },
+  {
+    "code": "regina",
+    "name": "regina"
+  },
+  {
+    "code": "saskatoon",
+    "name": "saskatoon"
+  },
+  {
+    "code": "whitehorse",
+    "name": "whitehorse"
+  },
+  {
+    "code": "vienna",
+    "name": "vienna"
+  },
+  {
+    "code": "brussels",
+    "name": "belgium"
+  },
+  {
+    "code": "bulgaria",
+    "name": "bulgaria"
+  },
+  {
+    "code": "zagreb",
+    "name": "croatia"
+  },
+  {
+    "code": "prague",
+    "name": "prague"
+  },
+  {
+    "code": "copenhagen",
+    "name": "copenhagen"
+  },
+  {
+    "code": "helsinki",
+    "name": "finland"
+  },
+  {
+    "code": "bordeaux",
+    "name": "bordeaux"
+  },
+  {
+    "code": "rennes",
+    "name": "brittany"
+  },
+  {
+    "code": "grenoble",
+    "name": "grenoble"
+  },
+  {
+    "code": "lille",
+    "name": "lille"
+  },
+  {
+    "code": "loire",
+    "name": "loire valley"
+  },
+  {
+    "code": "lyon",
+    "name": "lyon"
+  },
+  {
+    "code": "marseilles",
+    "name": "marseille"
+  },
+  {
+    "code": "montpellier",
+    "name": "montpellier"
+  },
+  {
+    "code": "cotedazur",
+    "name": "nice / cote d'azur"
+  },
+  {
+    "code": "rouen",
+    "name": "normandy"
+  },
+  {
+    "code": "paris",
+    "name": "paris"
+  },
+  {
+    "code": "strasbourg",
+    "name": "strasbourg"
+  },
+  {
+    "code": "toulouse",
+    "name": "toulouse"
+  },
+  {
+    "code": "berlin",
+    "name": "berlin"
+  },
+  {
+    "code": "bremen",
+    "name": "bremen"
+  },
+  {
+    "code": "cologne",
+    "name": "cologne"
+  },
+  {
+    "code": "dresden",
+    "name": "dresden"
+  },
+  {
+    "code": "dusseldorf",
+    "name": "dusseldorf"
+  },
+  {
+    "code": "essen",
+    "name": "essen / ruhr"
+  },
+  {
+    "code": "frankfurt",
+    "name": "frankfurt"
+  },
+  {
+    "code": "hamburg",
+    "name": "hamburg"
+  },
+  {
+    "code": "hannover",
+    "name": "hannover"
+  },
+  {
+    "code": "heidelberg",
+    "name": "heidelberg"
+  },
+  {
+    "code": "kaiserslautern",
+    "name": "kaiserslautern"
+  },
+  {
+    "code": "leipzig",
+    "name": "leipzig"
+  },
+  {
+    "code": "munich",
+    "name": "munich"
+  },
+  {
+    "code": "nuremberg",
+    "name": "nuremberg"
+  },
+  {
+    "code": "stuttgart",
+    "name": "stuttgart"
+  },
+  {
+    "code": "athens",
+    "name": "greece"
+  },
+  {
+    "code": "budapest",
+    "name": "budapest"
+  },
+  {
+    "code": "reykjavik",
+    "name": "reykjavik"
+  },
+  {
+    "code": "dublin",
+    "name": "dublin"
+  },
+  {
+    "code": "bologna",
+    "name": "bologna"
+  },
+  {
+    "code": "florence",
+    "name": "florence / tuscany"
+  },
+  {
+    "code": "genoa",
+    "name": "genoa"
+  },
+  {
+    "code": "milan",
+    "name": "milan"
+  },
+  {
+    "code": "naples",
+    "name": "napoli / campania"
+  },
+  {
+    "code": "perugia",
+    "name": "perugia"
+  },
+  {
+    "code": "rome",
+    "name": "rome"
+  },
+  {
+    "code": "sardinia",
+    "name": "sardinia"
+  },
+  {
+    "code": "sicily",
+    "name": "sicilia"
+  },
+  {
+    "code": "torino",
+    "name": "torino"
+  },
+  {
+    "code": "venice",
+    "name": "venice / veneto"
+  },
+  {
+    "code": "luxembourg",
+    "name": "luxembourg"
+  },
+  {
+    "code": "amsterdam",
+    "name": "amsterdam / randstad"
+  },
+  {
+    "code": "oslo",
+    "name": "norway"
+  },
+  {
+    "code": "warsaw",
+    "name": "poland"
+  },
+  {
+    "code": "faro",
+    "name": "faro / algarve"
+  },
+  {
+    "code": "lisbon",
+    "name": "lisbon"
+  },
+  {
+    "code": "porto",
+    "name": "porto"
+  },
+  {
+    "code": "bucharest",
+    "name": "romania"
+  },
+  {
+    "code": "moscow",
+    "name": "moscow"
+  },
+  {
+    "code": "stpetersburg",
+    "name": "st petersburg"
+  },
+  {
+    "code": "alicante",
+    "name": "alicante"
+  },
+  {
+    "code": "baleares",
+    "name": "baleares"
+  },
+  {
+    "code": "barcelona",
+    "name": "barcelona"
+  },
+  {
+    "code": "bilbao",
+    "name": "bilbao"
+  },
+  {
+    "code": "cadiz",
+    "name": "cadiz"
+  },
+  {
+    "code": "canarias",
+    "name": "canarias"
+  },
+  {
+    "code": "granada",
+    "name": "granada"
+  },
+  {
+    "code": "madrid",
+    "name": "madrid"
+  },
+  {
+    "code": "malaga",
+    "name": "malaga"
+  },
+  {
+    "code": "sevilla",
+    "name": "sevilla"
+  },
+  {
+    "code": "valencia",
+    "name": "valencia"
+  },
+  {
+    "code": "stockholm",
+    "name": "sweden"
+  },
+  {
+    "code": "basel",
+    "name": "basel"
+  },
+  {
+    "code": "bern",
+    "name": "bern"
+  },
+  {
+    "code": "geneva",
+    "name": "geneva"
+  },
+  {
+    "code": "lausanne",
+    "name": "lausanne"
+  },
+  {
+    "code": "zurich",
+    "name": "zurich"
+  },
+  {
+    "code": "istanbul",
+    "name": "turkey"
+  },
+  {
+    "code": "ukraine",
+    "name": "ukraine"
+  },
+  {
+    "code": "aberdeen",
+    "name": "aberdeen"
+  },
+  {
+    "code": "bath",
+    "name": "bath"
+  },
+  {
+    "code": "belfast",
+    "name": "belfast"
+  },
+  {
+    "code": "birmingham",
+    "name": "birmingham / west mids"
+  },
+  {
+    "code": "brighton",
+    "name": "brighton"
+  },
+  {
+    "code": "bristol",
+    "name": "bristol"
+  },
+  {
+    "code": "cambridge",
+    "name": "cambridge, UK"
+  },
+  {
+    "code": "cardiff",
+    "name": "cardiff / wales"
+  },
+  {
+    "code": "coventry",
+    "name": "coventry"
+  },
+  {
+    "code": "derby",
+    "name": "derby"
+  },
+  {
+    "code": "devon",
+    "name": "devon & cornwall"
+  },
+  {
+    "code": "dundee",
+    "name": "dundee"
+  },
+  {
+    "code": "norwich",
+    "name": "east anglia"
+  },
+  {
+    "code": "eastmids",
+    "name": "east midlands"
+  },
+  {
+    "code": "edinburgh",
+    "name": "edinburgh"
+  },
+  {
+    "code": "essex",
+    "name": "essex"
+  },
+  {
+    "code": "glasgow",
+    "name": "glasgow"
+  },
+  {
+    "code": "hampshire",
+    "name": "hampshire"
+  },
+  {
+    "code": "kent",
+    "name": "kent"
+  },
+  {
+    "code": "leeds",
+    "name": "leeds"
+  },
+  {
+    "code": "liverpool",
+    "name": "liverpool"
+  },
+  {
+    "code": "london",
+    "name": "london"
+  },
+  {
+    "code": "manchester",
+    "name": "manchester"
+  },
+  {
+    "code": "newcastle",
+    "name": "newcastle / NE england"
+  },
+  {
+    "code": "nottingham",
+    "name": "nottingham"
+  },
+  {
+    "code": "oxford",
+    "name": "oxford"
+  },
+  {
+    "code": "sheffield",
+    "name": "sheffield"
+  },
+  {
+    "code": "bangladesh",
+    "name": "bangladesh"
+  },
+  {
+    "code": "beijing",
+    "name": "beijing"
+  },
+  {
+    "code": "chengdu",
+    "name": "chengdu"
+  },
+  {
+    "code": "chongqing",
+    "name": "chongqing"
+  },
+  {
+    "code": "dalian",
+    "name": "dalian"
+  },
+  {
+    "code": "guangzhou",
+    "name": "guangzhou"
+  },
+  {
+    "code": "hangzhou",
+    "name": "hangzhou"
+  },
+  {
+    "code": "nanjing",
+    "name": "nanjing"
+  },
+  {
+    "code": "shanghai",
+    "name": "shanghai"
+  },
+  {
+    "code": "shenyang",
+    "name": "shenyang"
+  },
+  {
+    "code": "shenzhen",
+    "name": "shenzhen"
+  },
+  {
+    "code": "wuhan",
+    "name": "wuhan"
+  },
+  {
+    "code": "xian",
+    "name": "xi'an"
+  },
+  {
+    "code": "micronesia",
+    "name": "guam-micronesia"
+  },
+  {
+    "code": "hongkong",
+    "name": "hong kong"
+  },
+  {
+    "code": "ahmedabad",
+    "name": "ahmedabad"
+  },
+  {
+    "code": "bangalore",
+    "name": "bangalore"
+  },
+  {
+    "code": "bhubaneswar",
+    "name": "bhubaneswar"
+  },
+  {
+    "code": "chandigarh",
+    "name": "chandigarh"
+  },
+  {
+    "code": "chennai",
+    "name": "chennai (madras)"
+  },
+  {
+    "code": "delhi",
+    "name": "delhi"
+  },
+  {
+    "code": "goa",
+    "name": "goa"
+  },
+  {
+    "code": "hyderabad",
+    "name": "hyderabad"
+  },
+  {
+    "code": "indore",
+    "name": "indore"
+  },
+  {
+    "code": "jaipur",
+    "name": "jaipur"
+  },
+  {
+    "code": "kerala",
+    "name": "kerala"
+  },
+  {
+    "code": "kolkata",
+    "name": "kolkata (calcutta)"
+  },
+  {
+    "code": "lucknow",
+    "name": "lucknow"
+  },
+  {
+    "code": "mumbai",
+    "name": "mumbai"
+  },
+  {
+    "code": "pune",
+    "name": "pune"
+  },
+  {
+    "code": "surat",
+    "name": "surat surat"
+  },
+  {
+    "code": "jakarta",
+    "name": "indonesia"
+  },
+  {
+    "code": "tehran",
+    "name": "iran"
+  },
+  {
+    "code": "baghdad",
+    "name": "iraq"
+  },
+  {
+    "code": "haifa",
+    "name": "haifa"
+  },
+  {
+    "code": "jerusalem",
+    "name": "jerusalem"
+  },
+  {
+    "code": "telaviv",
+    "name": "tel aviv"
+  },
+  {
+    "code": "ramallah",
+    "name": "west bank"
+  },
+  {
+    "code": "fukuoka",
+    "name": "fukuoka"
+  },
+  {
+    "code": "hiroshima",
+    "name": "hiroshima"
+  },
+  {
+    "code": "nagoya",
+    "name": "nagoya"
+  },
+  {
+    "code": "okinawa",
+    "name": "okinawa"
+  },
+  {
+    "code": "osaka",
+    "name": "osaka-kobe-kyoto"
+  },
+  {
+    "code": "sapporo",
+    "name": "sapporo"
+  },
+  {
+    "code": "sendai",
+    "name": "sendai"
+  },
+  {
+    "code": "tokyo",
+    "name": "tokyo"
+  },
+  {
+    "code": "seoul",
+    "name": "seoul"
+  },
+  {
+    "code": "kuwait",
+    "name": "kuwait"
+  },
+  {
+    "code": "beirut",
+    "name": "beirut, lebanon"
+  },
+  {
+    "code": "malaysia",
+    "name": "malaysia"
+  },
+  {
+    "code": "pakistan",
+    "name": "pakistan"
+  },
+  {
+    "code": "bacolod",
+    "name": "bacolod"
+  },
+  {
+    "code": "naga",
+    "name": "bicol region"
+  },
+  {
+    "code": "cdo",
+    "name": "cagayan de oro"
+  },
+  {
+    "code": "cebu",
+    "name": "cebu"
+  },
+  {
+    "code": "davaocity",
+    "name": "davao city"
+  },
+  {
+    "code": "iloilo",
+    "name": "iloilo"
+  },
+  {
+    "code": "manila",
+    "name": "manila"
+  },
+  {
+    "code": "pampanga",
+    "name": "pampanga"
+  },
+  {
+    "code": "zamboanga",
+    "name": "zamboanga"
+  },
+  {
+    "code": "singapore",
+    "name": "singapore"
+  },
+  {
+    "code": "taipei",
+    "name": "taiwan"
+  },
+  {
+    "code": "bangkok",
+    "name": "thailand"
+  },
+  {
+    "code": "dubai",
+    "name": "united arab emirates"
+  },
+  {
+    "code": "vietnam",
+    "name": "vietnam"
+  },
+  {
+    "code": "adelaide",
+    "name": "adelaide"
+  },
+  {
+    "code": "brisbane",
+    "name": "brisbane"
+  },
+  {
+    "code": "cairns",
+    "name": "cairns"
+  },
+  {
+    "code": "canberra",
+    "name": "canberra"
+  },
+  {
+    "code": "darwin",
+    "name": "darwin"
+  },
+  {
+    "code": "goldcoast",
+    "name": "gold coast"
+  },
+  {
+    "code": "melbourne",
+    "name": "melbourne"
+  },
+  {
+    "code": "ntl",
+    "name": "newcastle, NSW"
+  },
+  {
+    "code": "perth",
+    "name": "perth"
+  },
+  {
+    "code": "sydney",
+    "name": "sydney"
+  },
+  {
+    "code": "hobart",
+    "name": "tasmania"
+  },
+  {
+    "code": "wollongong",
+    "name": "wollongong"
+  },
+  {
+    "code": "auckland",
+    "name": "auckland"
+  },
+  {
+    "code": "christchurch",
+    "name": "christchurch"
+  },
+  {
+    "code": "dunedin",
+    "name": "dunedin"
+  },
+  {
+    "code": "wellington",
+    "name": "wellington"
+  },
+  {
+    "code": "buenosaires",
+    "name": "buenos aires"
+  },
+  {
+    "code": "lapaz",
+    "name": "bolivia"
+  },
+  {
+    "code": "belohorizonte",
+    "name": "belo horizonte"
+  },
+  {
+    "code": "brasilia",
+    "name": "brasilia"
+  },
+  {
+    "code": "curitiba",
+    "name": "curitiba"
+  },
+  {
+    "code": "fortaleza",
+    "name": "fortaleza"
+  },
+  {
+    "code": "portoalegre",
+    "name": "porto alegre"
+  },
+  {
+    "code": "recife",
+    "name": "recife"
+  },
+  {
+    "code": "rio",
+    "name": "rio de janeiro"
+  },
+  {
+    "code": "salvador",
+    "name": "salvador, bahia"
+  },
+  {
+    "code": "saopaulo",
+    "name": "sao paulo"
+  },
+  {
+    "code": "caribbean",
+    "name": "caribbean islands"
+  },
+  {
+    "code": "santiago",
+    "name": "chile"
+  },
+  {
+    "code": "colombia",
+    "name": "colombia"
+  },
+  {
+    "code": "costarica",
+    "name": "costa rica"
+  },
+  {
+    "code": "santodomingo",
+    "name": "dominican republic"
+  },
+  {
+    "code": "quito",
+    "name": "ecuador"
+  },
+  {
+    "code": "elsalvador",
+    "name": "el salvador"
+  },
+  {
+    "code": "guatemala",
+    "name": "guatemala"
+  },
+  {
+    "code": "acapulco",
+    "name": "acapulco"
+  },
+  {
+    "code": "bajasur",
+    "name": "baja california sur"
+  },
+  {
+    "code": "chihuahua",
+    "name": "chihuahua"
+  },
+  {
+    "code": "juarez",
+    "name": "ciudad juarez"
+  },
+  {
+    "code": "guadalajara",
+    "name": "guadalajara"
+  },
+  {
+    "code": "guanajuato",
+    "name": "guanajuato"
+  },
+  {
+    "code": "hermosillo",
+    "name": "hermosillo"
+  },
+  {
+    "code": "mazatlan",
+    "name": "mazatlan"
+  },
+  {
+    "code": "mexicocity",
+    "name": "mexico city"
+  },
+  {
+    "code": "monterrey",
+    "name": "monterrey"
+  },
+  {
+    "code": "oaxaca",
+    "name": "oaxaca"
+  },
+  {
+    "code": "puebla",
+    "name": "puebla"
+  },
+  {
+    "code": "pv",
+    "name": "puerto vallarta"
+  },
+  {
+    "code": "tijuana",
+    "name": "tijuana"
+  },
+  {
+    "code": "veracruz",
+    "name": "veracruz"
+  },
+  {
+    "code": "yucatan",
+    "name": "yucatan"
+  },
+  {
+    "code": "managua",
+    "name": "nicaragua"
+  },
+  {
+    "code": "panama",
+    "name": "panama"
+  },
+  {
+    "code": "lima",
+    "name": "peru"
+  },
+  {
+    "code": "puertorico",
+    "name": "puerto rico"
+  },
+  {
+    "code": "montevideo",
+    "name": "montevideo"
+  },
+  {
+    "code": "caracas",
+    "name": "venezuela"
+  },
+  {
+    "code": "virgin",
+    "name": "virgin islands"
+  },
+  {
+    "code": "cairo",
+    "name": "egypt"
+  },
+  {
+    "code": "addisababa",
+    "name": "ethiopia"
+  },
+  {
+    "code": "accra",
+    "name": "ghana"
+  },
+  {
+    "code": "kenya",
+    "name": "kenya"
+  },
+  {
+    "code": "casablanca",
+    "name": "morocco"
+  },
+  {
+    "code": "capetown",
+    "name": "cape town"
+  },
+  {
+    "code": "durban",
+    "name": "durban"
+  },
+  {
+    "code": "johannesburg",
+    "name": "johannesburg"
+  },
+  {
+    "code": "pretoria",
+    "name": "pretoria"
+  },
+  {
+    "code": "tunis",
+    "name": "tunisia"
+  }
+]

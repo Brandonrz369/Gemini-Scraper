@@ -1,0 +1,4244 @@
+[
+  {
+    "code": "auburn",
+    "name": "auburn",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bham",
+    "name": "birmingham",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dothan",
+    "name": "dothan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "shoals",
+    "name": "florence / muscle shoals",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "gadsden",
+    "name": "gadsden-anniston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "huntsville",
+    "name": "huntsville / decatur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mobile",
+    "name": "mobile",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "montgomery",
+    "name": "montgomery",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tuscaloosa",
+    "name": "tuscaloosa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "anchorage",
+    "name": "anchorage / mat-su",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fairbanks",
+    "name": "fairbanks",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kenai",
+    "name": "kenai peninsula",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "juneau",
+    "name": "southeast alaska",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "flagstaff",
+    "name": "flagstaff / sedona",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mohave",
+    "name": "mohave county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "phoenix",
+    "name": "phoenix",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "prescott",
+    "name": "prescott",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "showlow",
+    "name": "show low",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sierravista",
+    "name": "sierra vista",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tucson",
+    "name": "tucson",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "yuma",
+    "name": "yuma",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fayar",
+    "name": "fayetteville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortsmith",
+    "name": "fort smith",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jonesboro",
+    "name": "jonesboro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "littlerock",
+    "name": "little rock",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "texarkana",
+    "name": "texarkana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bakersfield",
+    "name": "bakersfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chico",
+    "name": "chico",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fresno",
+    "name": "fresno / madera",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "goldcountry",
+    "name": "gold country",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hanford",
+    "name": "hanford-corcoran",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "humboldt",
+    "name": "humboldt county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "imperial",
+    "name": "imperial county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "inlandempire",
+    "name": "inland empire",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "losangeles",
+    "name": "los angeles",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mendocino",
+    "name": "mendocino county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "merced",
+    "name": "merced",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "modesto",
+    "name": "modesto",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "monterey",
+    "name": "monterey bay",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "orangecounty",
+    "name": "orange county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "palmsprings",
+    "name": "palm springs",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "redding",
+    "name": "redding",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sacramento",
+    "name": "sacramento",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sandiego",
+    "name": "san diego",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sfbay",
+    "name": "san francisco bay area",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "slo",
+    "name": "san luis obispo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "santabarbara",
+    "name": "santa barbara",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "santamaria",
+    "name": "santa maria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "siskiyou",
+    "name": "siskiyou county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stockton",
+    "name": "stockton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "susanville",
+    "name": "susanville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ventura",
+    "name": "ventura county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "visalia",
+    "name": "visalia-tulare",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "yubasutter",
+    "name": "yuba-sutter",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "boulder",
+    "name": "boulder",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cosprings",
+    "name": "colorado springs",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "denver",
+    "name": "denver",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastco",
+    "name": "eastern CO",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortcollins",
+    "name": "fort collins / north CO",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rockies",
+    "name": "high rockies",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pueblo",
+    "name": "pueblo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "westslope",
+    "name": "western slope",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newlondon",
+    "name": "eastern CT",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hartford",
+    "name": "hartford",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newhaven",
+    "name": "new haven",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nwct",
+    "name": "northwest CT",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "delaware",
+    "name": "delaware",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "washingtondc",
+    "name": "washington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "miami",
+    "name": "palm beach county",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "daytona",
+    "name": "daytona beach",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "keys",
+    "name": "florida keys",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortmyers",
+    "name": "ft myers / SW florida",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "gainesville",
+    "name": "gainesville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cfl",
+    "name": "heartland florida",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jacksonville",
+    "name": "jacksonville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lakeland",
+    "name": "lakeland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lakecity",
+    "name": "north central FL",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ocala",
+    "name": "ocala",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "okaloosa",
+    "name": "okaloosa / walton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "orlando",
+    "name": "orlando",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "panamacity",
+    "name": "panama city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pensacola",
+    "name": "pensacola",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sarasota",
+    "name": "sarasota-bradenton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "spacecoast",
+    "name": "space coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "staugustine",
+    "name": "st augustine",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tallahassee",
+    "name": "tallahassee",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tampa",
+    "name": "tampa bay area",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "treasure",
+    "name": "treasure coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "albanyga",
+    "name": "albany",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "athensga",
+    "name": "athens",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "atlanta",
+    "name": "atlanta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "augusta",
+    "name": "augusta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brunswick",
+    "name": "brunswick",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "columbusga",
+    "name": "columbus",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "macon",
+    "name": "macon / warner robins",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nwga",
+    "name": "northwest GA",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "savannah",
+    "name": "savannah / hinesville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "statesboro",
+    "name": "statesboro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "valdosta",
+    "name": "valdosta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "honolulu",
+    "name": "hawaii",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "boise",
+    "name": "boise",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastidaho",
+    "name": "east idaho",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lewiston",
+    "name": "lewiston / clarkston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "twinfalls",
+    "name": "twin falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bn",
+    "name": "bloomington-normal",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chambana",
+    "name": "champaign urbana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chicago",
+    "name": "chicago",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "decatur",
+    "name": "decatur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lasalle",
+    "name": "la salle co",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mattoon",
+    "name": "mattoon-charleston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "peoria",
+    "name": "peoria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rockford",
+    "name": "rockford",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "carbondale",
+    "name": "southern illinois",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "springfieldil",
+    "name": "springfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "quincy",
+    "name": "western IL",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bloomington",
+    "name": "bloomington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "evansville",
+    "name": "evansville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortwayne",
+    "name": "fort wayne",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "indianapolis",
+    "name": "indianapolis",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kokomo",
+    "name": "kokomo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tippecanoe",
+    "name": "lafayette / west lafayette",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "muncie",
+    "name": "muncie / anderson",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "richmondin",
+    "name": "richmond",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "southbend",
+    "name": "south bend / michiana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "terrehaute",
+    "name": "terre haute",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ames",
+    "name": "ames",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cedarrapids",
+    "name": "cedar rapids",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "desmoines",
+    "name": "des moines",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dubuque",
+    "name": "dubuque",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortdodge",
+    "name": "fort dodge",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "iowacity",
+    "name": "iowa city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "masoncity",
+    "name": "mason city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "quadcities",
+    "name": "quad cities",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "siouxcity",
+    "name": "sioux city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ottumwa",
+    "name": "southeast IA",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "waterloo",
+    "name": "waterloo / cedar falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lawrence",
+    "name": "lawrence",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ksu",
+    "name": "manhattan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nwks",
+    "name": "northwest KS",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "salina",
+    "name": "salina",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "seks",
+    "name": "southeast KS",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "swks",
+    "name": "southwest KS",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "topeka",
+    "name": "topeka",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wichita",
+    "name": "wichita",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bgky",
+    "name": "bowling green",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastky",
+    "name": "eastern kentucky",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lexington",
+    "name": "lexington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "louisville",
+    "name": "louisville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "owensboro",
+    "name": "owensboro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "westky",
+    "name": "western KY",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "batonrouge",
+    "name": "baton rouge",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cenla",
+    "name": "central louisiana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "houma",
+    "name": "houma",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lafayette",
+    "name": "lafayette",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lakecharles",
+    "name": "lake charles",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "monroe",
+    "name": "monroe",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "neworleans",
+    "name": "new orleans",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "shreveport",
+    "name": "shreveport",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "maine",
+    "name": "maine",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "annapolis",
+    "name": "annapolis",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "baltimore",
+    "name": "baltimore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "easternshore",
+    "name": "eastern shore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "frederick",
+    "name": "frederick",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "smd",
+    "name": "southern maryland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "westmd",
+    "name": "western maryland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "boston",
+    "name": "boston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "capecod",
+    "name": "cape cod / islands",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "southcoast",
+    "name": "south coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "westernmass",
+    "name": "western massachusetts",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "worcester",
+    "name": "worcester / central MA",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "annarbor",
+    "name": "ann arbor",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "battlecreek",
+    "name": "battle creek",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "centralmich",
+    "name": "central michigan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "detroit",
+    "name": "detroit metro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "flint",
+    "name": "flint",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "grandrapids",
+    "name": "grand rapids",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "holland",
+    "name": "holland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jxn",
+    "name": "jackson",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kalamazoo",
+    "name": "kalamazoo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lansing",
+    "name": "lansing",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "monroemi",
+    "name": "monroe",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "muskegon",
+    "name": "muskegon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nmi",
+    "name": "northern michigan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "porthuron",
+    "name": "port huron",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "saginaw",
+    "name": "saginaw-midland-baycity",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "swmi",
+    "name": "southwest michigan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "thumb",
+    "name": "the thumb",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "up",
+    "name": "upper peninsula",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bemidji",
+    "name": "bemidji",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brainerd",
+    "name": "brainerd",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "duluth",
+    "name": "duluth / superior",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mankato",
+    "name": "mankato",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "minneapolis",
+    "name": "minneapolis / st paul",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rmn",
+    "name": "rochester",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "marshall",
+    "name": "southwest MN",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stcloud",
+    "name": "st cloud",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "gulfport",
+    "name": "gulfport / biloxi",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hattiesburg",
+    "name": "hattiesburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jackson",
+    "name": "jackson",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "meridian",
+    "name": "meridian",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "northmiss",
+    "name": "north mississippi",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "natchez",
+    "name": "southwest MS",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "columbiamo",
+    "name": "columbia / jeff city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "joplin",
+    "name": "joplin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kansascity",
+    "name": "kansas city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kirksville",
+    "name": "kirksville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "loz",
+    "name": "lake of the ozarks",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "semo",
+    "name": "southeast missouri",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "springfield",
+    "name": "springfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stjoseph",
+    "name": "st joseph",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stlouis",
+    "name": "st louis",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "billings",
+    "name": "billings",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bozeman",
+    "name": "bozeman",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "butte",
+    "name": "butte",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "greatfalls",
+    "name": "great falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "helena",
+    "name": "helena",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kalispell",
+    "name": "kalispell",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "missoula",
+    "name": "missoula",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "montana",
+    "name": "eastern montana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "grandisland",
+    "name": "grand island",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lincoln",
+    "name": "lincoln",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "northplatte",
+    "name": "north platte",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "omaha",
+    "name": "omaha / council bluffs",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "scottsbluff",
+    "name": "scottsbluff / panhandle",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "elko",
+    "name": "elko",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lasvegas",
+    "name": "las vegas",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "reno",
+    "name": "reno / tahoe",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nh",
+    "name": "new hampshire",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cnj",
+    "name": "central NJ",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jerseyshore",
+    "name": "jersey shore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newjersey",
+    "name": "north jersey",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "southjersey",
+    "name": "south jersey",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "albuquerque",
+    "name": "albuquerque",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "clovis",
+    "name": "clovis / portales",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "farmington",
+    "name": "farmington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lascruces",
+    "name": "las cruces",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "roswell",
+    "name": "roswell / carlsbad",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "santafe",
+    "name": "santa fe / taos",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "albany",
+    "name": "albany",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "binghamton",
+    "name": "binghamton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "buffalo",
+    "name": "buffalo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "catskills",
+    "name": "catskills",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chautauqua",
+    "name": "chautauqua",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "elmira",
+    "name": "elmira-corning",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fingerlakes",
+    "name": "finger lakes",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "glensfalls",
+    "name": "glens falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hudsonvalley",
+    "name": "hudson valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ithaca",
+    "name": "ithaca",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "longisland",
+    "name": "long island",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newyork",
+    "name": "new york city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oneonta",
+    "name": "oneonta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "plattsburgh",
+    "name": "plattsburgh-adirondacks",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "potsdam",
+    "name": "potsdam-canton-massena",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rochester",
+    "name": "rochester",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "syracuse",
+    "name": "syracuse",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "twintiers",
+    "name": "twin tiers NY/PA",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "utica",
+    "name": "utica-rome-oneida",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "watertown",
+    "name": "watertown",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "asheville",
+    "name": "asheville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "boone",
+    "name": "boone",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "charlotte",
+    "name": "charlotte",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastnc",
+    "name": "eastern NC",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fayetteville",
+    "name": "fayetteville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "greensboro",
+    "name": "greensboro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hickory",
+    "name": "hickory / lenoir",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "onslow",
+    "name": "jacksonville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "outerbanks",
+    "name": "outer banks",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "raleigh",
+    "name": "raleigh / durham / CH",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wilmington",
+    "name": "wilmington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "winstonsalem",
+    "name": "winston-salem",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bismarck",
+    "name": "bismarck",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fargo",
+    "name": "fargo / moorhead",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "grandforks",
+    "name": "grand forks",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nd",
+    "name": "north dakota",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "akroncanton",
+    "name": "akron / canton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ashtabula",
+    "name": "ashtabula",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "athensohio",
+    "name": "athens",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chillicothe",
+    "name": "chillicothe",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cincinnati",
+    "name": "cincinnati",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cleveland",
+    "name": "cleveland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "columbus",
+    "name": "columbus",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dayton",
+    "name": "dayton / springfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "limaohio",
+    "name": "lima / findlay",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mansfield",
+    "name": "mansfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sandusky",
+    "name": "sandusky",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "toledo",
+    "name": "toledo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tuscarawas",
+    "name": "tuscarawas co",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "youngstown",
+    "name": "youngstown",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "zanesville",
+    "name": "zanesville / cambridge",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lawton",
+    "name": "lawton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "enid",
+    "name": "northwest OK",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oklahomacity",
+    "name": "oklahoma city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stillwater",
+    "name": "stillwater",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tulsa",
+    "name": "tulsa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bend",
+    "name": "bend",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "corvallis",
+    "name": "corvallis/albany",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastoregon",
+    "name": "east oregon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eugene",
+    "name": "eugene",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "klamath",
+    "name": "klamath falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "medford",
+    "name": "medford-ashland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oregoncoast",
+    "name": "oregon coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "portland",
+    "name": "portland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "roseburg",
+    "name": "roseburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "salem",
+    "name": "salem",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "altoona",
+    "name": "altoona-johnstown",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chambersburg",
+    "name": "cumberland valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "erie",
+    "name": "erie",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "harrisburg",
+    "name": "harrisburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lancaster",
+    "name": "lancaster",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "allentown",
+    "name": "lehigh valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "meadville",
+    "name": "meadville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "philadelphia",
+    "name": "philadelphia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pittsburgh",
+    "name": "pittsburgh",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "poconos",
+    "name": "poconos",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "reading",
+    "name": "reading",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "scranton",
+    "name": "scranton / wilkes-barre",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pennstate",
+    "name": "state college",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "williamsport",
+    "name": "williamsport",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "york",
+    "name": "york",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "providence",
+    "name": "rhode island",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "charleston",
+    "name": "charleston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "columbia",
+    "name": "columbia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "florencesc",
+    "name": "florence",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "greenville",
+    "name": "greenville / upstate",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hiltonhead",
+    "name": "hilton head",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "myrtlebeach",
+    "name": "myrtle beach",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nesd",
+    "name": "northeast SD",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "csd",
+    "name": "pierre / central SD",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rapidcity",
+    "name": "rapid city / west SD",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "siouxfalls",
+    "name": "sioux falls / SE SD",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sd",
+    "name": "south dakota",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chattanooga",
+    "name": "chattanooga",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "clarksville",
+    "name": "clarksville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cookeville",
+    "name": "cookeville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jacksontn",
+    "name": "jackson",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "knoxville",
+    "name": "knoxville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "memphis",
+    "name": "memphis",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nashville",
+    "name": "nashville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tricities",
+    "name": "tri-cities",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "abilene",
+    "name": "abilene",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "amarillo",
+    "name": "amarillo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "austin",
+    "name": "austin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "beaumont",
+    "name": "beaumont / port arthur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brownsville",
+    "name": "brownsville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "collegestation",
+    "name": "college station",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "corpuschristi",
+    "name": "corpus christi",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dallas",
+    "name": "dallas / fort worth",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nacogdoches",
+    "name": "deep east texas",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "delrio",
+    "name": "del rio / eagle pass",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "elpaso",
+    "name": "el paso",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "galveston",
+    "name": "galveston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "houston",
+    "name": "houston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "killeen",
+    "name": "killeen / temple / ft hood",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "laredo",
+    "name": "laredo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lubbock",
+    "name": "lubbock",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mcallen",
+    "name": "mcallen / edinburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "odessa",
+    "name": "odessa / midland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sanangelo",
+    "name": "san angelo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sanantonio",
+    "name": "san antonio",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sanmarcos",
+    "name": "san marcos",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bigbend",
+    "name": "southwest TX",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "texoma",
+    "name": "texoma",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "easttexas",
+    "name": "tyler / east TX",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "victoriatx",
+    "name": "victoria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "waco",
+    "name": "waco",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wichitafalls",
+    "name": "wichita falls",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "logan",
+    "name": "logan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ogden",
+    "name": "ogden-clearfield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "provo",
+    "name": "provo / orem",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "saltlakecity",
+    "name": "salt lake city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stgeorge",
+    "name": "st george",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "vermont",
+    "name": "vermont",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "charlottesville",
+    "name": "charlottesville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "danville",
+    "name": "danville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fredericksburg",
+    "name": "fredericksburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "norfolk",
+    "name": "hampton roads",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "harrisonburg",
+    "name": "harrisonburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lynchburg",
+    "name": "lynchburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "blacksburg",
+    "name": "new river valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "richmond",
+    "name": "richmond",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "roanoke",
+    "name": "roanoke",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "swva",
+    "name": "southwest VA",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "winchester",
+    "name": "winchester",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bellingham",
+    "name": "bellingham",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kpr",
+    "name": "kennewick-pasco-richland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "moseslake",
+    "name": "moses lake",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "olympic",
+    "name": "olympic peninsula",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pullman",
+    "name": "pullman / moscow",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "seattle",
+    "name": "seattle-tacoma",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "skagit",
+    "name": "skagit / island / SJI",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "spokane",
+    "name": "spokane / coeur d'alene",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wenatchee",
+    "name": "wenatchee",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "yakima",
+    "name": "yakima",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "charlestonwv",
+    "name": "charleston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "martinsburg",
+    "name": "eastern panhandle",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "huntington",
+    "name": "huntington-ashland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "morgantown",
+    "name": "morgantown",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wheeling",
+    "name": "northern panhandle",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "parkersburg",
+    "name": "parkersburg-marietta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "swv",
+    "name": "southern WV",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wv",
+    "name": "west virginia (old)",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "appleton",
+    "name": "appleton-oshkosh-FDL",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eauclaire",
+    "name": "eau claire",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "greenbay",
+    "name": "green bay",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "janesville",
+    "name": "janesville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "racine",
+    "name": "kenosha-racine",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lacrosse",
+    "name": "la crosse",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "madison",
+    "name": "madison",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "milwaukee",
+    "name": "milwaukee",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "northernwi",
+    "name": "northern WI",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sheboygan",
+    "name": "sheboygan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wausau",
+    "name": "wausau",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wyoming",
+    "name": "wyoming",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "micronesia",
+    "name": "guam-micronesia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "puertorico",
+    "name": "puerto rico",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "virgin",
+    "name": "virgin islands",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "calgary",
+    "name": "calgary",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "edmonton",
+    "name": "edmonton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ftmcmurray",
+    "name": "ft mcmurray",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lethbridge",
+    "name": "lethbridge",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hat",
+    "name": "medicine hat",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "peace",
+    "name": "peace river country",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "reddeer",
+    "name": "red deer",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cariboo",
+    "name": "cariboo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "comoxvalley",
+    "name": "comox valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "abbotsford",
+    "name": "fraser valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kamloops",
+    "name": "kamloops",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kelowna",
+    "name": "kelowna / okanagan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kootenays",
+    "name": "kootenays",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nanaimo",
+    "name": "nanaimo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "princegeorge",
+    "name": "prince george",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "skeena",
+    "name": "skeena-bulkley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sunshine",
+    "name": "sunshine coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "vancouver",
+    "name": "vancouver",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "victoria",
+    "name": "victoria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "whistler",
+    "name": "whistler",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "winnipeg",
+    "name": "winnipeg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newbrunswick",
+    "name": "new brunswick",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newfoundland",
+    "name": "st john's",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "territories",
+    "name": "territories",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "yellowknife",
+    "name": "yellowknife",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "halifax",
+    "name": "halifax",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "barrie",
+    "name": "barrie",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "belleville",
+    "name": "belleville",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brantford",
+    "name": "brantford-woodstock",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chatham",
+    "name": "chatham-kent",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cornwall",
+    "name": "cornwall",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "guelph",
+    "name": "guelph",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hamilton",
+    "name": "hamilton-burlington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kingston",
+    "name": "kingston",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kitchener",
+    "name": "kitchener-waterloo-cambridge",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "londonon",
+    "name": "london",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "niagara",
+    "name": "niagara region",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ottawa",
+    "name": "ottawa-hull-gatineau",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "owensound",
+    "name": "owen sound",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "peterborough",
+    "name": "peterborough",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sarnia",
+    "name": "sarnia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "soo",
+    "name": "sault ste marie",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sudbury",
+    "name": "sudbury",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "thunderbay",
+    "name": "thunder bay",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "toronto",
+    "name": "toronto",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "windsor",
+    "name": "windsor",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pei",
+    "name": "prince edward island",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "montreal",
+    "name": "montreal",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "quebec",
+    "name": "quebec city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "saguenay",
+    "name": "saguenay",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sherbrooke",
+    "name": "sherbrooke",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "troisrivieres",
+    "name": "trois-rivieres",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "regina",
+    "name": "regina",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "saskatoon",
+    "name": "saskatoon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "whitehorse",
+    "name": "whitehorse",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "vienna",
+    "name": "vienna",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brussels",
+    "name": "belgium",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bulgaria",
+    "name": "bulgaria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "zagreb",
+    "name": "croatia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "prague",
+    "name": "prague",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "copenhagen",
+    "name": "copenhagen",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "helsinki",
+    "name": "finland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bordeaux",
+    "name": "bordeaux",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rennes",
+    "name": "brittany",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "grenoble",
+    "name": "grenoble",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lille",
+    "name": "lille",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "loire",
+    "name": "loire valley",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lyon",
+    "name": "lyon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "marseilles",
+    "name": "marseille",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "montpellier",
+    "name": "montpellier",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cotedazur",
+    "name": "nice / cote d'azur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rouen",
+    "name": "normandy",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "paris",
+    "name": "paris",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "strasbourg",
+    "name": "strasbourg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "toulouse",
+    "name": "toulouse",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "berlin",
+    "name": "berlin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bremen",
+    "name": "bremen",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cologne",
+    "name": "cologne",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dresden",
+    "name": "dresden",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dusseldorf",
+    "name": "dusseldorf",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "essen",
+    "name": "essen / ruhr",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "frankfurt",
+    "name": "frankfurt",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hamburg",
+    "name": "hamburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hannover",
+    "name": "hannover",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "heidelberg",
+    "name": "heidelberg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kaiserslautern",
+    "name": "kaiserslautern",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "leipzig",
+    "name": "leipzig",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "munich",
+    "name": "munich",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nuremberg",
+    "name": "nuremberg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stuttgart",
+    "name": "stuttgart",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "athens",
+    "name": "greece",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "budapest",
+    "name": "budapest",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "reykjavik",
+    "name": "reykjavik",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dublin",
+    "name": "dublin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bologna",
+    "name": "bologna",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "florence",
+    "name": "florence / tuscany",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "genoa",
+    "name": "genoa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "milan",
+    "name": "milan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "naples",
+    "name": "napoli / campania",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "perugia",
+    "name": "perugia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rome",
+    "name": "rome",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sardinia",
+    "name": "sardinia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sicily",
+    "name": "sicilia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "torino",
+    "name": "torino",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "venice",
+    "name": "venice / veneto",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "luxembourg",
+    "name": "luxembourg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "amsterdam",
+    "name": "amsterdam / randstad",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oslo",
+    "name": "norway",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "warsaw",
+    "name": "poland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "faro",
+    "name": "faro / algarve",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lisbon",
+    "name": "lisbon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "porto",
+    "name": "porto",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bucharest",
+    "name": "romania",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "moscow",
+    "name": "moscow",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stpetersburg",
+    "name": "st petersburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "alicante",
+    "name": "alicante",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "baleares",
+    "name": "baleares",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "barcelona",
+    "name": "barcelona",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bilbao",
+    "name": "bilbao",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cadiz",
+    "name": "cadiz",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "canarias",
+    "name": "canarias",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "granada",
+    "name": "granada",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "madrid",
+    "name": "madrid",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "malaga",
+    "name": "malaga",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sevilla",
+    "name": "sevilla",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "valencia",
+    "name": "valencia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "stockholm",
+    "name": "sweden",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "basel",
+    "name": "basel",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bern",
+    "name": "bern",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "geneva",
+    "name": "geneva",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lausanne",
+    "name": "lausanne",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "zurich",
+    "name": "zurich",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "istanbul",
+    "name": "turkey",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ukraine",
+    "name": "ukraine",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "aberdeen",
+    "name": "aberdeen",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bath",
+    "name": "bath",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "belfast",
+    "name": "belfast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "birmingham",
+    "name": "birmingham / west mids",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brighton",
+    "name": "brighton",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bristol",
+    "name": "bristol",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cambridge",
+    "name": "cambridge, UK",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cardiff",
+    "name": "cardiff / wales",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "coventry",
+    "name": "coventry",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "derby",
+    "name": "derby",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "devon",
+    "name": "devon & cornwall",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dundee",
+    "name": "dundee",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "norwich",
+    "name": "east anglia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "eastmids",
+    "name": "east midlands",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "edinburgh",
+    "name": "edinburgh",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "essex",
+    "name": "essex",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "glasgow",
+    "name": "glasgow",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hampshire",
+    "name": "hampshire",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kent",
+    "name": "kent",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "leeds",
+    "name": "leeds",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "liverpool",
+    "name": "liverpool",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "london",
+    "name": "london",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "manchester",
+    "name": "manchester",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "newcastle",
+    "name": "newcastle / NE england",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nottingham",
+    "name": "nottingham",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oxford",
+    "name": "oxford",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sheffield",
+    "name": "sheffield",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bangladesh",
+    "name": "bangladesh",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "beijing",
+    "name": "beijing",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chengdu",
+    "name": "chengdu",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chongqing",
+    "name": "chongqing",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dalian",
+    "name": "dalian",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "guangzhou",
+    "name": "guangzhou",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hangzhou",
+    "name": "hangzhou",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nanjing",
+    "name": "nanjing",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "shanghai",
+    "name": "shanghai",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "shenyang",
+    "name": "shenyang",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "shenzhen",
+    "name": "shenzhen",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wuhan",
+    "name": "wuhan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "xian",
+    "name": "xi'an",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hongkong",
+    "name": "hong kong",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ahmedabad",
+    "name": "ahmedabad",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bangalore",
+    "name": "bangalore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bhubaneswar",
+    "name": "bhubaneswar",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chandigarh",
+    "name": "chandigarh",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chennai",
+    "name": "chennai (madras)",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "delhi",
+    "name": "delhi",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "goa",
+    "name": "goa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hyderabad",
+    "name": "hyderabad",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "indore",
+    "name": "indore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jaipur",
+    "name": "jaipur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kerala",
+    "name": "kerala",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kolkata",
+    "name": "kolkata (calcutta)",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lucknow",
+    "name": "lucknow",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mumbai",
+    "name": "mumbai",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pune",
+    "name": "pune",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "surat",
+    "name": "surat surat",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jakarta",
+    "name": "indonesia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tehran",
+    "name": "iran",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "baghdad",
+    "name": "iraq",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "haifa",
+    "name": "haifa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "jerusalem",
+    "name": "jerusalem",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "telaviv",
+    "name": "tel aviv",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ramallah",
+    "name": "west bank",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fukuoka",
+    "name": "fukuoka",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hiroshima",
+    "name": "hiroshima",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "nagoya",
+    "name": "nagoya",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "okinawa",
+    "name": "okinawa",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "osaka",
+    "name": "osaka-kobe-kyoto",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sapporo",
+    "name": "sapporo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sendai",
+    "name": "sendai",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tokyo",
+    "name": "tokyo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "seoul",
+    "name": "seoul",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kuwait",
+    "name": "kuwait",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "beirut",
+    "name": "beirut, lebanon",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "malaysia",
+    "name": "malaysia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pakistan",
+    "name": "pakistan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bacolod",
+    "name": "bacolod",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "naga",
+    "name": "bicol region",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cdo",
+    "name": "cagayan de oro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cebu",
+    "name": "cebu",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "davaocity",
+    "name": "davao city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "iloilo",
+    "name": "iloilo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "manila",
+    "name": "manila",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pampanga",
+    "name": "pampanga",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "zamboanga",
+    "name": "zamboanga",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "singapore",
+    "name": "singapore",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "taipei",
+    "name": "taiwan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bangkok",
+    "name": "thailand",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dubai",
+    "name": "united arab emirates",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "vietnam",
+    "name": "vietnam",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "adelaide",
+    "name": "adelaide",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brisbane",
+    "name": "brisbane",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cairns",
+    "name": "cairns",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "canberra",
+    "name": "canberra",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "darwin",
+    "name": "darwin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "goldcoast",
+    "name": "gold coast",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "melbourne",
+    "name": "melbourne",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "ntl",
+    "name": "newcastle, NSW",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "perth",
+    "name": "perth",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "sydney",
+    "name": "sydney",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hobart",
+    "name": "tasmania",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wollongong",
+    "name": "wollongong",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "auckland",
+    "name": "auckland",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "christchurch",
+    "name": "christchurch",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "dunedin",
+    "name": "dunedin",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "wellington",
+    "name": "wellington",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "buenosaires",
+    "name": "buenos aires",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lapaz",
+    "name": "bolivia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "belohorizonte",
+    "name": "belo horizonte",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "brasilia",
+    "name": "brasilia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "curitiba",
+    "name": "curitiba",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "fortaleza",
+    "name": "fortaleza",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "portoalegre",
+    "name": "porto alegre",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "recife",
+    "name": "recife",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "rio",
+    "name": "rio de janeiro",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "salvador",
+    "name": "salvador, bahia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "saopaulo",
+    "name": "sao paulo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "caribbean",
+    "name": "caribbean islands",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "santiago",
+    "name": "chile",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "colombia",
+    "name": "colombia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "costarica",
+    "name": "costa rica",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "santodomingo",
+    "name": "dominican republic",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "quito",
+    "name": "ecuador",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "elsalvador",
+    "name": "el salvador",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "guatemala",
+    "name": "guatemala",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "acapulco",
+    "name": "acapulco",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "bajasur",
+    "name": "baja california sur",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "chihuahua",
+    "name": "chihuahua",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "juarez",
+    "name": "ciudad juarez",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "guadalajara",
+    "name": "guadalajara",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "guanajuato",
+    "name": "guanajuato",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "hermosillo",
+    "name": "hermosillo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mazatlan",
+    "name": "mazatlan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "mexicocity",
+    "name": "mexico city",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "monterrey",
+    "name": "monterrey",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "oaxaca",
+    "name": "oaxaca",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "puebla",
+    "name": "puebla",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pv",
+    "name": "puerto vallarta",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tijuana",
+    "name": "tijuana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "veracruz",
+    "name": "veracruz",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "yucatan",
+    "name": "yucatan",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "managua",
+    "name": "nicaragua",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "panama",
+    "name": "panama",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "lima",
+    "name": "peru",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "montevideo",
+    "name": "montevideo",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "caracas",
+    "name": "venezuela",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "cairo",
+    "name": "egypt",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "addisababa",
+    "name": "ethiopia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "accra",
+    "name": "ghana",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "kenya",
+    "name": "kenya",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "casablanca",
+    "name": "morocco",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "capetown",
+    "name": "cape town",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "durban",
+    "name": "durban",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "johannesburg",
+    "name": "johannesburg",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "pretoria",
+    "name": "pretoria",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  },
+  {
+    "code": "tunis",
+    "name": "tunisia",
+    "first_seen": "2025-04-13T02:17:14.496606",
+    "last_seen": "2025-04-13T02:17:14.496606"
+  }
+]

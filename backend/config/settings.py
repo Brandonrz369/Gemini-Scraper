@@ -32,7 +32,7 @@ OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 AI_CONFIG = {
     'GEMINI_MODEL': "gemini-2.5-pro-exp-03-25", # User specified Gemini model
     'OPENROUTER_BASE_URL': "https://openrouter.ai/api/v1",
-    'OPENROUTER_MODEL': "anthropic/claude-3-haiku", # Default OpenRouter fallback model
+    'OPENROUTER_MODEL': "openrouter/optimus-alpha", # Default OpenRouter fallback model
     'KEY_CYCLE_COOLDOWN_MINUTES': 20, # Cooldown before retrying Gemini keys
     # API Keys are now loaded directly above and passed to the handler
 }
