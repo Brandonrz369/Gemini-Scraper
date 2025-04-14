@@ -1,1 +1,9 @@
-[]
+[
+  {
+    "city_code": "dallas",
+    "category_code": "gig",
+    "url": "https://dallas.craigslist.org/search/gig",
+    "timestamp": "2025-04-14T04:03:01.673543",
+    "error": "Persistent Oxylabs Failure: Oxylabs failed 6 consecutive times (threshold: 5). Aborting due to persistent failure. Last error: Oxylabs Rate Limited (429) for https://dallas.craigslist.org/search/gig."
+  }
+]

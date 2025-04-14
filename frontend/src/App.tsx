@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react'; // Removed unused import
 import './App.css';
 import LeadsDashboard from './components/LeadsDashboard';
 

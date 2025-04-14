@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { X, Filter, Download, Inbox, RefreshCw, Calendar, Clock, Phone, Tag, CheckCircle, CircleAlert, BarChart3, Settings, Search } from 'lucide-react';
+// Removed unused icons: Calendar, Clock, Phone, Tag, BarChart3, Settings
+import { X, Filter, Download, Inbox, RefreshCw, CheckCircle, CircleAlert, Search } from 'lucide-react';
 
 // Define the Lead interface to match your JSON structure
 interface Lead {
