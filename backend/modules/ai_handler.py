@@ -17,35 +17,77 @@ from openai import RateLimitError as OpenAIRateLimitError, APIError as OpenAIAPI
 from google.api_core.exceptions import ResourceExhausted as GoogleRateLimitError, GoogleAPIError, DeadlineExceeded as GoogleAPITimeoutError
 
 # Import keys directly from config (which loads from .env)
-from config.settings import OPENROUTER_API_KEY, AI_CONFIG # Removed GEMINI_API_KEYS
+# Re-added GEMINI_API_KEYS import
+from config.settings import OPENROUTER_API_KEY, GEMINI_API_KEYS, AI_CONFIG
 
 class AIHandler:
     def __init__(self, config): # config is passed but we use imported constants now
-        # Removed Gemini specific attributes
-        self.openrouter_model_name = AI_CONFIG.get('OPENROUTER_MODEL', "anthropic/claude-3-haiku") # Ensure default
+        # Re-added Gemini attributes
+        self.gemini_model_name = AI_CONFIG.get('GEMINI_MODEL', "gemini-2.0-flash") # Use updated model name
+        self.openrouter_model_name = AI_CONFIG.get('OPENROUTER_MODEL', "anthropic/claude-3-haiku")
         self.openrouter_base_url = AI_CONFIG.get('OPENROUTER_BASE_URL', "https://openrouter.ai/api/v1")
-        # self.key_cooldown = timedelta(minutes=AI_CONFIG.get('KEY_CYCLE_COOLDOWN_MINUTES', 20)) # No longer needed
+        self.key_cooldown = timedelta(minutes=AI_CONFIG.get('KEY_CYCLE_COOLDOWN_MINUTES', 20)) # Re-added cooldown
 
-        # self.gemini_keys = deque(GEMINI_API_KEYS) # Removed Gemini keys
+        self.gemini_keys = deque(GEMINI_API_KEYS) # Re-added Gemini keys
         self.openrouter_key = OPENROUTER_API_KEY
 
-        # self.gemini_unavailable_until = None # Removed Gemini state
-        self.active_service = 'openrouter' if self.openrouter_key else 'disabled' # Default to OpenRouter if key exists
-
-        if not self.openrouter_key:
-            logging.error("No OpenRouter API key found in config/env. AI filtering disabled.")
+        self.gemini_unavailable_until = None # Re-added Gemini state
+        # Prioritize Gemini if keys exist, otherwise OpenRouter, then disabled
+        if self.gemini_keys:
+            self.active_service = 'gemini'
+        elif self.openrouter_key:
+            self.active_service = 'openrouter'
+        else:
             self.active_service = 'disabled'
 
-        logging.info(f"AI Handler initialized. Primary Service: {self.active_service.upper()}. OpenRouter Key: {'Yes' if self.openrouter_key else 'No'}")
+        if self.active_service == 'disabled':
+            logging.error("No Gemini or OpenRouter API keys found in config/env. AI filtering disabled.")
+        elif not self.gemini_keys:
+             logging.warning("No Gemini API keys found. Will use OpenRouter as fallback.")
+        elif not self.openrouter_key:
+             logging.warning("No OpenRouter API key found. Will only use Gemini (no fallback).")
 
-    def _get_llm_client(self, temperature=None): # Keep temperature parameter for potential use with OpenRouter models
+
+        logging.info(f"AI Handler initialized. Primary Service: {self.active_service.upper()}. Gemini Keys: {len(self.gemini_keys)}. OpenRouter Key: {'Yes' if self.openrouter_key else 'No'}")
+
+    def _get_llm_client(self, temperature=None): # Keep temperature parameter
         """Gets the appropriate Langchain LLM client based on current state."""
         now = datetime.now()
 
-        # Simplified logic: only use OpenRouter if available
+        # --- Gemini Logic ---
+        if self.active_service == 'gemini':
+            if self.gemini_unavailable_until and now < self.gemini_unavailable_until:
+                logging.warning(f"Gemini keys are on cooldown until {self.gemini_unavailable_until}. Attempting OpenRouter fallback.")
+                self.active_service = 'openrouter' # Temporarily switch to OpenRouter
+                # Fall through to OpenRouter logic below
+            elif not self.gemini_keys:
+                 logging.warning("No Gemini keys available. Attempting OpenRouter fallback.")
+                 self.active_service = 'openrouter' # Permanently switch if no keys
+                 # Fall through to OpenRouter logic below
+            else:
+                try:
+                    current_key = self.gemini_keys[0] # Peek at the next key
+                    logging.debug(f"Initializing Gemini client with model {self.gemini_model_name}.")
+                    # Pass temperature if provided
+                    client_kwargs = {
+                        "model": self.gemini_model_name,
+                        "google_api_key": current_key,
+                        "convert_system_message_to_human": True, # Recommended for Gemini
+                        # Set max_output_tokens at initialization
+                        "max_output_tokens": AI_CONFIG.get('GEMINI_MAX_TOKENS', 8192) # Use a default or get from config if added
+                    }
+                    if temperature is not None:
+                        client_kwargs["temperature"] = temperature
+                    return ChatGoogleGenerativeAI(**client_kwargs)
+                except Exception as e:
+                    logging.error(f"Failed to initialize Gemini client: {e}", exc_info=True)
+                    # Don't cycle key here, cycle on API call failure
+                    return None # Indicate failure to get client
+
+        # --- OpenRouter Logic (Fallback or Primary) ---
         if self.active_service == 'openrouter' and self.openrouter_key:
             try:
-                logging.debug("Initializing OpenRouter client.")
+                logging.debug(f"Initializing OpenRouter client with model {self.openrouter_model_name}.")
                 # Pass temperature if provided
                 client_kwargs = {
                     "model": self.openrouter_model_name,
@@ -58,14 +100,18 @@ class AIHandler:
                 return ChatOpenAI(**client_kwargs)
             except Exception as e:
                 logging.error(f"Failed to initialize OpenRouter client: {e}", exc_info=True)
+                # If OpenRouter fails to init, and we got here from Gemini cooldown, we're stuck
+                if not self.gemini_keys and not (self.gemini_unavailable_until and now < self.gemini_unavailable_until):
+                     logging.critical("OpenRouter client init failed and no Gemini keys available/off cooldown.")
                 return None
-        else:
-            logging.error("No active AI service or keys available.")
+        # --- Disabled ---
+        else: # Covers disabled state or OpenRouter fallback failure
+            logging.error("No active AI service or keys available/functional.")
             return None
 
     def _call_llm_with_cycling(self, system_prompt, user_prompt, max_tokens, temperature, json_mode=True, max_retries=2, initial_delay=5):
         """
-        Handles the LLM call, retries. Now primarily uses OpenRouter.
+        Handles the LLM call, retries, and cycling between Gemini keys/OpenRouter.
         Returns the raw response content string or None if all attempts fail.
         """
         if self.active_service == 'disabled':
@@ -81,25 +127,37 @@ class AIHandler:
             llm_client = self._get_llm_client(temperature=temperature)
             if not llm_client:
                 logging.error("Failed to get LLM client. Cannot make API call.")
-                return None # Cannot proceed without a client
+                # If Gemini was on cooldown, maybe try OpenRouter one last time if available
+                if self.active_service == 'gemini' and self.gemini_unavailable_until and datetime.now() < self.gemini_unavailable_until and self.openrouter_key:
+                    logging.warning("Gemini client failed init during cooldown, trying OpenRouter again.")
+                    self.active_service = 'openrouter'
+                    continue # Retry the while loop, will attempt OpenRouter init
+                return None # Cannot proceed
 
-            current_service = self.active_service # Should always be 'openrouter' if active
-            model_name = self.openrouter_model_name
+            current_service = self.active_service
+            model_name = self.gemini_model_name if current_service == 'gemini' else self.openrouter_model_name
             logging.debug(f"Attempt {retries + 1}/{max_retries + 1} using {current_service.upper()} model: {model_name}")
 
             messages = [SystemMessage(content=system_prompt), HumanMessage(content=user_prompt)]
             invoke_kwargs = {}
 
-            # Set parameters for OpenRouter (using ChatOpenAI structure)
-            if isinstance(llm_client, ChatOpenAI):
-                # Temperature handled at init
+            # Set parameters based on client type
+            if isinstance(llm_client, ChatGoogleGenerativeAI):
+                # Gemini specific settings (temperature handled at init)
+                # Gemini specific settings (temperature and max_output_tokens handled at init)
+                # We rely on the prompt asking for JSON for json_mode.
+                # Safety settings could be added to client_kwargs if needed.
+                pass # No specific invoke_kwargs needed here now for max_tokens
+            elif isinstance(llm_client, ChatOpenAI):
+                # OpenRouter specific settings (temperature handled at init)
                 invoke_kwargs["max_tokens"] = max_tokens
                 if json_mode:
+                    # Attempt to use JSON mode for OpenRouter models that support it
                     invoke_kwargs["response_format"] = {"type": "json_object"}
             else:
-                 # This case should ideally not happen if only OpenRouter is configured
-                 logging.warning("LLM client is not ChatOpenAI, cannot set specific parameters like response_format.")
-                 invoke_kwargs["temperature"] = temperature # Pass temp directly if not ChatOpenAI
+                 logging.warning("Unknown LLM client type, cannot set specific parameters.")
+                 # Pass generic params if possible
+                 invoke_kwargs["temperature"] = temperature
                  invoke_kwargs["max_tokens"] = max_tokens
 
 
@@ -108,21 +166,65 @@ class AIHandler:
                 response = llm_client.invoke(messages, **invoke_kwargs)
                 response_content = response.content.strip()
                 logging.debug(f"Raw response from {current_service.upper()}: {response_content}")
+
+                # --- Reset Gemini cooldown on success ---
+                if current_service == 'gemini' and self.gemini_unavailable_until:
+                    logging.info("Successful Gemini call, resetting cooldown.")
+                    self.gemini_unavailable_until = None
+                # --- End Reset Cooldown ---
+
                 return response_content # Success
 
-            # Removed specific Gemini error handling
+            # --- Gemini Error Handling ---
+            except (GoogleRateLimitError, GoogleAPIError, GoogleAPITimeoutError) as e:
+                 logging.warning(f"Gemini API Error (Attempt {retries + 1}): {e}")
+                 last_error = e
+                 # Cycle Gemini key and potentially switch to OpenRouter
+                 if self.gemini_keys:
+                     failed_key = self.gemini_keys.popleft() # Remove the failed key
+                     self.gemini_keys.append(failed_key) # Add it to the end
+                     logging.warning(f"Rotated Gemini API key. Keys remaining: {len(self.gemini_keys)}")
+                     if len(self.gemini_keys) == 1 and isinstance(e, GoogleRateLimitError): # If only one key left and it's rate limited
+                          logging.warning("Last Gemini key hit rate limit. Applying cooldown.")
+                          self.gemini_unavailable_until = datetime.now() + self.key_cooldown
+                          if self.openrouter_key:
+                              logging.info("Switching to OpenRouter due to Gemini cooldown.")
+                              self.active_service = 'openrouter'
+                          else:
+                              logging.error("No OpenRouter key available for fallback during Gemini cooldown.")
+                              # Continue retry loop, but it will likely fail again until cooldown expires
+                     elif not self.gemini_keys: # Should not happen if logic above is correct, but safety check
+                          logging.error("Ran out of Gemini keys during rotation.")
+                          if self.openrouter_key:
+                              logging.info("Switching to OpenRouter as Gemini keys exhausted.")
+                              self.active_service = 'openrouter'
+                          else:
+                               logging.critical("No Gemini or OpenRouter keys available.")
+                               # Let retry logic handle final failure
+                 else: # No Gemini keys were available to begin with
+                      if self.openrouter_key:
+                           logging.info("Gemini error occurred but no keys were available. Switching to OpenRouter.")
+                           self.active_service = 'openrouter'
+                      else:
+                           logging.error("Gemini error, but no Gemini keys and no OpenRouter key for fallback.")
+                 # Proceed to retry logic below
+
+            # --- OpenRouter Error Handling ---
             except (OpenAIRateLimitError, OpenAIAPIError, OpenAPITimeoutError) as e:
-                 # Handle OpenRouter specific errors
                  logging.warning(f"OpenRouter API Error (Attempt {retries + 1}): {e}")
                  last_error = e
-                 # No fallback, just proceed to retry logic
+                 # No fallback from OpenRouter currently, just proceed to retry logic
 
             except OutputParserException as e:
                  logging.warning(f"Langchain Output Parser Error (Attempt {retries + 1}): {e}. Likely malformed response from LLM.")
                  last_error = e
 
             except Exception as e:
-                logging.error(f"Unexpected error during LLM call (Attempt {retries + 1}): {e}", exc_info=True)
+                # Check if it's the specific TypeError we've seen
+                if isinstance(e, TypeError) and "'NoneType' object is not iterable" in str(e):
+                    logging.error(f"TypeError during LLM call (Attempt {retries + 1}): Likely malformed API response (e.g., missing 'choices'). Error: {e}", exc_info=True)
+                else:
+                    logging.error(f"Unexpected error during LLM call (Attempt {retries + 1}): {e}", exc_info=True)
                 last_error = e
 
             # --- Retry Logic ---

@@ -10,7 +10,7 @@ load_dotenv(dotenv_path=dotenv_path)
 
 # Oxylabs credentials
 OXYLABS_CONFIG = {
-    'OXYLABS_USERNAME': 'brandonrz_FPQP5', # Updated username again as per user request
+    'OXYLABS_USERNAME': 'brandonrz6_p4VXc', # Updated username as per user request (Apr 13)
     'OXYLABS_PASSWORD': '+p0wer24fromJah',
     # Do not commit this file to version control!
 }
@@ -30,7 +30,7 @@ GEMINI_API_KEYS = [key for key in GEMINI_API_KEYS if key]
 OPENROUTER_API_KEY = os.getenv('OPENROUTER_API_KEY')
 
 AI_CONFIG = {
-    'GEMINI_MODEL': "gemini-2.5-pro-exp-03-25", # User specified Gemini model
+    'GEMINI_MODEL': "gemini-2.0-flash", # User specified Gemini model (Updated)
     'OPENROUTER_BASE_URL': "https://openrouter.ai/api/v1",
     'OPENROUTER_MODEL': "openrouter/optimus-alpha", # Default OpenRouter fallback model
     'KEY_CYCLE_COOLDOWN_MINUTES': 20, # Cooldown before retrying Gemini keys

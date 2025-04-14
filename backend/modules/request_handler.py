@@ -5,9 +5,15 @@ import random
 import logging # Import logging
 # from fake_useragent import UserAgent # Note: fake-useragent might not be needed if Oxylabs handles it (Removed import)
 
+# Custom exception for persistent failures
+class PersistentOxylabsFailure(Exception):
+    """Raised when Oxylabs requests fail consecutively above a threshold."""
+    pass
+
 class RequestHandler:
     def __init__(self, config):
         self.config = config
+        self.consecutive_failure_threshold = 5 # Threshold for consecutive failures before raising exception
         # self.ua = UserAgent() # Oxylabs handles user agent via 'user_agent_type'
         self.username = config.get('OXYLABS_USERNAME') # Get from config dict
         self.password = config.get('OXYLABS_PASSWORD') # Get from config dict
@@ -20,9 +26,10 @@ class RequestHandler:
         self.success_count = 0
         self.failure_count = 0
         self.blocked_count = 0 # Tracks failures after all retries
+        self.consecutive_failure_count = 0 # Tracks consecutive failures
 
     def get_page(self, url, retry_count=3, backoff_factor=2):
-        """Fetch a page using Oxylabs Web Scraper API with intelligent retries"""
+        """Fetch a page using Oxylabs Web Scraper API with intelligent retries and persistent failure detection"""
         last_error = None
         for attempt in range(retry_count):
             try:
@@ -61,6 +68,7 @@ class RequestHandler:
 
                         logging.info(f"Success fetching {url}")
                         self.success_count += 1
+                        self.consecutive_failure_count = 0 # Reset consecutive failures on success
                         return data['results'][0]['content'] # Return the HTML content
                     else:
                         # Log Oxylabs specific failure reason if available
@@ -70,29 +78,34 @@ class RequestHandler:
                         logging.warning(last_error) # Use warning level for internal API failures
                         # Treat this as a failure for retry logic
                         self.failure_count += 1
+                        self.consecutive_failure_count += 1 # Increment consecutive failures
 
                 elif response.status_code == 401:
                      last_error = f"Oxylabs Authentication Failed (401). Check credentials for user '{self.username}'."
                      logging.error(last_error) # Use error level for auth failures
                      # No point retrying on auth failure
                      self.failure_count += (retry_count - attempt) # Count remaining attempts as failures
+                     self.consecutive_failure_count += (retry_count - attempt) # Also count consecutive
                      break
                 elif response.status_code == 403:
                      last_error = f"Oxylabs Forbidden (403). Check subscription or permissions for {url}."
                      logging.error(last_error) # Use error level for permission issues
                      # May not be worth retrying if it's a permission issue
                      self.failure_count += 1 # Count this attempt as failure
+                     self.consecutive_failure_count += 1
                      # Consider breaking if 403 persists
                 elif response.status_code == 429:
                      last_error = f"Oxylabs Rate Limited (429) for {url}."
                      logging.warning(last_error) # Use warning for rate limiting
                      self.failure_count += 1 # Count this attempt as failure
+                     self.consecutive_failure_count += 1
                      # Exponential backoff will handle waiting
                 else:
                     # General HTTP error from Oxylabs endpoint
                     last_error = f"Oxylabs API request failed for {url}. Status: {response.status_code}, Body: {response.text[:200]}"
                     logging.warning(last_error) # Use warning for general API errors
                     self.failure_count += 1
+                    self.consecutive_failure_count += 1
 
                 # Implement exponential backoff if request failed (and not auth error)
                 if response.status_code != 401:
@@ -104,6 +117,7 @@ class RequestHandler:
                 last_error = f"Request timed out after 60s for {url} on attempt {attempt + 1}"
                 logging.warning(last_error)
                 self.failure_count += 1
+                self.consecutive_failure_count += 1
                 # Apply backoff before retrying
                 wait_time = backoff_factor ** attempt + random.uniform(0, 1)
                 logging.info(f"Waiting {wait_time:.2f} seconds before retry...")
@@ -112,6 +126,7 @@ class RequestHandler:
                 last_error = f"Network exception during request for {url} on attempt {attempt + 1}: {str(e)}"
                 logging.warning(last_error, exc_info=True) # Log exception info
                 self.failure_count += 1
+                self.consecutive_failure_count += 1
                 # Apply backoff before retrying
                 wait_time = backoff_factor ** attempt + random.uniform(0, 1)
                 logging.info(f"Waiting {wait_time:.2f} seconds before retry...")
@@ -121,6 +136,7 @@ class RequestHandler:
                 last_error = f"Unexpected exception during request for {url} on attempt {attempt + 1}: {str(e)}"
                 logging.error(last_error, exc_info=True) # Log unexpected errors as ERROR
                 self.failure_count += 1
+                self.consecutive_failure_count += 1
                 # Apply backoff before retrying
                 wait_time = backoff_factor ** attempt + random.uniform(0, 1)
                 logging.info(f"Waiting {wait_time:.2f} seconds before retry...")
@@ -130,7 +146,14 @@ class RequestHandler:
         # If we exhausted all retries
         logging.error(f"Failed to fetch {url} after {retry_count} attempts. Last error: {last_error}")
         self.blocked_count += 1 # Increment blocked count after all retries fail
-        return None
+
+        # Check for persistent failure threshold
+        if self.consecutive_failure_count >= self.consecutive_failure_threshold:
+            error_message = f"Oxylabs failed {self.consecutive_failure_count} consecutive times (threshold: {self.consecutive_failure_threshold}). Aborting due to persistent failure. Last error: {last_error}"
+            logging.critical(error_message)
+            raise PersistentOxylabsFailure(error_message)
+
+        return None # Return None if retries exhausted but threshold not met
 
     def get_stats(self):
         """Returns the current request statistics."""

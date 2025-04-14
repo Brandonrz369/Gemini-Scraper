@@ -11,6 +11,7 @@ import argparse
 import concurrent.futures # Added for ThreadPoolExecutor
 from datetime import datetime
 from urllib.parse import urljoin, urlparse # Added urlparse
+import json # Ensure json is imported for logging failures
 
 # --- Project Root Definition ---
 project_root = os.path.dirname(os.path.abspath(__file__))
@@ -43,7 +44,8 @@ try:
     # Import PRE_FILTER_CONFIG as well
     from config.settings import OXYLABS_CONFIG, SEARCH_CONFIG, STATE_CONFIG, AI_CONFIG, PRE_FILTER_CONFIG
     from modules.city_manager import CityManager
-    from modules.request_handler import RequestHandler
+    # Import PersistentOxylabsFailure along with RequestHandler
+    from modules.request_handler import RequestHandler, PersistentOxylabsFailure
     from modules.content_analyzer import ContentAnalyzer
     from modules.state_manager import StateManager
     from modules.output_generator import OutputGenerator
@@ -74,10 +76,23 @@ def process_single_lead(basic_lead_info, worker_request_handler, worker_content_
         return None, None # Indicate skip
 
     logging.info(f"{log_prefix} Fetching lead details: {basic_lead_info.get('title', 'Untitled')} ({lead_url})")
-    lead_page_html = worker_request_handler.get_page(lead_url)
+    # --- Catch PersistentOxylabsFailure for detail page fetch ---
+    lead_page_html = None
+    try:
+        # Note: get_page handles its own retries internally now
+        lead_page_html = worker_request_handler.get_page(lead_url)
+    except PersistentOxylabsFailure as e:
+         # If persistent failure occurs even for a single lead detail page, log critically but just skip this lead for now.
+         # We don't want one bad lead URL to kill the whole city worker.
+         logging.critical(f"{log_prefix} Skipping lead detail fetch for {lead_url} due to persistent Oxylabs failure: {e}")
+         return None, None
+    except Exception as e_detail:
+         logging.error(f"{log_prefix} Unexpected error fetching lead detail page {lead_url}: {e_detail}", exc_info=True)
+         return None, None # Skip lead on other unexpected errors too
 
     if not lead_page_html:
-        logging.warning(f"{log_prefix} Failed to fetch lead detail page: {lead_url}. Skipping lead.")
+        # This case handles failure after internal retries in get_page, but *before* the persistent threshold was met.
+        logging.warning(f"{log_prefix} Failed to fetch lead detail page {lead_url} after retries. Skipping lead.")
         return None, None # Indicate failure/skip
 
     full_lead_details = worker_content_analyzer.analyze_lead_details(lead_page_html, basic_lead_info)
@@ -116,9 +131,11 @@ def scrape_city_worker(worker_args):
     city_leads_found_total = 0
     try:
         worker_state_manager = StateManager(config)
+        # Pass the whole Oxylabs config dict
         worker_request_handler = RequestHandler(config['OXYLABS_CONFIG'])
         worker_content_analyzer = ContentAnalyzer(config)
-        worker_ai_handler = AIHandler(config) # AI Handler initialized per worker
+        # Pass the whole AI config dict
+        worker_ai_handler = AIHandler(config['AI_CONFIG']) # Pass AI_CONFIG dict
 
         if not city_code:
             logging.warning(f"[{worker_name}] Skipping city: Missing 'code' in city_info {city_info}")
@@ -157,6 +174,17 @@ def scrape_city_worker(worker_args):
              worker_state_manager.clear_last_completed_category_for_city(city_code)
              return (city_code, 0) # Return 0 leads found as the city is effectively complete
 
+        # --- Fail log setup (outside category loop) ---
+        fail_log_path = os.path.join(repo_root, "failed_scrapes.json")
+        if not os.path.exists(fail_log_path):
+            try:
+                with open(fail_log_path, "w", encoding="utf-8") as f:
+                    f.write("[]")  # Initialize as empty list
+            except IOError as e:
+                 logging.error(f"Failed to initialize failed_scrapes.json: {e}")
+                 # Decide if this is critical enough to stop the worker
+                 # return (city_code, -1)
+
         for category_code in categories_to_process:
             current_page = 1
             # Construct the initial search URL correctly
@@ -168,54 +196,68 @@ def scrape_city_worker(worker_args):
             while next_page_url and current_page <= max_pages_to_scrape:
                 logging.info(f"[{worker_name}] Fetching category: {category_code} (Page {current_page}/{max_pages_to_scrape}) -> {next_page_url}")
 
-                # --- Added Retry Logic for Search Page Fetch ---
+                # --- Modified Fetch Logic for Search Page ---
                 search_page_html = None
-                fetch_retries = 0
-                max_fetch_retries = 2 # Try up to 3 times total (0, 1, 2)
-                fetch_delay = 5 # Initial delay in seconds
-
-                # --- Fail log setup ---
-                fail_log_path = os.path.join(repo_root, "failed_scrapes.json")
-                if not os.path.exists(fail_log_path):
-                    with open(fail_log_path, "w", encoding="utf-8") as f:
-                        f.write("[]")  # Initialize as empty list
-
-                while fetch_retries <= max_fetch_retries:
+                last_fetch_error = None # Variable to store potential error for logging
+                try:
+                    # Call get_page - it handles internal retries and raises PersistentOxylabsFailure
                     search_page_html = worker_request_handler.get_page(next_page_url)
-                    if search_page_html:
-                        break # Success
-                    else:
-                        fetch_retries += 1
-                        if fetch_retries <= max_fetch_retries:
-                            logging.warning(f"[{worker_name}] Failed to fetch search page {next_page_url} (Attempt {fetch_retries}/{max_fetch_retries + 1}). Retrying in {fetch_delay}s...")
-                            time.sleep(fetch_delay)
-                            fetch_delay *= 1.5 # Exponential backoff
-                        else:
-                            logging.error(f"[{worker_name}] Failed to fetch search page {next_page_url} after {max_fetch_retries + 1} attempts. Logging failure to failed_scrapes.json.")
-                            # Log the failure to a separate JSON file for later review
-                            import json
-                            try:
-                                with open(fail_log_path, "r+", encoding="utf-8") as f:
-                                    fail_log = json.load(f)
-                                    fail_log.append({
-                                        "city_code": city_code,
-                                        "category_code": category_code,
-                                        "url": next_page_url,
-                                        "timestamp": datetime.now().isoformat()
-                                    })
-                                    f.seek(0)
-                                    json.dump(fail_log, f, indent=2, ensure_ascii=False)
-                                    f.truncate()
-                            except Exception as e:
-                                logging.error(f"Failed to write to failed_scrapes.json: {e}")
-                            search_page_html = None # Ensure we don't proceed with parsing
-                            break # Break the retry loop, will then break the pagination loop below
 
+                except PersistentOxylabsFailure as e:
+                    # If get_page raises the persistent failure exception, log critical and abort worker
+                    logging.critical(f"[{worker_name}] Aborting city {city_code} due to persistent Oxylabs failure while fetching search page {next_page_url}: {e}")
+                    last_fetch_error = e # Store the error
+                    # Log to failed_scrapes.json before aborting
+                    try:
+                        with open(fail_log_path, "r+", encoding="utf-8") as f:
+                            fail_log = json.load(f)
+                            fail_log.append({
+                                "city_code": city_code, "category_code": category_code,
+                                "url": next_page_url, "timestamp": datetime.now().isoformat(),
+                                "error": f"Persistent Oxylabs Failure: {e}"
+                            })
+                            f.seek(0); json.dump(fail_log, f, indent=2, ensure_ascii=False); f.truncate()
+                    except Exception as e_log: logging.error(f"Failed to write persistent failure to failed_scrapes.json: {e_log}")
+                    return (city_code, -1) # Return failure code for this worker
+
+                except Exception as e_outer:
+                    # Catch any other unexpected errors during the get_page call itself
+                    logging.error(f"[{worker_name}] Unexpected error during get_page call for {next_page_url}: {e_outer}", exc_info=True)
+                    last_fetch_error = e_outer # Store the error
+                    # Log to failed_scrapes.json as well for unexpected errors
+                    try:
+                        with open(fail_log_path, "r+", encoding="utf-8") as f:
+                            fail_log = json.load(f)
+                            fail_log.append({
+                                "city_code": city_code, "category_code": category_code,
+                                "url": next_page_url, "timestamp": datetime.now().isoformat(),
+                                "error": f"Unexpected error during get_page: {e_outer}"
+                            })
+                            f.seek(0); json.dump(fail_log, f, indent=2, ensure_ascii=False); f.truncate()
+                    except Exception as e_log: logging.error(f"Failed to write unexpected error to failed_scrapes.json: {e_log}")
+                    search_page_html = None # Ensure html is None
+
+                # --- Check if fetch failed after all internal retries (but not persistent failure) ---
                 if not search_page_html:
-                    # If still no HTML after retries, skip to the next category
-                    logging.warning(f"[{worker_name}] Skipping category '{category_code}' due to persistent fetch failure. Logged to failed_scrapes.json.")
+                    # This case handles failures where get_page returned None after retries,
+                    # but the persistent threshold wasn't met.
+                    logging.error(f"[{worker_name}] Final failure fetching search page {next_page_url} after retries (check request_handler logs). Skipping category.")
+                    # Log to failed_scrapes.json if not already logged by PersistentOxylabsFailure
+                    # Check if last_fetch_error exists and is not the specific type we already handled
+                    if last_fetch_error and not isinstance(last_fetch_error, PersistentOxylabsFailure):
+                         try:
+                             with open(fail_log_path, "r+", encoding="utf-8") as f:
+                                 fail_log = json.load(f)
+                                 fail_log.append({
+                                     "city_code": city_code, "category_code": category_code,
+                                     "url": next_page_url, "timestamp": datetime.now().isoformat(),
+                                     "error": "Failed after retries (non-persistent type)"
+                                 })
+                                 f.seek(0); json.dump(fail_log, f, indent=2, ensure_ascii=False); f.truncate()
+                         except Exception as e_log: logging.error(f"Failed to write final failure to failed_scrapes.json: {e_log}")
+
                     continue # Continue to the next category in the outer loop
-                # --- End Retry Logic ---
+                # --- End Fetch/Retry Logic ---
 
 
                 logging.info(f"[{worker_name}] Parsing search results page {current_page} for {city_code}/{category_code}...")
@@ -342,9 +384,10 @@ def scrape_city_worker(worker_args):
         # --- End clear category checkpoint ---
         return (city_code, city_leads_found_total)
 
-    except ConnectionError as e: # Catch the specific error raised on persistent fetch failure
-        logging.error(f"[{worker_name}] Worker for city {city_code} aborted due to connection error: {e}")
-        return (city_code, -1) # Return -1 or another indicator of failure
+    # Catch PersistentOxylabsFailure at the worker level too, just in case it happens outside the search page fetch loop
+    except PersistentOxylabsFailure as e:
+        logging.critical(f"[{worker_name}] Worker for city {city_code} aborted due to persistent Oxylabs failure: {e}")
+        return (city_code, -1) # Return failure code
     except Exception as e:
         logging.error(f"[{worker_name}] Unhandled error processing city {city_code}: {e}", exc_info=True)
         return (city_code, -1) # Return -1 or another indicator of failure
@@ -462,7 +505,7 @@ def main(args):
         logging.info("--- System Status & Setup ---")
         cities_to_process = []
         target_city_codes = None
-        import json # Import json module
+        # import json # Already imported globally
 
         if args.city_list_file:
             # Load cities from the specified JSON file
@@ -509,8 +552,8 @@ def main(args):
             logging.info(f"Loaded {total_cities_in_list} cities from {list_to_load}.json.")
             cities_to_process = cities_to_process_full
 
-        total_cities_to_process = len(cities_to_process)
-        logging.info(f"Will process {total_cities_to_process} cities.")
+        total_cities_to_process_initial = len(cities_to_process) # Store initial count for progress calc
+        logging.info(f"Will process {total_cities_to_process_initial} cities initially.")
         logging.info(f"Total leads currently in database: {state_manager._get_total_leads_count()}")
 
         # --- Checkpoint/Resumption Logic ---
@@ -533,8 +576,8 @@ def main(args):
             logging.info("Starting fresh run (no previous completed city found).")
         # --- End Checkpoint Logic ---
 
-        total_cities_to_process = len(cities_to_process) # Recalculate after potential filtering
-        logging.info(f"Will process {total_cities_to_process} cities in this run.")
+        total_cities_to_process_this_run = len(cities_to_process) # Recalculate after potential filtering
+        logging.info(f"Will process {total_cities_to_process_this_run} cities in this run.")
         if not cities_to_process: logging.warning("No cities left to process for this run. Exiting."); sys.exit(0)
 
         # Determine max pages per category based on argument or default (3)
@@ -572,13 +615,21 @@ def main(args):
                     processed_cities_count += 1
                     city_code, leads_found = result
                     if leads_found == -1: # Check for failure indicator from worker
-                        logging.error(f"Worker for city {city_code} reported failure.")
+                        logging.critical(f"Worker for city {city_code} reported critical failure (likely persistent Oxylabs issue). Terminating entire run.")
                         failed_cities.append(city_code)
-                        # Do NOT save 'last_completed_city' checkpoint if worker failed
+                        pool.terminate() # Terminate all other workers
+                        pool.join() # Wait for termination
+                        logging.critical("Multiprocessing pool terminated due to critical worker failure.")
+                        # Optionally perform minimal cleanup before exiting if needed
+                        if state_manager and hasattr(state_manager, '_close_db'):
+                             state_manager._close_db()
+                        sys.exit(1) # Exit the main script with a failure code
                     else: # Worker completed successfully (leads_found >= 0)
                         if leads_found > 0:
                             total_leads_found_this_session += leads_found
-                        logging.info(f"Worker finished successfully for {city_code}. Found {leads_found} leads. ({processed_cities_count}/{total_cities_to_process} cities complete)")
+                        # Log progress percentage
+                        progress_percent = (processed_cities_count / total_cities_to_process_this_run) * 100 if total_cities_to_process_this_run > 0 else 0
+                        logging.info(f"Worker finished successfully for {city_code}. Found {leads_found} leads. ({processed_cities_count}/{total_cities_to_process_this_run} cities complete this run - {progress_percent:.2f}%)")
                         # --- Save overall city progress ONLY after successful worker completion ---
                         # The worker itself clears the category checkpoint before returning success.
                         if city_code: # Ensure city_code is valid before saving progress
@@ -603,7 +654,7 @@ def main(args):
         if failed_cities:
             logging.warning(f"The following cities failed processing due to errors: {', '.join(failed_cities)}")
         state_manager._set_progress_value("last_full_run_completed", datetime.now().isoformat())
-        logging.info(f"Processed {processed_cities_count} cities.")
+        logging.info(f"Processed {processed_cities_count} cities in this run.")
         logging.info(f"Found approx {total_leads_found_this_session} new leads this session.")
 
         all_leads = state_manager.get_leads()
@@ -619,6 +670,11 @@ def main(args):
         deploy_to_github()
         logging.info("--- Agent Finished ---")
 
+    # Catch PersistentOxylabsFailure at the main level if it somehow propagates
+    except PersistentOxylabsFailure as e:
+         logging.critical(f"Main execution caught persistent Oxylabs failure: {e}. Terminating.")
+         # Optionally perform cleanup before exiting
+         sys.exit(1) # Exit with a non-zero code to indicate failure
     except Exception as e:
         logging.critical(f"An unexpected error occurred in main execution: {e}", exc_info=True)
     finally:
