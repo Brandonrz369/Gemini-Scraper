@@ -10,7 +10,7 @@ load_dotenv(dotenv_path=dotenv_path)
 
 # Oxylabs credentials
 OXYLABS_CONFIG = {
-    'OXYLABS_USERNAME': 'brandonrz6_p4VXc', # Updated username as per user request (Apr 13)
+    'OXYLABS_USERNAME': 'brandonrz_pHeAj', # Updated username as per user request (Apr 14)
     'OXYLABS_PASSWORD': '+p0wer24fromJah',
     # Do not commit this file to version control!
 }

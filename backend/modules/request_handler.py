@@ -28,7 +28,7 @@ class RequestHandler:
         self.blocked_count = 0 # Tracks failures after all retries
         self.consecutive_failure_count = 0 # Tracks consecutive failures
 
-    def get_page(self, url, retry_count=3, backoff_factor=2):
+    def get_page(self, url, retry_count=3, backoff_factor=2): # Removed browser_instructions
         """Fetch a page using Oxylabs Web Scraper API with intelligent retries and persistent failure detection"""
         last_error = None
         for attempt in range(retry_count):
@@ -41,6 +41,8 @@ class RequestHandler:
                     "render": "html",  # Get rendered HTML with JavaScript processed
                     # Consider adding 'geo_location' if needed for specific cities
                 }
+                # Removed browser instructions logic
+
 
                 # Add randomized delay before the request
                 # Adjust delay based on Oxylabs recommendations if available

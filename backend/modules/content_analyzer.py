@@ -113,12 +113,66 @@ class ContentAnalyzer:
                  logging.debug(f"Could not find time tag for post date for {basic_lead_info.get('url')}")
 
             # --- (Placeholder) Extract Other Details ---
-            # Add logic here to extract things like contact info, compensation, etc. if needed
-            # Example: Look for reply button info
+            # --- Extract Contact Email (if available) ---
+            full_details['contact_email'] = None # Initialize
+            reply_info_section = soup.find('div', class_='reply-info') # Often contains the email spans
+            # Define reply_button_area earlier to ensure it exists for phone fallback logic
+            reply_button_area = soup.find('div', class_='reply-button-row') # Or similar container
+
+            if reply_info_section:
+                local_part_span = reply_info_section.find('span', class_='reply-email-localpart')
+                if local_part_span:
+                    # The domain part is usually in the next sibling span
+                    domain_part_span = local_part_span.find_next_sibling('span')
+                    if domain_part_span:
+                        local_part = local_part_span.get_text(strip=True)
+                        domain_part = domain_part_span.get_text(strip=True)
+                        if local_part and domain_part:
+                            full_details['contact_email'] = f"{local_part}{domain_part}"
+                            logging.debug(f"Extracted contact email for {basic_lead_info.get('url')}")
+                        else:
+                             logging.debug(f"Found email spans but one was empty for {basic_lead_info.get('url')}")
+                    else:
+                         logging.debug(f"Found local part span but no sibling domain span for {basic_lead_info.get('url')}")
+                else:
+                     logging.debug(f"Could not find span.reply-email-localpart within reply-info for {basic_lead_info.get('url')}")
+            elif reply_button_area: # Use elif since reply_button_area is now defined earlier
+                 # Fallback: Check if the spans exist directly under the reply button area if no div.reply-info
+                 local_part_span = reply_button_area.find('span', class_='reply-email-localpart')
+                 if local_part_span:
+                           domain_part_span = local_part_span.find_next_sibling('span')
+                           if domain_part_span:
+                               local_part = local_part_span.get_text(strip=True)
+                               domain_part = domain_part_span.get_text(strip=True)
+                               if local_part and domain_part:
+                                   full_details['contact_email'] = f"{local_part}{domain_part}"
+                                   logging.debug(f"Extracted contact email (fallback) for {basic_lead_info.get('url')}")
+
+            # --- Extract Contact Phone (if available) ---
+            full_details['contact_phone'] = None # Initialize
+            # Phone numbers are often in tel: links within the reply info or button area
+            phone_link = None
+            if reply_info_section:
+                 phone_link = reply_info_section.find('a', href=lambda href: href and href.startswith('tel:'))
+            if not phone_link and reply_button_area: # Check fallback area if not found in reply_info
+                 phone_link = reply_button_area.find('a', href=lambda href: href and href.startswith('tel:'))
+
+            if phone_link:
+                phone_number = phone_link.get_text(strip=True)
+                if phone_number:
+                    full_details['contact_phone'] = phone_number
+                    logging.debug(f"Extracted contact phone for {basic_lead_info.get('url')}")
+                else:
+                    logging.debug(f"Found phone link but text was empty for {basic_lead_info.get('url')}")
+            else:
+                 logging.debug(f"Could not find phone link for {basic_lead_info.get('url')}")
+
+
+            # --- (Placeholder) Extract Other Details ---
+            # Example: Look for reply button info (already done above implicitly)
             reply_button = soup.find('button', class_='reply-button')
             if reply_button:
-                 full_details['contact_method'] = 'Reply Button'
-                 # Further logic could try to get email/phone if revealed
+                 full_details['contact_method'] = 'Reply Button' # Keep this for context
 
         except Exception as e:
             logging.error(f"Error analyzing lead details HTML for {basic_lead_info.get('url')}: {e}", exc_info=True)

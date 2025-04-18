@@ -1,4 +1,4 @@
-# modules/state_manager.py (Recreated)
+# brandonrz_pHeAj# modules/state_manager.py (Recreated)
 import sqlite3
 import logging
 import os
@@ -49,7 +49,8 @@ class StateManager:
                     scraped_timestamp TEXT,
                     estimated_value TEXT,
                     contact_method TEXT,
-                    contact_info TEXT,
+                    contact_info TEXT, -- For email
+                    contact_phone TEXT, -- Added for phone number
                     has_been_contacted BOOLEAN DEFAULT 0,
                     follow_up_date TEXT,
                     ai_is_junk BOOLEAN,
@@ -77,6 +78,13 @@ class StateManager:
                 self.cursor.execute("ALTER TABLE leads ADD COLUMN search_scope TEXT")
                 self.conn.commit()
                 logging.info("'search_scope' column added successfully.")
+
+            # Check if the contact_phone column exists
+            if 'contact_phone' not in columns:
+                logging.info("Adding 'contact_phone' column to existing 'leads' table...")
+                self.cursor.execute("ALTER TABLE leads ADD COLUMN contact_phone TEXT")
+                self.conn.commit()
+                logging.info("'contact_phone' column added successfully.")
             # --- End migration logic ---
 
         except sqlite3.Error as e:
@@ -145,7 +153,9 @@ class StateManager:
             'scraped_timestamp': lead_details.get('scraped_timestamp', datetime.now().isoformat()),
             'estimated_value': lead_details.get('estimated_value'),
             'contact_method': lead_details.get('contact_method'),
-            'contact_info': lead_details.get('contact_info'),
+            # Use 'contact_email' from lead_details, store in 'contact_info' column
+            'contact_info': lead_details.get('contact_email'),
+            'contact_phone': lead_details.get('contact_phone'), # Add phone number
             'has_been_contacted': lead_details.get('has_been_contacted', False),
             'follow_up_date': lead_details.get('follow_up_date'),
             'ai_is_junk': ai_is_junk,

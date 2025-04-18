@@ -73,13 +73,14 @@ def process_single_lead(basic_lead_info, worker_request_handler, worker_content_
     expected_domain = f"{basic_lead_info.get('city_code', 'unknown')}.craigslist.org" # Assume city_code is added to basic_lead_info
     if parsed_url.netloc != expected_domain:
         logging.warning(f"{log_prefix} Skipping lead from different city: {lead_url} (Expected domain: {expected_domain})")
-        return None, None # Indicate skip
+        return None, None # Indicate skip - Correctly indented now
 
     logging.info(f"{log_prefix} Fetching lead details: {basic_lead_info.get('title', 'Untitled')} ({lead_url})")
+    # --- Removed browser instructions for reply button click ---
     # --- Catch PersistentOxylabsFailure for detail page fetch ---
     lead_page_html = None
     try:
-        # Note: get_page handles its own retries internally now
+        # Fetch lead detail page without browser instructions
         lead_page_html = worker_request_handler.get_page(lead_url)
     except PersistentOxylabsFailure as e:
          # If persistent failure occurs even for a single lead detail page, log critically but just skip this lead for now.
